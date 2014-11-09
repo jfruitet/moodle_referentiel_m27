@@ -24,7 +24,10 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+if (!isset($plugin)) {
+    // Avoid warning message in M2.5 and below.
+    $plugin = new stdClass();
+}
 $plugin->version   = 2014110300;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012112900;        // Requires this Moodle version
 $plugin->release  = 'Block Referentiel v 10.01 for Moodle 2.7 with scale support - Release 2014-11-02';    // User-friendly date of release

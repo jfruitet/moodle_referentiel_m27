@@ -261,9 +261,18 @@ $sql='';
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
             // suppression
 			if (referentiel_delete_activity_record($delete)){
-				add_to_log($course->id, 'referentiel', 'record delete', "activite.php?d=$referentiel->id", $delete, $cm->id);
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+                	'contextid' => $context->id,
+                	'objectid' => $delete,
+            		);
+            		$event = \mod_referentiel\event\activite_deleted::create($params);
+            		$event->trigger();
+        		} else { // Before Moodle 2.7
+					add_to_log($course->id, 'referentiel', 'activity deleted', "activite.php?id=$cm->id", $delete, $cm->id);
+        		}
                 // notify(get_string('recorddeleted','referentiel'), 'notifysuccess');
-            }
+			}
         }
         redirect("$CFG->wwwroot/mod/referentiel/activite.php?d=$referentiel->id&amp;select_acc=$select_acc&amp;mode=$mode&amp;f_auteur=$data_f->f_auteur&amp;f_validation=$data_f->f_validation&amp;f_referent=$data_f->f_referent&amp;f_date_modif=$data_f->f_date_modif&amp;f_date_modif_student=$data_f->f_date_modif_student");
         exit;
@@ -442,7 +451,16 @@ $sql='';
                     if (is_string($return)) {
                         print_error($return, "activite.php?d=$referentiel->id");
                     }
-                    add_to_log($course->id, "referentiel", "update", "mise a jour activite $form2->activite_id", "$form2->instance", "");
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	        		$params = array(
+        	        	'contextid' => $context->id,
+            	    	'objectid' => $form2->activite_id,
+            			);
+            			$event = \mod_referentiel\event\activite_updated::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', "activity $form2->activite_id  updated", $form2->instance, $cm->id);
+        			}
                 }
             }
             unset($form);
@@ -485,9 +503,16 @@ $sql='';
                         if (is_string($return)) {
                             print_error($return, 'error', "activite.php?d=$referentiel->id&amp;userid=$form->userid");
                         }
-                        add_to_log($course->id, "referentiel", "delete",
-            	          "mise a jour activite $form->activite_id",
-                          "$form->instance", "");
+	        			if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	        			$params = array(
+        	        			'contextid' => $context->id,
+            	    			'objectid' => $form->activite_id,
+            				);
+            				$event = \mod_referentiel\event\activite_deleted::create($params);
+	            			$event->trigger();
+    	    			} else { // Before Moodle 2.7
+	                        add_to_log($course->id, 'referentiel', 'delete', "mise a jour activite {$form->activite_id}", $form->instance, $cm->id);
+        				}
                     }
                     else {
 						if ($userbareme){   // evaluation basee sur bareme
@@ -568,9 +593,16 @@ $sql='';
                         if (is_string($return)) {
     	        		    print_error($return, "activite.php?d=$referentiel->id");
                         }
-                        add_to_log($course->id, "referentiel", "update",
-            	           "mise a jour activite $form->activite_id",
-                           "$form->instance", "");
+	        			if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	        			$params = array(
+        	        			'contextid' => $context->id,
+		            	    	'objectid' => $form->activite_id,
+        	    			);
+            				$event = \mod_referentiel\event\activite_updated::create($params);
+	            			$event->trigger();
+    	    			} else { // Before Moodle 2.7
+	                    	add_to_log($course->id, 'referentiel', "activity $form->activite_id  updated", $form->instance, $cm->id);
+	        			}
 
 					   // depot de document ?
                         if (isset($form->depot_document) && ($form->depot_document==get_string('yes'))){
@@ -630,9 +662,16 @@ $sql='';
                             exit;
                         }
                     }
-                    add_to_log($course->id, "referentiel", "add",
-                           "creation activite $form->activite_id ",
-                           "$form->instance", "");
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	        		$params = array(
+        	        		'contextid' => $context->id,
+		            	    'objectid' => $form->activite_id,
+        	    		);
+            			$event = \mod_referentiel\event\activite_created::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', "add", "activity $form->activite_id  created", $form->instance, $cm->id);
+	        		}
 
                     $mode ='listactivityall';
 					if (has_capability('mod/referentiel:managecertif', $context)){
@@ -654,9 +693,16 @@ $sql='';
                     }
 	                else{
                         unset($SESSION->returnpage);
-                        add_to_log($course->id, "referentiel", "add",
-                           "suppression activite $form->activite_id ",
-                           "$form->instance", "");
+		        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+        		    		$params = array(
+                				'contextid' => $context->id,
+			                	'objectid' => $form->activite_id,
+            				);
+            				$event = \mod_referentiel\event\activite_deleted::create($params);
+		            		$event->trigger();
+        				} else { // Before Moodle 2.7
+							add_to_log($course->id, 'referentiel', 'activity deleted', "activite.php?id=$cm->id", $delete, $cm->id);
+			        	}
 				    }
       		        $mode ='listactivityall';
 			   	    if (has_capability('mod/referentiel:managecertif', $context)){

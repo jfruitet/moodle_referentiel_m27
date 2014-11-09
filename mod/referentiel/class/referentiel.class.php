@@ -197,8 +197,16 @@ class referentiel {
         $this->context = context_module::instance($this->cm->id);
         require_capability('mod/referentiel:view', $this->context);
 
-        add_to_log($this->course->id, "referentiel", "view", "view.php?id={$this->cm->id}",
-                   $this->referentiel->id, $this->cm->id);
+        if ($CFG->version > 2014051200) { // Moodle 2.7+
+            $params = array(
+                'contextid' => $this->context->id,
+                'objectid' => $this->referentiel->id,
+            );
+            $event = \mod_referentiel\event\course_module_viewed::create($params);
+            $event->trigger();
+        } else { // Before Moodle 2.7
+	        add_to_log($this->course->id, 'referentiel', 'view', "view.php?id={$this->cm->id}",$this->referentiel->id, $this->cm->id);
+        }
 
         $this->view_header();
 
@@ -238,8 +246,17 @@ class referentiel {
 
         require_capability('mod/referentiel:import', $this->context);
 
-        add_to_log($this->course->id, "referentiel", "view", "import_instance.php?id={$this->cm->id}",
-                   $this->referentiel->id, $this->cm->id);
+        if ($CFG->version > 2014051200) { // Moodle 2.7+
+            $params = array(
+                'contextid' => $this->context->id,
+                'objectid' => $this->referentiel->id,
+            );
+            $event = \mod_referentiel\event\import_intance::create($params);
+            $event->trigger();
+        } else { // Before Moodle 2.7
+	        add_to_log($this->course->id, 'referentiel', 'view', "import_instance.php?id={$this->cm->id}", $this->referentiel->id, $this->cm->id);
+		}
+
 
         $this->view_header();
 

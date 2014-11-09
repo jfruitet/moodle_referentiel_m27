@@ -179,8 +179,16 @@
 	        if (! $referentiel = $DB->get_record("referentiel", array("id" => "$referentiel->id"))) {
     	        print_error('Certification instance '.$return.' is incorrect');
         	}
-			
-    	    add_to_log($course->id, "referentiel", "update", "add.php?d=$referentiel->id", "$form->name_instance $referentiel->id");
+	        if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    	$params = array(
+        	       	'contextid' => $context->id,
+            	   	'objectid' => $referentiel->id,
+            	);
+            	$event = \mod_referentiel\event\course_module_updated::create($params);
+	            $event->trigger();
+    	    } else { // Before Moodle 2.7
+	        	add_to_log($course->id, 'referentiel', 'update', "referentiel $referentiel->name of id $referentiel->id updated", "add.php?id=$cm->id", $cm->id);
+           	}
 			// pas de redirection car il faut peut �tre encore selectionner le referentiel
 		}
 		
@@ -197,8 +205,17 @@
 	        if (! $referentiel = $DB->get_record("referentiel", array("id" => "$referentiel->id")))
             {
     	        print_error('Certification instance '.$return.' is incorrect');
-        	}			
-    	    add_to_log($course->id, "referentiel", "update", "add.php?id=$cm->id", "$form->name_instance $referentiel->id");
+        	}
+	        if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    	$params = array(
+        	       	'contextid' => $context->id,
+            	   	'objectid' => $referentiel->id,
+            	);
+            	$event = \mod_referentiel\event\course_module_updated::create($params);
+	            $event->trigger();
+    	    } else { // Before Moodle 2.7
+                add_to_log($course->id, 'referentiel', 'update', "add.php?id=$cm->id", "$referentiel->name $referentiel->id");
+			}
 			// echo "<br />add.php :: 157 :: RETOUR : $returnlink_suite ; FORM<br />\n";					
 			redirect($returnlink_suite);
 	        exit;
@@ -206,9 +223,6 @@
 		
 		if (!empty($action) && ($action=="modifierreferentiel")){
 			// sauvegarder le referentiel
-			// echo "<br />add.php :: 189 :: ACTION : $action ; FORM<br />\n";
-			// print_r($form);
-			// exit;
 			$return_referentiel_id = referentiel_add_referentiel_domaines($form);
     	    if (!$return_referentiel_id) {
 				print_error(get_string('erreur_creation','referentiel'), $returnlink_erreur);
@@ -216,16 +230,19 @@
     	    if (is_string($return_referentiel_id)) {
         		print_error($return_referentiel_id, $returnlink_erreur);
 	        }
-			
-    	    add_to_log($course->id, "referentiel", "write", "add.php?id=$cm->id", "$form->name $return_referentiel_id");
-			// DEBUG
-			// echo "<br /> add.php :: 200 :: INSTANCE : $form->instance : REFERENTIEL : $return_referentiel_id<br />\n";
+	        if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    	$params = array(
+        	       	'contextid' => $context->id,
+            	   	'objectid' => $return_referentiel_id,
+            	);
+            	$event = \mod_referentiel\event\course_module_updated::create($params);
+	            $event->trigger();
+    	    } else { // Before Moodle 2.7
+                add_to_log($course->id, "referentiel", "write", "add.php?id=$cm->id", "$form->name $return_referentiel_id");
+			}
 
 			// associer le referentiel
 			$form->new_referentiel_id=$return_referentiel_id;
-			// echo "<br />add.php :: 204 :: FORM<br />\n";		
-			// print_r($form);
-            // MODIF JF 2012/03/07
 			$return = referentiel_associe_referentiel_instance($referentiel->id, $return_referentiel_id);
         	if (!$return) {
 				print_error("Error 3 : Could not update the referentiel instance 3 ", $returnlink_erreur);
@@ -234,9 +251,16 @@
 	        if (! $referentiel = $DB->get_record("referentiel", array("id"=>"$referentiel->id"))) {
     	        print_error('Referentiel instance '.$form->instance.' is incorrect');
         	}
-			
-    	    add_to_log($course->id, "referentiel", "update", "add.php?d=$referentiel->id", "$form->name_instance $referentiel->id");
-			// echo "<br />add.php :: 237 :: EXIT<br />\n";
+	        if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    	$params = array(
+        	       	'contextid' => $context->id,
+            	   	'objectid' => $referentiel->id,
+            	);
+            	$event = \mod_referentiel\event\course_module_updated::create($params);
+	            $event->trigger();
+    	    } else { // Before Moodle 2.7
+	    	    add_to_log($course->id, 'referentiel', 'update', "add.php?d=$referentiel->id", "$referentiel->name $referentiel->id");
+			}
 			redirect($returnlink_suite);
 	        exit;
 		}

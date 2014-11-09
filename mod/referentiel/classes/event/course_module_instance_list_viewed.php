@@ -15,19 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * The mod_referentiel instance list viewed event.
  *
- * @package    report
- * @subpackage backups
- * @copyright  2007 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @package    mod_referentiel
+ * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-if (!isset($plugin)) {
-    // Avoid warning message in M2.5 and below.
-    $plugin = new stdClass();
+namespace mod_referentiel\event;
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * The mod_referentiel instance list viewed event class.
+ *
+ * @package    mod_referentiel
+ * @since      Moodle 2.7
+ * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed {
+    // No need for any code here as everything is handled by the parent class.
 }
-$plugin->requires = 2011120500;  // Requires this Moodle version  2.0
-$plugin->version  = 2013061401;  // The current module version (Date: YYYYMMDDXX)
-$plugin->component = 'report_referentiel'; // Full name of the plugin (used for diagnostics)

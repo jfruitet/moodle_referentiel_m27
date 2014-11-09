@@ -2,7 +2,31 @@
 // ----------------
 // UTF-8 French
 //
-$string['explaingeneralconfig'] = 'Ces paramètres sont <strong>toujours</strong> utiilisés';
+
+// Events
+
+$string['eventeditpageviewed'] = 'Page éditée';
+$string['eventreferentielcomplete'] = 'Referentiel complété';
+$string['eventactivitycreated'] = 'Activité  crée';
+$string['eventactivitydeleted'] = 'Activité  supprimée';
+$string['eventactivityupdated'] = 'Activité  mise à jour';
+$string['eventactivityviewed'] = 'Activité affichée';
+$string['eventcertificatviewed'] = 'Certificat affiché';
+$string['eventdomaincreated'] = 'Domaine créé';
+$string['eventdomaindeleted'] = 'Domaine supprimé';
+$string['eventdomainupdated'] = 'Domaine mis à jour';
+$string['eventcompetencycreated'] = 'Compétence créée';
+$string['eventcompetencydeleted'] = 'Compétency supprimée';
+$string['eventcompetencyupdated'] = 'Compétency mise à jour';
+$string['eventitemcreated'] = 'Item crée';
+$string['eventitemdeleted'] = 'Item supprimé';
+$string['eventitemupdated'] = 'Item mis à jour';
+$string['eventoccurrencecreated'] = 'Occurrrence créée';
+$string['eventoccurrencedeleted'] = 'Occurrrence supprimée';
+$string['eventoccurrenceupdated'] = 'Occurrrence mise à jour';
+$string['eventinstanceupdated'] = 'Referentiel instance mise à jour';
+
+$string['explaingeneralconfig'] = 'Ces paramètres sont <strong>toujours</strong> utilisés';
 $string['generalconfig'] = 'Configuration générale';
 $string['settings'] = 'Configuration Referentiel';
 $string['bilanactivity'] = 'Bilan';

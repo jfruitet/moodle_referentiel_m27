@@ -2,6 +2,29 @@
 // referentiel module
 //
 
+// Events
+$string['eventeditpageviewed'] = 'Edit page viewed';
+$string['eventreferentielcomplete'] = 'Referentiel complete';
+$string['eventactivitycreated'] = 'Activity created';
+$string['eventactivitydeleted'] = 'Activity deleted';
+$string['eventactivityupdated'] = 'Activity updated';
+$string['eventactivityviewed'] = 'Activity viewed';
+$string['eventcertificatviewed'] = 'Certificate viewed';
+
+$string['eventdomaincreated'] = 'Domain created';
+$string['eventdomaindeleted'] = 'Domain deleted';
+$string['eventdomainupdated'] = 'Domain updated';
+$string['eventcompetencycreated'] = 'Competency created';
+$string['eventcompetencydeleted'] = 'Competency deleted';
+$string['eventcompetencyupdated'] = 'Competency updated';
+$string['eventitemcreated'] = 'Item created';
+$string['eventitemdeleted'] = 'Item deleted';
+$string['eventitemupdated'] = 'Item updated';
+$string['eventoccurrencecreated'] = 'Occurrrence created';
+$string['eventoccurrencedeleted'] = 'Occurrrence deleted';
+$string['eventoccurrenceupdated'] = 'Occurrrence updated';
+$string['eventinstanceupdated'] = 'Referentiel instance updated';
+
 $string['explaingeneralconfig'] = 'These settings are <strong>always</strong> used';
 $string['generalconfig'] = 'General Settings';
 $string['settings'] = 'Skills repository settings';

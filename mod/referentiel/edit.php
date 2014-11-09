@@ -193,8 +193,17 @@
 						// echo "<br />LISTE_CODES_COMPETENCE : $form->liste_codes_competence\n";
 						referentiel_set_liste_codes_competence($referentiel_referentiel->id, $liste_codes_competence);
                     }
-
-                    add_to_log($course->id, "referentiel", "delete", "edit.php?id=".$cm->id, $msg, $cm->module);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $referentiel->id,
+							'other' => array('msg' =>$msg),
+            			);
+            			$event = \mod_referentiel\event\course_module_deleted::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', 'delete', "edit.php?id=".$cm->id, $msg, $cm->module);
+					}
 			     }
 
 			     redirect("$CFG->wwwroot/mod/referentiel/edit.php?id=$cm->id&amp;pass=1&amp;sesskey=".sesskey());
@@ -239,7 +248,17 @@
                     if (!$return) {
                         print_error("Could not update domain $form2->domaine_id of the referentiel", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "update", "mise a jour domaine ".$form2->domaine_id);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $form2->domaine_id,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\domaine_updated::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', 'domain update', "Domain {$form2->domaine_id} updated");
+					}
                 }
             }
 
@@ -277,7 +296,17 @@
                     if (!$return) {
                        	print_error("Could not update skill $form2->competence_id of the referentiel", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "update", "mise a jour competence ".$form2->competence_id);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $form2->competence_id,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\competence_updated::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', 'competency update', "Competency {$form2->competence_id} updated");
+					}
                 }
             }
 
@@ -313,7 +342,17 @@
                     if (!$return) {
                         print_error("Could not update Item $form2->item_id of the referentiel", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "update", "mise a jour item ".$form2->item_id);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $form2->competence_id,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\item_updated::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, 'referentiel', 'item update', "Item {$form2->item_id} updated");
+					}
                 }
             }
 
@@ -351,7 +390,17 @@
                     if (!$return) {
                         print_error("Could not create Item", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "add", "mise a jour item ".$return);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $return,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\item_created::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, "referentiel", "add", "mise a jour item ".$return);
+					}
                 }
             }
 
@@ -389,8 +438,18 @@
                     if (!$return) {
                         print_error("Could not create Competency", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "add", "mise a jour Competence ".$return);
-                }
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $return,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\competence_created::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+	                    add_to_log($course->id, "referentiel", "add", "mise a jour Competence ".$return);
+					}
+	            }
             }
 
             //NOUVEAU domaine
@@ -426,7 +485,17 @@
                     if (!$return) {
                         print_error("Could not create Domain", "view.php?id=".$cm->id);
                     }
-                    add_to_log($course->id, "referentiel", "add", "mise a jour domaine ".$return);
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    			$params = array(
+        	       			'contextid' => $context->id,
+            	   			'objectid' => $return,
+                            'other' => array('occurrenceid'=>$referentiel_referentiel->id),
+            			);
+            			$event = \mod_referentiel\event\domaine_created::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+                        add_to_log($course->id, "referentiel", "add", "mise a jour domaine ".$return);
+					}
                 }
             }
 
@@ -529,7 +598,22 @@
 			}
 			
 			if (isset($action)){
-				add_to_log($course->id, "referentiel", $action, "edit.php?d=".$referentiel->id, $msg, $cm->module);
+	        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+     					$params = array(
+       					'contextid' => $context->id,
+   	   					'objectid' => $referentiel->id,
+						'other' => array('occurrenceid' => $referentiel_referentiel->id, 'msg' =>$msg),
+	            	);
+					if ($action=="update"){
+						$event = \mod_referentiel\event\occurrence_updated::create($params);
+					}
+					else{
+                        $event = \mod_referentiel\event\occurrence_created::create($params);
+					}
+                   	$event->trigger();
+    	    	} else { // Before Moodle 2.7
+					add_to_log($course->id, "referentiel", $action, "edit.php?d=".$referentiel->id, $msg, $cm->module);
+				}
 			}
 		}
 	}

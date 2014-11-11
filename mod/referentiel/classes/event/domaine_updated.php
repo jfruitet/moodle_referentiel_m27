@@ -62,7 +62,7 @@ class domaine_updated extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        $occurrenceid=0;
+        $msg='';
 		if (!empty($this->other['occurrenceid'])){
             $msg="The user with id '$this->userid' updated the domain {$this->objectid} for the occurrence '{$this->other['occurrenceid']}'. The course module id '$this->contextinstanceid'";
 		}

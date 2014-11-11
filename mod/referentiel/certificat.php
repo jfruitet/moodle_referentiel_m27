@@ -166,10 +166,10 @@
 
 	    $mode ='list';
 		  if (has_capability('mod/referentiel:managecertif', $context)){
-         $SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id&amp;select_acc=$select_acc&amp;userid=0&amp;mode=$mode&";
+         $SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id&amp;select_acc=$select_acc&amp;userid=0&amp;mode=$mode&";
 		  }
 		  else{
-         $SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id&amp;select_acc=$select_acc&amp;userid=$userid&amp;mode=$mode";				
+         $SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id&amp;select_acc=$select_acc&amp;userid=$userid&amp;mode=$mode";
 		  }
 	   
       if (!empty($SESSION->returnpage)) {
@@ -178,7 +178,7 @@
             redirect($return);
       }
       else {
-            redirect("$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id&amp;select_acc=$select_acc&amp;userid=$userid&amp;mode=$mode");
+            redirect("$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id&amp;select_acc=$select_acc&amp;userid=$userid&amp;mode=$mode");
       }
        exit;
     }
@@ -216,7 +216,16 @@
 			&& (has_capability('mod/referentiel:rate', $context) or referentiel_certificat_isowner($delete))) {
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
             if (referentiel_delete_certificat_record($delete)){
-				add_to_log($course->id, 'referentiel', 'record delete', "certificat.php?d=$referentiel->id", $delete, $cm->id);
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+                	'contextid' => $context->id,
+                	'objectid' => $delete,
+            		);
+            		$event = \mod_referentiel\event\certificat_deleted::create($params);
+            		$event->trigger();
+        		} else { // Before Moodle 2.7
+                    add_to_log($course->id, 'referentiel', 'certificate delete', "certificat.php?id=$cm->id", $delete, $cm->id);
+        		}
             }
             
 		}
@@ -351,13 +360,21 @@
 
                     $return = referentiel_update_certificat($form2);
                     if (!$return) {
-                        print_error("Could not update certificat $form->certificat_id of the referentiel", "certificat.php?d=$referentiel->id");
+                        print_error("Could not update certificat $form->certificat_id of the referentiel", "certificat.php?id=$cm->id");
                     }
                     if (is_string($return)) {
-                        print_error($return, "certificat.php?d=$referentiel->id");
+                        print_error($return, "certificat.php?id=$cm->id");
                     }
-                    add_to_log($course->id, "referentiel", "update", "mise a jour certificat $form2->certificat_id", "$form2->instance", "");
-
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	        		$params = array(
+        	        		'contextid' => $context->id,
+            	    		'objectid' => $delete,
+            			);
+	            		$event = \mod_referentiel\event\certificat_updated::create($params);
+    	        		$event->trigger();
+        			} else { // Before Moodle 2.7
+                        add_to_log($course->id, 'referentiel', 'update', "certificate $form2->certificat_id updated", $form2->instance, $cm->id);
+					}
                 }
             }
             unset($form);
@@ -386,15 +403,15 @@
 					// suppression 	
 	    	        $return = $deletefunction($form);
     	    	    if (!$return) {
-    	         	    print_error("Could not update certificat $certificat_id of the referentiel", "certificat.php?d=$referentiel->id");
+    	         	    print_error("Could not update certificat $certificat_id of the referentiel", "certificat.php?id=$cm->id");
         	    	}
 	                if (is_string($return)) {
-    	           	    print_error($return, "certificat.php?d=$referentiel->id");
+    	           	    print_error($return, "certificat.php?id=$cm->id");
 	    	        }
 	        	    if (isset($form->redirect)) {
     	                $SESSION->returnpage = $form->redirecturl;
         	       	} else {
-            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id";
+            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id";
 	               	}
 					
 	    	        add_to_log($course->id, "referentiel", "delete",
@@ -410,16 +427,16 @@
 	    	    	$return = $updatefunction($form);
 
     	    	    if (!$return) {
-    	            	print_error("Could not update certificat $form->id of the referentiel", "certificat.php?d=$referentiel->id");
+    	            	print_error("Could not update certificat $form->id of the referentiel", "certificat.php?id=$cm->id");
 					}
 		            if (is_string($return)) {
-    		        	print_error($return, "certificat.php?d=$referentiel->id");
+    		        	print_error($return, "certificat.php?id=$cm->id");
 	    		    }
 	        		if (isset($form->redirect)) {
     	        		$SESSION->returnpage = $form->redirecturl;
 					} 
 					else {
-        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id";
+        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id";
 	        	    }
 					add_to_log($course->id, "referentiel", "update",
             	           "mise a jour certificat $form->certificat_id",
@@ -434,16 +451,16 @@
         		}
 				$return = $addfunction($form);
 				if (!$return) {
-					print_error("Could not add a new certificat to the referentiel", "certificat.php?d=$referentiel->id");
+					print_error("Could not add a new certificat to the referentiel", "certificat.php?id=$cm->id");
 				}
 	        	if (is_string($return)) {
-    	        	print_error($return, "certificat.php?d=$referentiel->id");
+    	        	print_error($return, "certificat.php?id=$cm->id");
 				}
 				if (isset($form->redirect)) {
     	    		$SESSION->returnpage = $form->redirecturl;
 				} 
 				else {
-					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?d=$referentiel->id";
+					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/certificat.php?id=$cm->id";
 				}
 				add_to_log($course->id, referentiel, "add",
                            "creation certificat $form->certificat_id ",
@@ -470,7 +487,7 @@
     	    redirect($return);
         } 
 		else {
-	    	redirect("certificat.php?d=$referentiel->id");
+	    	redirect("certificat.php?id=$cm->id");
     	}
 		
         exit;
@@ -554,7 +571,7 @@
 
     echo $OUTPUT->header();
 
-	groups_print_activity_menu($cm,  $CFG->wwwroot . '/mod/referentiel/certificat.php?d='.$referentiel->id.'&amp;mode='.$mode.'&amp;select_acc='.$select_acc);
+	groups_print_activity_menu($cm,  $CFG->wwwroot . '/mod/referentiel/certificat.php?id='.$cm->id.'&amp;mode='.$mode.'&amp;select_acc='.$select_acc);
 
     if (!empty($referentiel->name)){
         echo '<div align="center"><h1>'.$referentiel->name.'</h1></div>'."\n";

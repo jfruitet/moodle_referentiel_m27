@@ -53,7 +53,7 @@ class domaine_created extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('domaincreated', 'mod_referentiel');
+        return get_string('eventdomaincreated', 'mod_referentiel');
     }
 
     /**

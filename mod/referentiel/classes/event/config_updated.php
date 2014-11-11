@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_referentiel course module viewed event.
+ * The mod_referentiel referentiel_referntiel event class.
  *
  * @package    mod_referentiel
  * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
@@ -27,14 +27,14 @@ namespace mod_referentiel\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_referentiel course module viewed event class.
+ * The mod_referentiel referentiel_referntiel event class.
  *
  * @package    mod_referentiel
  * @since      Moodle 2.7
  * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_module_updated extends \core\event\base  {
+class config_updated extends \core\event\base {
 
     /**
      * Init method.
@@ -44,7 +44,7 @@ class course_module_updated extends \core\event\base  {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'referentiel';
+        $this->data['objecttable'] = 'referentiel_referentiel';
     }
 
     /**
@@ -53,27 +53,35 @@ class course_module_updated extends \core\event\base  {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventinstanceupdated', 'mod_referentiel');
+        return get_string('eventconfigupdated', 'mod_referentiel');
     }
 
     /**
-     * Get URL related to the action
+     * Returns description of what happened.
+     *
+     * @return string
+     */
+    public function get_description() {
+        return "The user with id '$this->userid' updated the config of occurrence {$this->objectid} for the referentiel instance with " .
+            "the course module id '$this->contextinstanceid'.";
+    }
+
+    /**
+     * Get URL related to the action.
      *
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/referentiel/add.php', array('id' => $this->contextinstanceid));
+        return new \moodle_url('/mod/referentiel/config_ref.php', array('id' => $this->contextinstanceid));
     }
 
     /**
      * Return the legacy event log data.
      *
-     * @return array|null
+     * @return array
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, 'referentiel', 'update', 'add.php?id='.$this->contextinstanceid,
-            $this->objectid, $this->contextinstanceid);
+        $url = 'config_ref.php?id='.$this->contextinstanceid;
+        return array($this->courseid, 'referentiel', 'config updated', $url, $this->objectid, $this->contextinstanceid);
     }
-
 }
-

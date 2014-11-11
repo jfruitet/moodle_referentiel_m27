@@ -66,7 +66,7 @@ class activite_deleted extends \core\event\base {
         if ($this->relateduserid) {
             $userdesc = "user '$this->relateduserid' in ";
         }
-        return "The user with id '$this->userid' deleted the activity {$this->objectid} of {$userdesc} the referentiel with " .
+        return "The user with id '$this->userid' deleted the activity {$this->objectid} of {$userdesc} for the referentiel with " .
             "the course module id '$this->contextinstanceid'.";
     }
 

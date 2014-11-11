@@ -47,7 +47,16 @@ class course_module_viewed extends \core\event\course_module_viewed {
         $this->data['objecttable'] = 'referentiel';
     }
 
-    /**
+        /**
+     * Return localised event name.
+     *
+     * @return string
+     */
+    public static function get_name() {
+        return get_string('eventinstanceviewed', 'mod_referentiel');
+    }
+
+	/**
      * Get URL related to the action
      *
      * @return \moodle_url

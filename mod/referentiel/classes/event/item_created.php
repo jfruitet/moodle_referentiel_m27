@@ -53,7 +53,7 @@ class item_created extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('itemcreated', 'mod_referentiel');
+        return get_string('eventitemcreated', 'mod_referentiel');
     }
 
     /**

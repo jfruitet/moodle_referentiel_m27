@@ -145,7 +145,7 @@
                     exit;
                 }
             }
-            else{    // mot de passe vide mais c'est un admin qui est connect�
+            else{    // mot de passe vide mais c'est un admin qui est connecte
                 if (!empty($form->force_pass)){
                     $pass=1; // on passe... le mot de passe !
                 }
@@ -165,23 +165,26 @@
 		if (!empty($delete)){
             if ($delete == get_string("delete")){
                 if (!empty($deleteid) && (($action=="modifierdomaine") || ($action=="modifiercompetence") || ($action=="modifieritem"))){
-
+                    $component='';
                     if ($action=="modifierdomaine"){
 						// enregistre les modifications
 							$return=referentiel_supprime_domaine($deleteid);
+							$component='domaine';
 							$msg=get_string("referentiel", "referentiel")." ".$referentiel_referentiel->id." ".get_string("domaine", "referentiel")." ".$deleteid;
 					}
 					else if ($action=="modifiercompetence"){
 							$return=referentiel_supprime_competence($deleteid);
+                            $component='competence';
 							$msg=get_string("referentiel", "referentiel")." ".$referentiel_referentiel->id." ".get_string("competence", "referentiel")." ".$deleteid;
 					}
 					else if ($action=="modifieritem"){
 							$return=referentiel_supprime_item($deleteid);
+                            $component='item';
 							$msg=get_string("referentiel", "referentiel")." ".$referentiel_referentiel->id." ".get_string("item", "referentiel")." ".$deleteid;
 					}
 
 					if (!isset($return) || (!$return)) {
-    	    	    	print_error("Could not delete $msg", "$CFG->wwwroot/mod/referentiel/view.php?id=$cm->id&amp;non_redirection=1");
+    	    	    	print_error("Could not delete component $component : $msg", "$CFG->wwwroot/mod/referentiel/view.php?id=$cm->id&amp;non_redirection=1");
                     }
                     if (is_string($return)) {
                         print_error($return, "$CFG->wwwroot/mod/referentiel/view.php?id=$cm->id&amp;non_redirection=1");
@@ -197,9 +200,9 @@
     	    			$params = array(
         	       			'contextid' => $context->id,
             	   			'objectid' => $referentiel->id,
-							'other' => array('msg' =>$msg),
+							'other' => array('component' => $component, 'componentid' => $deleteid, 'occurrenceid' => $referentiel_referentiel->id, 'msg' => $msg),
             			);
-            			$event = \mod_referentiel\event\course_module_deleted::create($params);
+            			$event = \mod_referentiel\event\occurrence_component_deleted::create($params);
 	            		$event->trigger();
     	    		} else { // Before Moodle 2.7
 	                    add_to_log($course->id, 'referentiel', 'delete', "edit.php?id=".$cm->id, $msg, $cm->module);

@@ -22,8 +22,16 @@
     require_login($course->id);
     $PAGE->set_pagelayout('incourse');
 
-    add_to_log($course->id, "referentiel", "view all", "index.php?id=$course->id", "");
-
+	if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	$params = array(
+        	'context' => context_course::instance($course->id)
+    	);
+    	$event = \mod_referentiel\event\course_module_instance_list_viewed::create($params);
+    	$event->add_record_snapshot('course', $course);
+    	$event->trigger();
+	} else { // Before Moodle 2.7
+    	add_to_log($course->id, 'referentiel', 'view all', "index.php?id=$course->id", '');
+	}
     // AFFICHAGE DE LA PAGE Moodle 2
 	/// Print the page header
 	$strreferentiels = get_string('modulenameplural','referentiel');

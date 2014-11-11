@@ -236,7 +236,17 @@
                                 		$msg.= "<br />".get_string('instance','referentiel')." $record_instance->name (#$record_instance->id) ".get_string('course')." $record_course->fullname ($record_course->shortname) ".get_string('not_deleted', 'referentiel')."\n";
             			    		}
                                 }
-                                add_to_log($course->id, "referentiel", "delete", "delete.php?id=".$cm->id, $msg, $cm->module);													                                                 
+					        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+     								$params = array(
+				       					'contextid' => $context->id,
+   	   									'objectid' => $referentiel->id,
+										'other' => array('occurrenceid' => $referentiel_referentiel->id, 'msg' =>$msg),
+	            					);
+                                    $event = \mod_referentiel\event\course_module_deleted::create($params);
+				                   	$event->trigger();
+    	    					} else { // Before Moodle 2.7
+                                    add_to_log($course->id, 'referentiel', 'delete', "delete.php?id=".$cm->id, $msg, $cm->module);
+								}
                             }
                         }
                     }
@@ -253,13 +263,22 @@
 							redirect($returnlink_course, $msg);
 						}
 						else{
-							// suppression du referentiel
+							// suppression de l'occurrence du referentiel
 							$return=referentiel_delete_referentiel_domaines($form->referentiel_id);
 							if (isset($return) && !empty($return) && !is_string($return)){
                                 // suppression des certificats
                                 referentiel_delete_referentiel_certificats($form->referentiel_id);
                                 $msg=get_string('deletereferentiel', 'referentiel').' '.$form->referentiel_id;
-		    				    add_to_log($course->id, "referentiel", "delete", "delete.php?id=".$cm->id, $msg, $cm->module);
+					        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+     								$params = array(
+				       					'contextid' => $context->id,
+   	   									'objectid' => $form->referentiel_id,
+	            					);
+                                    $event = \mod_referentiel\event\occurrence_deleted::create($params);
+				                   	$event->trigger();
+    	    					} else { // Before Moodle 2.7
+                                    add_to_log($course->id, 'referentiel', 'delete occurrence', "delete.php?id=".$cm->id, $msg, $cm->module);
+								}
                                 redirect($returnlink_course);
                             }
                             else{
@@ -294,7 +313,16 @@
 							}
 							
 							$msg=get_string('deletereferentiel', 'referentiel').' '.$form->referentiel_id;
-		    				add_to_log($course->id, "referentiel", "delete", "delete.php?id=".$cm->id, $msg, $cm->module);
+				        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+   								$params = array(
+			       					'contextid' => $context->id,
+   									'objectid' => $form->referentiel_id,
+	           					);
+                                $event = \mod_referentiel\event\occurrence_deleted::create($params);
+			                   	$event->trigger();
+        					} else { // Before Moodle 2.7
+    		    				add_to_log($course->id, 'referentiel', 'delete occurrence', "delete.php?id=".$cm->id, $msg, $cm->module);
+							}
                             redirect($returnlink_course,$msg);
 							exit;	
 						}

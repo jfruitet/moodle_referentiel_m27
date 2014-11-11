@@ -79,7 +79,7 @@ class edit_page_viewed extends \core\event\base {
      * @return array
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, 'referentiel', 'edit', 'view.php?id='.$this->contextinstanceid,
+        return array($this->courseid, 'referentiel', 'edit', 'edit.php?id='.$this->contextinstanceid,
             $this->objectid, $this->contextinstanceid);
     }
 }

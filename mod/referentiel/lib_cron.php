@@ -947,7 +947,7 @@ mtrace("\n");
                             if (!empty($user)){
                                 if ($user->emailstop) {
                                     if (!empty($CFG->forum_logblocked)) {
-                                        add_to_log(SITEID, 'referentiel', 'mail blocked', '', '', 0, $user->id);
+                                        //add_to_log(SITEID, 'referentiel', 'mail blocked', '', '', 0, $user->id);
                                     }
                                 }
                                 else{

@@ -53,7 +53,7 @@ class activite_created extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('activitycreated', 'mod_referentiel');
+        return get_string('eventactivitycreated', 'mod_referentiel');
     }
 
     /**

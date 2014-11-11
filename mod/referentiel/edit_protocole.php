@@ -172,8 +172,16 @@
             && !empty($form->mode) && ($form->mode=='protocole')){
             // sauvegarder
             $config=referentiel_set_protocole($referentiel_referentiel->id, $form);
-
-            add_to_log($course->id, 'referentiel', "config", "edit_protocole?id=$cm->id", "$course->id");
+	        if ($CFG->version > 2014051200) { // Moodle 2.7+
+    	    	$params = array(
+        			'contextid' => $context->id,
+            		'objectid' => $referentiel_referentiel->id,
+           			);
+            	$event = \mod_referentiel\event\protocole_updated::create($params);
+	            $event->trigger();
+    	    } else { // Before Moodle 2.7
+                add_to_log($course->id, 'referentiel', "config", "edit_protocole?id=$cm->id", "$course->id");
+			}
 
             /*
 	        if (isset($form->redirecturl)) {

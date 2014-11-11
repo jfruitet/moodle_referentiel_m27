@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_referentiel course module viewed event.
+ * The mod_referentiel task created event.
  *
  * @package    mod_referentiel
  * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
@@ -27,14 +27,14 @@ namespace mod_referentiel\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_referentiel course module viewed event class.
+ * The mod_referentiel task created class.
  *
  * @package    mod_referentiel
  * @since      Moodle 2.7
  * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_module_updated extends \core\event\base  {
+class task_created extends \core\event\base {
 
     /**
      * Init method.
@@ -42,18 +42,28 @@ class course_module_updated extends \core\event\base  {
      * @return void
      */
     protected function init() {
-        $this->data['crud'] = 'u';
+        $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'referentiel';
+        $this->data['objecttable'] = 'referentiel_task';
     }
 
     /**
-     * Return localised event name.
+     * Returns localised general event name.
      *
      * @return string
      */
     public static function get_name() {
-        return get_string('eventinstanceupdated', 'mod_referentiel');
+        return get_string('eventtaskcreated', 'mod_referentiel');
+    }
+
+    /**
+     * Returns description of what happened.
+     *
+     * @return string
+     */
+    public function get_description() {
+        return "The user with id '$this->userid' has created the task {$this->objectid} for the ".
+        "referentiel with the course module id '$this->contextinstanceid'";
     }
 
     /**
@@ -62,7 +72,7 @@ class course_module_updated extends \core\event\base  {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/referentiel/add.php', array('id' => $this->contextinstanceid));
+        return new \moodle_url('/mod/referentiel/task.php', array('id' => $this->contextinstanceid, 'taskid' => $this->objectid, 'userid' => $this->userid));
     }
 
     /**
@@ -71,8 +81,8 @@ class course_module_updated extends \core\event\base  {
      * @return array|null
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, 'referentiel', 'update', 'add.php?id='.$this->contextinstanceid,
-            $this->objectid, $this->contextinstanceid);
+        $url = 'task.php?id='.$this->contextinstanceid.'&taskid='.$this->objectid;
+        return array($this->courseid, 'referentiel', 'create task', $url, $this->objectid, $this->contextinstanceid);
     }
 
 }

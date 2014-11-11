@@ -43,8 +43,8 @@ class activite_viewed extends \core\event\base {
      */
     protected function init() {
         $this->data['crud'] = 'r';
-        $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'referentiel';
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+        $this->data['objecttable'] = 'referentiel_activite';
     }
 
     /**
@@ -66,7 +66,7 @@ class activite_viewed extends \core\event\base {
         if ($this->relateduserid) {
             $userdesc = "user '$this->relateduserid' in ";
         }
-        return "The user with id '$this->userid' viewed the activity for {$userdesc} the referentiel with " .
+        return "The user with id '$this->userid' viewed the activity for {$userdesc} of the referentiel with " .
             "the course module id '$this->contextinstanceid'.";
     }
 

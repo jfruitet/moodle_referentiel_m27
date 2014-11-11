@@ -157,7 +157,16 @@
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
 			// verifier que la tache existe
 			if (referentiel_delete_task_record($delete)){
-				add_to_log($course->id, 'referentiel', 'record delete', "task.php?d=$referentiel->id", $delete, $cm->id);
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+                		'contextid' => $context->id,
+                		'objectid' => $delete,
+            		);
+            		$event = \mod_referentiel\event\task_deleted::create($params);
+            		$event->trigger();
+        		} else { // Before Moodle 2.7
+					add_to_log($course->id, 'referentiel', 'record delete', "task.php?id=$cm->id", $delete, $cm->id);
+				}
             }
         } 
     }
@@ -169,7 +178,17 @@
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
 			// detruire la taches, les consignes et les activites associes
             if (referentiel_delete_task_and_activities($deleteall)){
-			     add_to_log($course->id, 'referentiel', 'record delete', "task.php?d=$referentiel->id", $deleteall, $cm->id);
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+                		'contextid' => $context->id,
+                		'objectid' => $deleteall,
+						'other' => array('msg' => 'All activities linked to this task have been deleted too.'),
+            		);
+            		$event = \mod_referentiel\event\task_deleted::create($params);
+            		$event->trigger();
+        		} else { // Before Moodle 2.7
+					add_to_log($course->id, 'referentiel', 'record delete', "task.php?id=$cm->id", $deleteall, $cm->id);
+				}
             }
 		}
     }
@@ -200,7 +219,7 @@
         $referentids=referentiel_get_accompagnements_user($referentiel->id, $course->id, $USER->id);
 
         if ($referentids){
-            print_object($referentids);
+            // print_object($referentids);
             // exit;
             foreach($referentids as $referentid){
                 if ($referentid->userid){
@@ -211,8 +230,17 @@
             // choisir le premier de la liste !
         }
 		if (referentiel_association_user_task($USER->id, $select, $a_referentid, $mailnow, false)){
-			add_to_log($course->id, 'referentiel', 'task', "task.php?d=$referentiel->id", $select, $cm->id);
-            redirect("$CFG->wwwroot/mod/referentiel/activite.php?d=$referentiel->id&amp;select_acc=$select_acc&amp;mode=listactivityall&amp;f_auteur=$data_f->f_auteur&amp;f_validation=$data_f->f_validation&amp;f_referent=$data_f->f_referent&amp;f_date_modif=$data_f->f_date_modif&amp;f_date_modif_student=$data_f->f_date_modif_student");
+      		if ($CFG->version > 2014051200) { // Moodle 2.7+
+           		$params = array(
+               		'contextid' => $context->id,
+               		'objectid' => $select,
+           		);
+           		$event = \mod_referentiel\event\task_linked::create($params);
+           		$event->trigger();
+       		} else { // Before Moodle 2.7
+				add_to_log($course->id, 'referentiel', 'task', "task.php?id=$cm->id", $select, $cm->id);
+			}
+            redirect("$CFG->wwwroot/mod/referentiel/activite.php?id=$cm->id&amp;select_acc=$select_acc&amp;mode=listactivityall&amp;f_auteur=$data_f->f_auteur&amp;f_validation=$data_f->f_validation&amp;f_referent=$data_f->f_referent&amp;f_date_modif=$data_f->f_date_modif&amp;f_date_modif_student=$data_f->f_date_modif_student");
 		}
     }
 	
@@ -298,37 +326,59 @@
 
                     $return = referentiel_delete_task_and_activities($form->taskid);
                     if (!$return) {
-                        print_error("Could not delete task $taskid of the referentiel", "task.php?d=$referentiel->id");
+                        print_error("Could not delete task $form->taskid of the referentiel", "task.php?id=$cm->id");
                     }
-                    add_to_log($course->id, "referentiel", "delete",
-            	          "task $form->taskid deleted",
-                          "$form->instance", "");
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+	            		$params = array(
+    	            		'contextid' => $context->id,
+        	        		'objectid' => $form->taskid,
+							'other' => array('msg' => 'All activities linked to this task have been deleted too.'),
+            			);
+            			$event = \mod_referentiel\event\task_deleted::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+                        add_to_log($course->id, 'referentiel', 'delete', "task $form->taskid deleted", $cm->id, "");
+					}
                 }
                 elseif (isset($form->delete) && ($form->delete==get_string('delete'))){
                     // suppression
 					// echo "<br />SUPPRESSION\n";
                     $return = $deletefunction($form);
                     if (!$return) {
-                        print_error("Could not delete task $taskid of the referentiel", "task.php?d=$referentiel->id");
+                        print_error("Could not delete task $taskid of the referentiel", "task.php?id=$cm->id");
                     }
                     if (is_string($return)) {
-                        print_error($return, "task.php?d=$referentiel->id");
+                        print_error($return, "task.php?id=$cm->id");
                     }
-                    add_to_log($course->id, "referentiel", "delete",
-            	          "mtask $form->taskid deleted",
-                          "$form->instance", "");
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+	            		$params = array(
+    	            		'contextid' => $context->id,
+        	        		'objectid' => $form->taskid,
+            			);
+            			$event = \mod_referentiel\event\task_deleted::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+                        add_to_log($course->id, "referentiel", "delete", "task $form->taskid deleted","$form->instance", "");
+					}
                 }
 				else {
                     $return = $updatefunction($form);
                     if (!$return) {
-                        print_error("Could not update task $form->id of the referentiel", "task.php?d=$referentiel->id");
+                        print_error("Could not update task $form->id of the referentiel", "task.php?id=$cm->id");
 					}
                     if (is_string($return)) {
-                        print_error($return, "task.php?d=$referentiel->id");
+                        print_error($return, "task.php?id=$cm->id");
                     }
-					add_to_log($course->id, "referentiel", "update",
-            	           "task $form->taskid updated",
-                           "$form->instance", "");
+	        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+	            		$params = array(
+    	            		'contextid' => $context->id,
+        	        		'objectid' => $form->taskid,
+            			);
+            			$event = \mod_referentiel\event\task_updated::create($params);
+	            		$event->trigger();
+    	    		} else { // Before Moodle 2.7
+						add_to_log($course->id, "referentiel", "update", "task $form->taskid updated", "$form->instance", "");
+					}
 					// depot de consigne ?
 					if (isset($form->depot_consigne) && ($form->depot_consigne==get_string('yes'))){
 						// APPELER le script
@@ -372,7 +422,7 @@
         
 				$return = $addfunction($form);
 				if (!$return) {
-					print_error("Could not add a new task to the referentiel", "task.php?d=$referentiel->id");
+					print_error("Could not add a new task to the referentiel", "task.php?id=$cm->id");
 				}
                 if (is_string($return)) {
     	        	print_error($return, $CFG->wwwroot.'/mod/referentiel/task.php?d='.$referentiel->id);
@@ -399,20 +449,36 @@
 				else {
 					$SESSION->returnpage = $CFG->wwwroot.'/mod/referentiel/task.php?d='.$referentiel->id.'&amp;select_all='.$select_all.'&amp;mode=listtasksingle';
 				}
-				add_to_log($course->id, "referentiel", "add",
-                           "creation task $form->taskid ",
-                           "$form->instance", "");
+	        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+	            	$params = array(
+    	           		'contextid' => $context->id,
+        	       		'objectid' => $form->taskid,
+            		);
+            		$event = \mod_referentiel\event\task_created::create($params);
+	            	$event->trigger();
+    	    	} else { // Before Moodle 2.7
+					add_to_log($course->id, "referentiel", "add", "creation task $form->taskid ", "$form->instance", "");
+				}
                 break;
 			
 	        case "deletetask":
 				if (! $deletefunction($form)) {
 					print_error("Could not delete task of  the referentiel");
                 }
-	            unset($SESSION->returnpage);
-	            add_to_log($course->id, "referentiel", "add",
-                           "task $form->taskid deleted",
-                           "$form->instance", "");
-                break;
+				else{
+	            	unset($SESSION->returnpage);
+		        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+		            	$params = array(
+    		           		'contextid' => $context->id,
+        		       		'objectid' => $form->taskid,
+            			);
+            			$event = \mod_referentiel\event\task_deleted::create($params);
+		            	$event->trigger();
+    		    	} else { // Before Moodle 2.7
+        	            add_to_log($course->id, "referentiel", "delete", "task $form->taskid deleted", "$form->instance", "");
+					}
+				}
+				break;
             
 			default:
             	// print_error("No mode defined");
@@ -617,7 +683,7 @@
            	$editorfields = '';
         }
 		else {
-    	    notice("ERREUR : No file found at : $modform)", "task.php?d=$referentiel->id");
+    	    notice("ERREUR : No file found at : $modform)", "task.php?id=$cm->id");
     	}
 
 		include_once($modform);

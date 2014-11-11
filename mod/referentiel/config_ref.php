@@ -177,9 +177,16 @@
             referentiel_global_set_vecteur_config($config, $referentiel_referentiel->id);
 		    $config_impression=referentiel_initialise_configuration($form,'config_impression');
             referentiel_global_set_vecteur_config_imp($config_impression, $referentiel_referentiel->id);
-
-            add_to_log($course->id, 'referentiel', "config", "config_ref.php?id=$cm->id", "$course->id");
-
+        	if ($CFG->version > 2014051200) { // Moodle 2.7+
+            	$params = array(
+            	   	'contextid' => $context->id,
+               		'objectid' => $referentiel_referentiel->id,
+            	);
+            	$event = \mod_referentiel\event\config_updated::create($params);
+            	$event->trigger();
+        	} else { // Before Moodle 2.7
+                add_to_log($course->id, 'referentiel', 'config', "config_ref.php?id=$cm->id", $course->id);
+			}
 	        if (isset($form->redirect)) {
                 $SESSION->returnpage = $form->redirecturl;
         	}

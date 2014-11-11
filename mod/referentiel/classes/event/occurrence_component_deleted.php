@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2014 Jean FRUITET <jean.fruitet@univ-nantes.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_module_deleted extends \core\event\base  {
+class occurrence_component_deleted extends \core\event\base  {
 
     /**
      * Init method.
@@ -44,19 +44,15 @@ class course_module_deleted extends \core\event\base  {
     protected function init() {
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'referentiel';
+        if (!empty($this->other['component'])){
+			$this->data['objecttable'] = "referentiel_{$this->other['component']}";
+		}
+		else{
+            $this->data['objecttable'] = "referentiel_referentiel";
+		}
     }
 
     /**
-     * Return localised event name.
-     *
-     * @return string
-     */
-    public static function get_name() {
-        return get_string('eventinstancedeleted', 'mod_referentiel');
-    }
-
-   /**
      * Returns description of what happened.
      *
      * @return string
@@ -64,11 +60,20 @@ class course_module_deleted extends \core\event\base  {
     public function get_description() {
         $msg=0;
 		if (!empty($this->other['occurrenceid'])){
-           	$msg="The user with id '$this->userid' deleted the referentiel instance {$this->objectid} for the occurrence '{$this->other['occurrenceid']}'. The course module id is '$this->contextinstanceid'";
+  			if (!empty($this->other['component']) && !empty($this->other['componentid']) && ($this->other['component']=='domaine')){
+            	$msg="The user with id '$this->userid' deleted the domain {$this->other['componentid']} for the occurrence '{$this->other['occurrenceid']}'. The course module id is '$this->contextinstanceid'";
+			}
+  			elseif (!empty($this->other['component']) && !empty($this->other['componentid']) && ($this->other['component']=='competence')){
+            	$msg="The user with id '$this->userid' deleted the competency {$this->other['componentid']} for the occurrence '{$this->other['occurrenceid']}'. The course module id is '$this->contextinstanceid'";
+			}
+  			elseif (!empty($this->other['component']) && !empty($this->other['componentid']) && ($this->other['component']=='item')){
+            	$msg="The user with id '$this->userid' deleted the item {$this->other['componentid']} for the occurrence '{$this->other['occurrenceid']}'. The course module id is '$this->contextinstanceid'";
+			}
+
+			else{
+				$msg="The user with id '$this->userid' updated the domain {$this->objectid}. The course module id '$this->contextinstanceid'";
+			}
 		}
-        else{
-			$msg="The user with id '$this->userid' deleted the referentiel instance {$this->objectid}. The course module id '$this->contextinstanceid'";
-  		}
         if (!empty($this->other['msg'])){
             $msg.= ' '.$this->other['msg'];
 		}
@@ -81,7 +86,7 @@ class course_module_deleted extends \core\event\base  {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/referentiel/delete.php', array('id' => $this->contextinstanceid));
+        return new \moodle_url('/mod/referentiel/edit.php', array('id' => $this->contextinstanceid));
     }
 
     /**
@@ -90,7 +95,7 @@ class course_module_deleted extends \core\event\base  {
      * @return array|null
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, 'referentiel', 'delete', 'delete.php?id='.$this->contextinstanceid, $this->objectid, $this->contextinstanceid);
+        return array($this->courseid, 'referentiel', 'edit', 'edit.php?id='.$this->contextinstanceid, $this->objectid, $this->contextinstanceid);
     }
 
 }

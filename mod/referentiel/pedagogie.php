@@ -238,8 +238,17 @@
 		  && (has_capability('mod/referentiel:managecertif', $context))) {
             if ($confirm = optional_param('confirm',0,PARAM_INT)) {
                 if (referentiel_delete_pedago($delete)){
-                    add_to_log($course->id, 'referentiel', 'record delete', "pedagogie.php?d=$referentiel->id", $delete, $cm->id);
-                    redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $delete,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_deleted::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                        add_to_log($course->id, 'referentiel', 'pedagogy delete', "pedagogie.php?id=$cm->id", $delete, $cm->id);
+					}
+                    redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
                 }
  		    }
     }
@@ -252,8 +261,18 @@
               or referentiel_pedagogie_isowner($deleteasso, $USER->id))) {
             if ($confirm = optional_param('confirm',0,PARAM_INT)) {
                 if (referentiel_delete_asso_user($deleteasso, $userid, $referentiel->ref_referentiel)){
-                    add_to_log($course->id, 'referentiel', 'record delete', "pedagogie.php?d=$referentiel->id", $deleteasso, $cm->id);
-                    redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $delete,
+							'other' => array('userid' => $userid, 'occurrenceid' => $referentiel->ref_referentiel),
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_association_deleted::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                    	add_to_log($course->id, 'referentiel', 'record delete', "pedagogie.php?id=$cm->id", $deleteasso, $cm->id);
+					}
+                    redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
                 }
  		    }
     }
@@ -294,22 +313,27 @@
     	                   		die;
 	    	               	}
 							*/
-    	         	      	print_error("Could not update pedago $form->userid of the referentiel", "pedagogie.php?d=$referentiel->id");
+    	         	      	print_error("Could not update pedago $form->userid of the referentiel", "pedagogie.php?id=$cm->id");
         	    	}
 	                if (is_string($return)) {
-    	           	    print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+    	           	    print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
 	    	        }
 	        	    if (isset($form->redirect)) {
     	                $SESSION->returnpage = $form->redirecturl;
         	       	}
                        else {
-            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id";
+            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id";
 	               	}
-					
-	    	        add_to_log($course->id, "referentiel", "delete",
-            	          "mise a jour pedago $form->userid",
-                          "$form->pedago_id", "");
-					
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $form->pedago_id,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_deleted::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                        add_to_log($course->id, "referentiel", "delete", "mise a jour pedago $form->userid","$form->pedago_id", "");
+					}
 				}
 				else {
 				// DEBUG
@@ -324,20 +348,29 @@
                         	die;
 	                    }
 					*/
-    	            	print_error("Could not update pedago $form->pedago_id of the referentiel", "pedagogie.php?d=$referentiel->id");
+    	            	print_error("Could not update pedago $form->pedago_id of the referentiel", "pedagogie.php?id=$cm->id");
 					}
 		            if (is_string($return)) {
-    		        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+    		        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
 	    		    }
 	        		if (isset($form->redirect)) {
     	        		$SESSION->returnpage = $form->redirecturl;
 					} 
 					else {
-        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id";
+        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id";
 	        	    }
-					add_to_log($course->id, "referentiel", "update",
-            	           "mise a jour pedago $form->pedago_id",
-                           "$form->pedago_id", "");
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $return,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_updated::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                        	add_to_log($course->id, "referentiel", "update", "mise a jour pedago $return", "$return", "");
+					}
+
+
     	    	}
 
 			break;
@@ -355,20 +388,27 @@
             	    	die;
 					}
 	            	*/
-					print_error("Could not add a new pedago to the referentiel", "pedagogie.php?d=$referentiel->id");
+					print_error("Could not add a new pedago to the referentiel", "pedagogie.php?id=$cm->id");
 				}
 	        	if (is_string($return)) {
-    	        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+    	        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
 				}
 				if (isset($form->redirect)) {
     	    		$SESSION->returnpage = $form->redirecturl;
 				} 
 				else {
-					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id";
+					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id";
 				}
-				add_to_log($course->id, "referentiel", "add",
-                           "creation pedago ",
-                           "", "");
+                if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $return,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_created::create($params);
+            			$event->trigger();
+	        	} else { // Before Moodle 2.7
+					add_to_log($course->id, "referentiel", "add", "creation pedago ", "", "");
+				}
             break;
 			
 	        case "deletepedago":
@@ -376,9 +416,16 @@
 	            	print_error("Could not delete pedago of  the referentiel");
                 }
 	            unset($SESSION->returnpage);
-	            add_to_log($course->id, "referentiel", "add",
-                           "suppression pedago $form->userid ",
-                           "$form->pedago_id", "");
+                if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $form->pedago_id,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_deleted::create($params);
+            			$event->trigger();
+	        	} else { // Before Moodle 2.7
+		            add_to_log($course->id, "referentiel", "delete", "suppression pedago $form->userid ", "$form->pedago_id", "");
+				}
             break;
 
 // ###########  ASSOCIATIONS
@@ -398,22 +445,28 @@
 					// echo "<br />SUPPRESSION\n";
 	    	        $return = $deletefunctionasso($form);
     	    	    if (!$return) {
-    	         	      	print_error("Could not update association $form->userid of the referentiel", "pedagogie.php?d=$referentiel->id");
+    	         	      	print_error("Could not update association $form->userid of the referentiel", "pedagogie.php?id=$cm->id");
         	    	}
 	                if (is_string($return)) {
-    	           	    print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+    	           	    print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
 	    	        }
 	        	    if (isset($form->redirect)) {
     	                $SESSION->returnpage = $form->redirecturl;
         	       	}
                     else {
-            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id";
+            	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id";
 	               	}
-
-	    	        add_to_log($course->id, "referentiel", "delete",
-            	          "mise a jour association $form->userid :: $form->pedago_id",
-                          "$form->pedago_id", "");
-
+                	if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $form->pedago_id,
+							'other' => array('userid' => $form->userid, 'occurrenceid' => $referentiel_referentiel->id),
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_association_deleted::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+	    	        	add_to_log($course->id, "referentiel", "delete", "mise a jour association $form->userid :: $form->pedago_id", "$form->pedago_id", "");
+					}
 				}
 				else {
 				// DEBUG
@@ -422,20 +475,27 @@
 	    	    	$return = $updatefunctionasso($form);
     	    	    if (!$return) {
 
-    	            	print_error("Could not update association $form->userid of the referentiel", "pedagogie.php?d=$referentiel->id");
+    	            	print_error("Could not update association $form->userid of the referentiel", "pedagogie.php?id=$cm->id");
 					}
 		            if (is_string($return)) {
-    		        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+    		        	print_error($return, "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
 	    		    }
 	        		if (isset($form->redirect)) {
     	        		$SESSION->returnpage = $form->redirecturl;
 					}
 					else {
-        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id";
+        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id";
 	        	    }
-					add_to_log($course->id, "referentiel", "update",
-            	           "mise a jour association $form->userid :: $form->pedago_id",
-                           "$form->pedago_id", "");
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $form->pedago_id,
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_updated::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                        add_to_log($course->id, "referentiel", "update", "mise a jour association $form->userid :: $form->pedago_id", "$form->pedago_id", "");
+					}
     	    	}
 
 			break;
@@ -445,9 +505,18 @@
 	            	print_error("Could not delete association of the referentiel");
                 }
 	            unset($SESSION->returnpage);
-	            add_to_log($course->id, referentiel, "add",
-                           "suppression association $form->userid :: $form->pedago_id",
-                           "$form->pedago_id", "");
+                if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $form->pedago_id,
+							'other' => array('userid' => $form->userid, 'occurrenceid' => $referentiel_referentiel->id),
+        	    		);
+            			$event = \mod_referentiel\event\pedagogie_association_deleted::create($params);
+            			$event->trigger();
+	        	} else { // Before Moodle 2.7
+	    	       	add_to_log($course->id, "referentiel", "delete", "mise a jour association $form->userid :: $form->pedago_id", "$form->pedago_id", "");
+				}
+
             break;
 
 			default:
@@ -460,7 +529,7 @@
     	    redirect($return);
         } 
 		else {
-	    	redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?d=$referentiel->id");
+	    	redirect("$CFG->wwwroot/mod/referentiel/pedagogie.php?id=$cm->id");
     	}
 		
         exit;
@@ -586,7 +655,7 @@
        	    $editorfields = '';
 		}
 		else {
-    	    notice("ERREUR : No file found at : $modform)", "pedagogie.php?d=$referentiel->id");
+    	    notice("ERREUR : No file found at : $modform)", "pedagogie.php?id=$cm->id");
     	}
 		include_once($modform);
         echo $OUTPUT->box_end();

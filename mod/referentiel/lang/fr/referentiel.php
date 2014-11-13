@@ -29,6 +29,8 @@ $string['eventoccurrencecreated'] = 'Occurrence créée';
 $string['eventoccurrencedeleted'] = 'Occurrence supprimée';
 $string['eventoccurrenceupdated'] = 'Occurrence mise à jour';
 $string['eventinstanceupdated'] = 'Referentiel instance mise à jour';
+$string['eventpedagogydeleted'] = 'Pedagogie supprimée';
+$string['eventpedagogyauserdeleted'] = 'Association de pedagogie supprimée';
 $string['eventtaskcreated'] = 'Tâche créé';
 $string['eventtaskdeleted'] = 'Tâche supprimée';
 $string['eventtaskupdated'] = 'Tâche mise à jour';
@@ -512,7 +514,7 @@ Exportez ensuite (onglet <strong>Exporter</strong>) les données de scolarité d
 2) Modifier cette sauvegarde avec un éditeur (un tableur). Tous les champs marqués "INCONNU"
 peuvent être modifiés sous éditeur
 <b>Attention</b> : Champs à ne modifier sous aucun prétexte :
-<pre> #id_etablissement  #id_etudiant  user_id    login </pre>
+<pre> \#id_etablissement  \#id_etudiant  user_id    login </pre>
 N.B : Il suffit qu\'un des trois champs "#id_etudiant", "user_id" ou "login" soit correctement renseigné pour chaque étudiant.
 3) Importer ce fichier de scolarité désormais à jour (onglet <strong>Importer</strong>, format CSV avec séparateur \';\' )
 4) Exporter les certificats (onglet <strong>Certificat</strong>), soit au format PDF pour impression, soit au format CSV pour injection dans un logiciel de scolarité type Apogée.
@@ -560,12 +562,9 @@ $string['importpedagoh'] = 'Importer un fichier des formations';
 $string['importpedagoh_help'] = 'Fichier CSV ou XML.
 Format CSV, Séparateur \';\'
 
-#Moodle Referentiel pedagos CSV Export;;latin1;Y:2011m:03d:17;;;;;;
-
-#username;firstname;lastname;date_cloture;promotion;formation;pedagogie;composante;num_groupe;commentaire;referentiel;
-
+\#Moodle Referentiel pedagos CSV Export;;latin1;Y:2011m:03d:17;;;;;;
+\#username;firstname;lastname;date_cloture;promotion;formation;pedagogie;composante;num_groupe;commentaire;referentiel;
 E001326S;Severine;DUPON;2011-06-01;2011;6252;FCI2EMD;919;;;C2i2e-2011
-
 dupuis-d;David;DUPUIS;2011-06-01;2011;6252;FCI2EME;919;a123;;
 ...
 

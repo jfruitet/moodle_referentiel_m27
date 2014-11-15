@@ -395,13 +395,8 @@
 			}
 		}
 	    if (file_exists($modform)) {
-
-        	    $defaultformat = FORMAT_PLAIN;
-	            $editorfields = '';
-    	    } 
-			else {
-            	
-	        }
+       	    $defaultformat = FORMAT_PLAIN;
+            $editorfields = '';
 		}
 		else {
     	 	notice("ERREUR : No file found at : $modform)", "etablissement.php?d=$referentiel->id");

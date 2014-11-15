@@ -40,11 +40,23 @@ Historique des versions
 Ceci est la partie activité du module Référentiel
 This is the activity module for Referentiel plugin
 
-Référentiel pour Moodle 2.4, 2.5 avec barèmes
-Referentiel for Moodle 2.4, 2.5  with scales support
+Référentiel pour Moodle 2.4, 2.5, 2.6, 2.7 avec barèmes
+Referentiel for Moodle 2.4, 2.5, 2.6, 2.7 with scales support
 ---------------------------------------------
+Version 10.05 for Moodle 2.7 with scale support, block and report
+Release 2014-11-15
+New pagination display for activities
+New event log classes
+
+Version 10.01 (2014050400) for Moodle 2.7 with scale support, block and report
+Release 2014-06-20
+Modification de la gestion des évaluations avec bareme pour les tâches
+Release 2014-05-09
+Version 10.01 (2014050400) for Moodle 2.6 with scale support, block and report - Release 2014-05-04
+Correction d'un bug empêchant le paramétrage
 
 Version 10.00 (2014022803) for Moodle 2.4 et 2.5 with scale support and block
+
 Release 2014-04-25
 Correction bug empêchant la suppression d'un document attaché
 Suppression des caractères accentués dans les noms des fichiers d'archives

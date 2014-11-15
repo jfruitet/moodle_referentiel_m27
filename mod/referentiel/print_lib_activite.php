@@ -105,7 +105,7 @@ global $COURSE;
 
         echo referentiel_modifie_entete_activite_complete_filtre("activite.php?id=$cm->id&amp;select_acc=$select_acc&amp;courseid=$course->id&amp;userid=$userid_filtre&amp;mode=$mode&amp;sesskey=".sesskey(), $data_f, false, false);
 		//echo referentiel_print_enqueue_activite();
-        echo '<br /><br /><br /><br />'."\n";
+        echo '<br /><br />'."\n";
  	}
 }
 
@@ -1359,7 +1359,7 @@ print_object($CFG);
 		$s.='</td>'."\n".'<td align="center">';
 		$s.=$user_info;
         // MODIF JF 2012/05/06
-        $s.=referentiel_liste_groupes_user($ref_course, $userid);
+        $s.="\n<br />\n".referentiel_liste_groupes_user($ref_course, $userid);
 		$s.='</td>'."\n".'<td align="center">';
 		$s.=$url_course.'<br />'.$url_instance;
 		$s.='</td>'."\n".'<td align="center">';

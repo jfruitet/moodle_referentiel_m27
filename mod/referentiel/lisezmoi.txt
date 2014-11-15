@@ -4,7 +4,7 @@ jean.fruitet@univ-nantes.fr
 2007/2014
 
 Type: Activity Module
-Requires: Moodle 2.4 or 2.5
+Requires: Moodle 2.7
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
@@ -109,14 +109,7 @@ Fonctions Report
 ---------------------------------------------------
 La nouvelle fonctionnalité "Rapport Référentiel" (report) est proposée aux administrateurs
 
-Moodle 1.9, 2.0, 2.1
---------------------
-L'archive referentiel-report.zip
-doit être décomprimée dans le dossier
-SERVEUR_MOODLE/admin/report/
-
-
-Moodle 2.2, 2.3, 2.4, 2.5, 2.6
+Moodle 2.7
 --------------------------------
 L'archive referentiel-report.zip
 doit être décomprimée dans le dossier
@@ -156,16 +149,7 @@ Functionnality "Skills repository report" (Referentiel report) for administrator
 gives to administrators the opportunity to manage occurrences and instances of the referentiel module
 and make archives of users numerical data
 
-Moodle 1.9, 2.0, 2.1
---------------------
-Unzip  
-YOUR_MOODLE/mod/referentiel/report/referentiel-report.zip
-in 
-YOUR_MOODLE/admin/report/
-directory
-
-
-Moodle 2.2, 2.3, 2.4, 2.5, 2.6
+Moodle 2.7
 ------------------------------
 Unzip referentiel-report.zip
 in 
@@ -190,6 +174,11 @@ Le serveur public des sources CVS / Subversion est  :
 Subversion server at: 
 https://subversion.cru.fr/referentiel/
 https://sourcesup.renater.fr/scm/viewvc.php/?root=referentiel
+
+---------------------------------------------------
+GitHub
+---------------------------------------------------
+https://github.com/jfruitet/moodle_referentiel_m27
 
 ----------------------------------------------------
 Forums et Tests du module

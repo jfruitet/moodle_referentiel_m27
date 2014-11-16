@@ -172,7 +172,16 @@
             // Vider
             if (isset($formdata->deleteall) && ($formdata->deleteall!=0)){
     			if (referentiel_vider_pedagos_assos()){
-	       			add_to_log($course->id, 'referentiel', 'pedagos deleted', "import_pedagogie.php?d=$referentiel->id", $cm->id);
+                    if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+                			'contextid' => $context->id,
+		                	'objectid' => $referentiel_referentiel->id,
+        	    		);
+            			$event = \mod_referentiel\event\allpedagogie_deleted::create($params);
+            			$event->trigger();
+	        		} else { // Before Moodle 2.7
+                        add_to_log($course->id, 'referentiel', 'pedagogy delete', "pedagogie.php?id=$cm->id", $referentiel_referentiel->id, $cm->id);
+					}
                     notify(get_string('recorddeleted','referentiel'), 'notifysuccess');
                 }
             }

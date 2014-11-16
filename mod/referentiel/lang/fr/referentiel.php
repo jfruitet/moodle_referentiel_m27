@@ -4,7 +4,6 @@
 //
 
 // Events
-
 $string['eventeditpageviewed'] = 'Page éditée';
 $string['eventreferentielcomplete'] = 'Referentiel complété';
 $string['eventactivitycreated'] = 'Activité  crée';
@@ -12,6 +11,7 @@ $string['eventactivitydeleted'] = 'Activité  supprimée';
 $string['eventactivityupdated'] = 'Activité  mise à jour';
 $string['eventactivityviewed'] = 'Activité affichée';
 $string['eventcertificatviewed'] = 'Certificat affiché';
+$string['eventallpedagogydeleted'] = 'Toutes les Pédagogies sont supprimées';
 $string['eventconfigupdated'] = 'Configuration mise à jour';
 $string['eventinstancedeleted'] = 'Instance supprimée';
 $string['eventinstanceupdated'] = 'Instance mise à jour';
@@ -31,11 +31,16 @@ $string['eventoccurrenceupdated'] = 'Occurrence mise à jour';
 $string['eventinstanceupdated'] = 'Referentiel instance mise à jour';
 $string['eventpedagogydeleted'] = 'Pedagogie supprimée';
 $string['eventpedagogyauserdeleted'] = 'Association de pedagogie supprimée';
+$string['eventstudentcreated'] = 'Student record created';
+$string['eventstudentdeleted'] = 'Student record deleted';
+$string['eventstudentupdated'] = 'Student record updated';
 $string['eventtaskcreated'] = 'Tâche créé';
 $string['eventtaskdeleted'] = 'Tâche supprimée';
 $string['eventtaskupdated'] = 'Tâche mise à jour';
 $string['eventtaskviewed'] = 'Tâche affcihée';
 
+$string['pagination_yes'] = 'Affichage paginé';
+$string['pagination_no'] = 'Affichage non paginé';
 $string['explaingeneralconfig'] = 'Ces paramètres sont <strong>toujours</strong> utilisés';
 $string['generalconfig'] = 'Configuration générale';
 $string['settings'] = 'Configuration Referentiel';

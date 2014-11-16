@@ -10,7 +10,7 @@ $string['eventactivitydeleted'] = 'Activity deleted';
 $string['eventactivityupdated'] = 'Activity updated';
 $string['eventactivityviewed'] = 'Activity viewed';
 $string['eventcertificatviewed'] = 'Certificate viewed';
-
+$string['eventallpedagogydeleted'] = 'All Pedagogies deleted';
 $string['eventdomaincreated'] = 'Domain created';
 $string['eventdomaindeleted'] = 'Domain deleted';
 $string['eventdomainupdated'] = 'Domain updated';
@@ -28,15 +28,20 @@ $string['eventoccurrencecreated'] = 'Occurrence created';
 $string['eventoccurrencedeleted'] = 'Occurrence deleted';
 $string['eventoccurrenceupdated'] = 'Occurrence updated';
 $string['eventinstanceupdated'] = 'Referentiel instance updated';
-$string['eventpedagogydeleted'] = 'Pedagogyy deleted';
+$string['eventpedagogydeleted'] = 'Pedagogy deleted';
 $string['eventpedagogyauserdeleted'] = 'Pedagogy association deleted';
 $string['eventpedagogyeupdated'] = 'Pedagogy association deleted';
 $string['eventpedagogycreated'] = 'Pedagogy created';
-
+$string['eventstudentcreated'] = 'Student record created';
+$string['eventstudentdeleted'] = 'Student record deleted';
+$string['eventstudentupdated'] = 'Student record updated';
 $string['eventtaskcreated'] = 'Task created';
 $string['eventtaskdeleted'] = 'Task deleted';
 $string['eventtaskupdated'] = 'Task updated';
 $string['eventtaskviewed'] = 'Task viewed';
+
+$string['pagination_yes'] = 'Pagination display On';
+$string['pagination_no'] = 'Pagination display Off';
 
 $string['explaingeneralconfig'] = 'These settings are <strong>always</strong> used';
 $string['generalconfig'] = 'General Settings';

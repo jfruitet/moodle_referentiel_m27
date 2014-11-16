@@ -207,10 +207,16 @@
             or referentiel_etudiant_isowner($deleteid))) {
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
             if (referentiel_delete_etudiant_user($deleteid)){
-				// DEBUG
-				// echo "<br /> DEBUG :: 212 ::  etudiant $delete REMIS A ZERO\n";
-				// exit;
-				add_to_log($course->id, 'referentiel', 'record delete', "etudiant.php?id=$cm->id", $deleteid, $cm->id);
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+                	'contextid' => $context->id,
+                	'objectid' => $deleteid,
+            		);
+            		$event = \mod_referentiel\event\etudiant_deleted::create($params);
+            		$event->trigger();
+        		} else { // Before Moodle 2.7
+					add_to_log($course->id, 'referentiel', 'delete', "etudiant.php?id=$cm->id", $deleteid, $cm->id);
+				}
                 // notify(get_string('recorddeleted','referentiel'), 'notifysuccess');
             }
             redirect("$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id&amp;sesskey=".sesskey());
@@ -244,7 +250,17 @@
 					if (!$DB->update_record("referentiel_etudiant", $record)){
                         print_error("Could not update record $record->id ", "etudiant.php?id=".$cm->id.'&amp;sesskey='.sesskey());
                     }
-                    add_to_log($course->id, "referentiel", "update", "update student ".$record->id);
+        			if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+		                	'contextid' => $context->id,
+        		        	'objectid' => $record->id,
+            			);
+	            		$event = \mod_referentiel\event\etudiant_updated::create($params);
+    	        		$event->trigger();
+        			} else { // Before Moodle 2.7
+						add_to_log($course->id, 'referentiel', 'update', "etudiant.php?id=$cm->id", $record->id, $cm->id);
+					}
+				}
             }
         }
         unset($form);
@@ -277,11 +293,16 @@
                        else {
             	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id";
 	               	}
-
-	    	        add_to_log($course->id, "referentiel", "delete",
-            	          "mise a jour etudiant $form->userid",
-                          "$form->etudiant_id", "");
-
+       				if ($CFG->version > 2014051200) { // Moodle 2.7+
+	            		$params = array(
+    		            	'contextid' => $context->id,
+            		    	'objectid' => $return,
+            			);
+	            		$event = \mod_referentiel\event\etudiant_deleted::create($params);
+    	        		$event->trigger();
+        			} else { // Before Moodle 2.7
+						add_to_log($course->id, 'referentiel', 'delete', "etudiant.php?id=$cm->id", $return, $cm->id);
+					}
 				}
 				else {
                     // update
@@ -290,17 +311,24 @@
     	         	    print_error('incorrect_id','referentiel',$CFG->wwwroot.'/mod/referentiel/etudiant.php?id='.$cm->id,$form->etudiant_id,"Delete function");
 					}
 		            if (is_string($return)) {
-    		        	print_error($return, "etudiant.php?d=$referentiel->id");
+    		        	print_error($return, "etudiant.php?id=$cm->id");
 	    		    }
 	        		if (isset($form->redirect)) {
     	        		$SESSION->returnpage = $form->redirecturl;
 					}
 					else {
-        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?d=$referentiel->id";
+        	    		$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id";
 	        	    }
-					add_to_log($course->id, "referentiel", "update",
-            	           "mise a jour etudiant $form->userid",
-                           "$form->etudiant_id", "");
+        			if ($CFG->version > 2014051200) { // Moodle 2.7+
+            			$params = array(
+		                	'contextid' => $context->id,
+        		        	'objectid' => $form->etudiant_id,
+            			);
+	            		$event = \mod_referentiel\event\etudiant_updated::create($params);
+    	        		$event->trigger();
+        			} else { // Before Moodle 2.7
+						add_to_log($course->id, 'referentiel', 'update', "etudiant.php?id=$cm->id", $form->etudiant_id, $cm->id);
+					}
     	    	}
 
 			break;
@@ -311,20 +339,28 @@
         		}
 				$return = $addfunction($form);
 				if (!$return) {
-					print_error("Could not add a new etudiant to the referentiel", "etudiant.php?d=$referentiel->id");
+					print_error("Could not add a new etudiant to the referentiel", "etudiant.php?id=$cm->id");
 				}
 	        	if (is_string($return)) {
-    	        	print_error($return, "etudiant.php?d=$referentiel->id");
+    	        	print_error($return, "etudiant.php?id=$cm->id");
 				}
 				if (isset($form->redirect)) {
     	    		$SESSION->returnpage = $form->redirecturl;
 				}
 				else {
-					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?d=$referentiel->id";
+					$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id";
 				}
-				add_to_log($course->id, referentiel, "add",
-                           "creation etudiant $form->etudiant_id ",
-                           "$form->instance", "");
+        		if ($CFG->version > 2014051200) { // Moodle 2.7+
+            		$params = array(
+		               	'contextid' => $context->id,
+        		       	'objectid' => $form->etudiant_id,
+            		);
+	            	$event = \mod_referentiel\event\etudiant_created::create($params);
+    	        	$event->trigger();
+        		} else { // Before Moodle 2.7
+					add_to_log($course->id, 'referentiel', 'add', "etudiant.php?id=$cm->id", $form->etudiant_id, $cm->id);
+				}
+
             break;
 
 	        case "deleteetudiant":
@@ -347,7 +383,7 @@
     	    redirect($return);
         }
 		else {
-	    	redirect("etudiant.php?d=$referentiel->id");
+	    	redirect("etudiant.php?id=$cm->id");
     	}
 
         exit;
@@ -467,7 +503,7 @@
        	    $editorfields = '';
 		}
 		else {
-    	    notice("ERREUR : No file found at : $modform)", "etudiant.php?d=$referentiel->id");
+    	    notice("ERREUR : No file found at : $modform)", "etudiant.php?id=$cm->id");
     	}
 		include_once($modform);
         echo $OUTPUT->box_end();

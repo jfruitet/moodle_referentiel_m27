@@ -59,8 +59,8 @@ function referentiel_get_print_formats( $type, $classprefix="" ) {
 function referentiel_default_print_filename($course, $referentiel, $info="") {
     //Take off some characters in the filename !!
     $takeoff = array(" ", ":", "/", "\\", "|");
-    $textlib = new textlib();
-    $export_word = str_replace($takeoff,"_", $textlib::strtolower(get_string("exportfilename","referentiel")));
+    $core_text = new core_text();
+    $export_word = str_replace($takeoff,"_", $core_text::strtolower(get_string("exportfilename","referentiel")));
     //If non-translated, use "export"
     if (substr($export_word,0,1) == "[") {
         $export_word= "export";
@@ -86,11 +86,11 @@ function referentiel_default_print_filename($course, $referentiel, $info="") {
     //The export word
     $export_name = 'print_'.$export_word."-";
     //The shortname
-    $export_name .= $textlib::strtolower($export_shortname)."-";
+    $export_name .= $core_text::strtolower($export_shortname)."-";
     //The instance name
-    $export_name .= $textlib::strtolower($export_instancename)."-";
+    $export_name .= $core_text::strtolower($export_instancename)."-";
 	if ($info){
-		$export_name .= $textlib::strtolower($info)."-";
+		$export_name .= $core_text::strtolower($info)."-";
 	}
 	
     //The date format

@@ -7,7 +7,7 @@
 
      
 // traitement des chaines de caracteres
-require_once('textlib.php');
+require_once('core_text.php');
 
 // MSWORD maison
 require_once('msword.class.php');

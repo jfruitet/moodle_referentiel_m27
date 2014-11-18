@@ -10,7 +10,7 @@
 // JF
      
 // traitement des chaines de caracteres
-require_once('textlib.php');
+require_once('core_text.php');
 
 // RTF    
 require_once('./rtf/Rtf.php');

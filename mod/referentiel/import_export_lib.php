@@ -65,8 +65,8 @@ function referentiel_default_export_filename($course, $referentiel, $info="") {
     //Take off some characters in the filename !!
     $takeoff = array(" ", ":", "/", "\\", "|");
 
-    $textlib = new textlib();
-    $export_word = str_replace($takeoff,"_", $textlib::strtolower(get_string("exportfilename","referentiel")));
+    $core_text = new core_text();
+    $export_word = str_replace($takeoff,"_", $core_text::strtolower(get_string("exportfilename","referentiel")));
     //If non-translated, use "export"
     if (substr($export_word,0,1) == "[") {
         $export_word= "export";
@@ -116,10 +116,10 @@ function referentiel_default_export_filename($course, $referentiel, $info="") {
 
 function referentiel_purge_accents($s){
     //Take off some characters in the filename !!
-    $textlib = new textlib();
+    $core_text = new core_text();
     $search = array(" ", "à", "â", "ä", "é", "è", "ê", "ë", "î", "ï", "ô", "ö", "û", "ü", "ç");
     $replace= array("_", "a", "a", "a", "e", "e", "e", "e", "i", "i", "o", "o", "u", "u", "c");
-    return (str_replace($search, $replace, $textlib::strtolower($s)));
+    return (str_replace($search, $replace, $core_text::strtolower($s)));
 }
 
 ?>

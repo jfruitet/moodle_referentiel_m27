@@ -5,6 +5,7 @@ jean.fruitet@univ-nantes.fr
 
 Type: Activity Module
 Requires: Moodle 2.7
+Avalaible: Moodle 2.7, 2.8
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
 

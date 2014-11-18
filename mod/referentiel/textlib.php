@@ -1,6 +1,6 @@
 <?php
 /* ************************  RECODAGES de tables de caracteres *************************/
-// require_once($CFG->libdir .'/textlib.class.php'); // pour utiliser $textlib
+// require_once($CFG->libdir .'/core_text.class.php'); // pour utiliser $core_text
 
 // FONCTIONS ===================================================================
 
@@ -42,9 +42,9 @@ else {
 	$direction = ' dir="ltr"';
 }
 */
-/// Loading the textlib singleton instance. We are going to need it.
+/// Loading the core_text singleton instance. We are going to need it.
 /// pour les fonctions strpos(), substr() et autres conversions de chaines UTF8
-// $textlib = textlib_get_instance();
+// $core_text = core_text_get_instance();
 
 
 /* ************************  RECODAGES de tables de caracteres ************************/

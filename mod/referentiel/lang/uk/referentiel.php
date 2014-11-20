@@ -22,7 +22,7 @@
  * @subpackage referentiel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+// Ukrainien - 2014-10-05 - Alexandre Scherbyna - sch@ua.fm
 defined('MOODLE_INTERNAL') || die();
 
 $string['a_completer'] = 'Треба заповнити!';

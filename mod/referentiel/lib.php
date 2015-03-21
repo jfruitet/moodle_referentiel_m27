@@ -77,7 +77,7 @@ define ('REFERENTIEL_OUTCOMES', 1);   // placer à 0 pour désactiver le traitem
 // si à 1 le cron devient très bavard :))
 // et les messages en attente portent sur une semaine au lieu de deux jours.
 define ('REFERENTIEL_DEBUG', 0);    // DEBUG INACTIF
-// define ('REFERENTIEL_DEBUG', 1);       // DEBUG ACTIF  : le cron devient très bavard :))
+//define ('REFERENTIEL_DEBUG', 1);       // DEBUG ACTIF  : le cron devient très bavard :))
 define ('OUTCOMES_SUPER_DEBUG', 0);       // SUPER DEBUG OUTCOMES INACTIF
 //define ('OUTCOMES_SUPER_DEBUG', 1);       // SUPER DEBUG OUTCOMES ACTIF : affichage tres detaille
 
@@ -92,11 +92,12 @@ define('EDITOR_ON', 1);// editeur de referentiels simplifié wysiwyg actif (nece
 define('MAXBOITESSELECTION', 5);  // à réduire si le nombre de boites de selection des etudiants
 // ne tient pas dans la page sans ascenceur horizontal
 
-define('NOTIFICATION_TACHES', 0); // placer à 1 pour activer la notification
+define('NOTIFICATION_TACHES', 1); // placer à 1 pour activer la notification
 define('NOTIFICATION_ACTIVITES', 1); // placer à 0 pour désactiver la notification
 define('NOTIFICATION_CERTIFICATS', 1); // placer à 0 pour désactiver la notification
 
-define('NOTIFICATION_TACHES_AUX_REFERENTS', 0); // placer à 1 pour activer la notification de la tâches aux enseignants du cours ; en general inutile
+define('NOTIFICATION_TACHES_AUX_REFERENTS', 0); // placer à 1 pour activer la notification de la tâches aux enseignants du cours ; ctte notification est en general inutile
+//define('NOTIFICATION_TACHES_AUX_REFERENTS', 1); // placer à 0 pour desactiver la notification de la tâches aux enseignants du cours ;
 define('NOTIFICATION_JURY', 0); // placer à 1 pour activer la notification la certification ; notification en général inutile
 define('NOTIFICATION_AUTEUR_ACTIVITE', 0); // placer à 0 pour désactiver la notification de l'auteur de la declaration d'activite ; notification en général inutile
 

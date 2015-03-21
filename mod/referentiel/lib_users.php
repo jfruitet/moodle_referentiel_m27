@@ -170,8 +170,7 @@ function referentiel_get_user($user_id){
     global $DB;
 	if (!empty($user_id)){
         $params=array("userid" => "$user_id");
-        $sql="SELECT id, username, firstname, lastname, maildisplay, mailformat, maildigest, emailstop, imagealt,
- email, city, country, lastaccess, lastlogin, picture, timezone, theme, lang, trackforums, mnethostid
+        $sql="SELECT *
  FROM {user} WHERE id=:userid ORDER BY email ASC";
         return $DB->get_record_sql($sql, $params);
   }

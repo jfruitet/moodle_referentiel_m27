@@ -271,7 +271,6 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                             $subscribedusers[$certificatid][$userid]=$userid;
                             // this user is a user we have to process later
                             $users[$userid] = $user;
-
 // DEBUG : cron_lib.php :
 // mtrace('DESTINATAIRE AUTEUR '.$userid);
                         }
@@ -295,12 +294,10 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                   }
                 }
             }
-
             $mailcount[$cid] = 0;
             $errorcount[$cid] = 0;
         }
     }
-
 
 
     if ($users && $certificats) {
@@ -310,7 +307,6 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
         $hostname = $urlinfo['host'];
 
         foreach ($users as $userto) {
-
             @set_time_limit(TIME_LIMIT); // terminate if processing of any account takes longer than 2 minutes
 
             // set this so that the capabilities are cached, and environment matches receiving user
@@ -326,10 +322,14 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                     continue; // user does not subscribe to this activity
                 }
                 // Get info about the author user
-                if (array_key_exists($certificat->teacherid, $users)) { // teacher is userfrom                    $userfrom = $users[$certificat->teacherid];
-                    $userfrom = $users[$certificat->teacherid];
+				// MODIF JF 2015/03/21
+				// We need a really complete user object...
+                if (array_key_exists($certificat->teacherid, $users)) { // teacher is userfrom
+                	$userfrom = $DB->get_record("user", array("id" => "$certificat->teacherid"));
+                    $users[$certificat->teacherid] = $userfrom;
                 } else if (array_key_exists($certificat->userid, $users)) { // we might know him/her already
-                    $userfrom = $users[$certificat->userid];
+                    $userfrom = $DB->get_record("user", array("id" => "$certificat->userid"));
+                    $users[$certificat->userid] = $userfrom;
                 } else if ($userfrom = $DB->get_record("user", array("id" => "$certificat->userid"))) {
                     $users[$userfrom->id] = $userfrom; // fetch only once, we can add it to user list, it will be skipped anyway
                 }
@@ -372,13 +372,7 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
 
                 // Fill caches
                 if (!isset($userfrom->viewfullnames[$certificat->id])) {
-                    // Valable pour Moodle 2.1 et Moodle 2.2
-                    //if ($CFG->version < 2011120100) {
-                            $modcontext = context_module::instance($cm->id);
-                    //} else {
-                    //        $modcontext = context_module::instance($cm);
-                    //}
-
+                    $modcontext = context_module::instance($cm->id);
                     $userfrom->viewfullnames[$certificat->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                 }
 
@@ -449,21 +443,12 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                     $postsubject = "$course->shortname: ".format_string($strcertificatename,true);
                 }
 
-
-                // Valable pour Moodle 2.1 et Moodle 2.2
-                //if ($CFG->version < 2011120100) {
-                    $context = context_module::instance($cm->id);
-                //} else {
-                    // $context = context_module::instance($cm);
-                //}
-
+                $context = context_module::instance($cm->id);
                 $posttext = referentiel_make_mail_text(TYPE_CERTIFICAT, $context, $course, $info_certif, $userfrom, $userto);
                 $posthtml = referentiel_make_mail_html(TYPE_CERTIFICAT, $context, $course, $info_certif, $userfrom, $userto);
 
                 // Send the post now!
-
                 // mtrace('Sending ', '');
-
                 if (!$mailresult = email_to_user($userto, $userfrom, $postsubject, $posttext,
                                                  $posthtml, '', '', $CFG->forum_replytouser)) {
                     mtrace("Error: certificates : Could not send out mail for id $certificat->id to user $userto->id ($userto->email) .. not trying again.");
@@ -499,7 +484,6 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
     $sitetimezone = $CFG->timezone;
 
     // Now see if there are any digest mails waiting to be sent, and if we should send them
-
     mtrace('Starting digest processing...');
 
     @set_time_limit(TIME_LIMIT*2); // terminate if not able to fetch all digests in 5 minutes
@@ -534,37 +518,35 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
             $userposts = array();
 
             foreach ($digestposts_rs as $digestpost) {
-                    if (!isset($users[$digestpost->userid])) {
-                        if ($user = $DB->get_record("user", array("id" => "$digestpost->userid"))) {
-                            $users[$digestpost->userid] = $user;
-                        }
-                        else {
-                            continue;
-                        }
+                if (!isset($users[$digestpost->userid])) {
+                    if ($user = $DB->get_record("user", array("id" => "$digestpost->userid"))) {
+                        $users[$digestpost->userid] = $user;
                     }
-                    $postuser = $users[$digestpost->userid];
-                    if ($postuser->emailstop) {
-                        if (!empty($CFG->forum_logblocked)) {
-                            // add_to_log(SITEID, 'referentiel', 'mail blocked', '', '', 0, $postuser->id);
-                        }
+                    else {
                         continue;
                     }
-
-                    // contenu certificat
-                    // 0 : certificat
-                    if (!isset($certificats[$digestpost->activiteid])) {
-                        if ($certificat = $DB->get_record("referentiel_certificat", array("id" => "$digestpost->activiteid"))) {
-                            $certificats[$digestpost->activiteid] = $certificat;
-                        }
-                        else {
-                            continue;
-                        }
-                    }
-
-
-                    $userposts[$digestpost->userid][$digestpost->activiteid] = $digestpost->activiteid;
-
                 }
+                $postuser = $users[$digestpost->userid];
+                if ($postuser->emailstop) {
+                    if (!empty($CFG->forum_logblocked)) {
+                        // add_to_log(SITEID, 'referentiel', 'mail blocked', '', '', 0, $postuser->id);
+                    }
+                    continue;
+                }
+
+                // contenu certificat
+                // 0 : certificat
+                if (!isset($certificats[$digestpost->activiteid])) {
+                    if ($certificat = $DB->get_record("referentiel_certificat", array("id" => "$digestpost->activiteid"))) {
+                        $certificats[$digestpost->activiteid] = $certificat;
+                    }
+                    else {
+                        continue;
+                    }
+                }
+
+                $userposts[$digestpost->userid][$digestpost->activiteid] = $digestpost->activiteid;
+            }
 
             $digestposts_rs->close(); /// Finished iteration, let's close the resultset
 
@@ -629,8 +611,7 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
 
                     // Fill caches
                     if (!isset($userto->viewfullnames[$certificat->id])) {
-                        $modcontext = context_system::instance();
-
+						$modcontext = context_system::instance();
                         $userto->viewfullnames[$certificat->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                     }
 
@@ -665,34 +646,34 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                             continue;
                         }
 
-                               // JF 2011/10/25
-                                if (!isset($userfrom->groups[$post->id])) {
-                                    if (!isset($userfrom->groups)) {
-                                        $userfrom->groups = array();
-                                        $users[$userfrom->id]->groups = array();
-                                    }
-                                    $userfrom->groups[$post->id] = groups_get_all_groups($course->id, $userfrom->id, $cm->groupingid);
-                                    $users[$userfrom->id]->groups[$post->id] = $userfrom->groups[$post->id];
-                                }
-                                $groupname='';
-                                if (!empty($userfrom->groups)){
-                                    // mtrace("\nDEBUG : lib.php :: 285 :: \n");
-                                    // print_r($userfrom->groups);
-                                    foreach($userfrom->groups as $un_groupe){
-                                        // mtrace("\nDEBUG : lib_cron.php :: 288 \n");
-                                        // print_r($un_groupe);
-                                        if (!empty($un_groupe)){
-                                            foreach($un_groupe as $groupe){
-                                                //mtrace("\nDEBUG : lib.php :: 1015 \n");
-                                                //print_r($groupe);
-                                                if (!empty($groupe->name)){
-                                                    $groupname.= $groupe->name. ' ';
-                                                }
-                                            }
-                                        }
-                                    }
-                                    // mtrace("\nDEBUG : lib_cron.php :: 299 :: $groupname \n");
-                                }
+                        // JF 2011/10/25
+                        if (!isset($userfrom->groups[$post->id])) {
+                           	if (!isset($userfrom->groups)) {
+                               	$userfrom->groups = array();
+                                $users[$userfrom->id]->groups = array();
+                            }
+                            $userfrom->groups[$post->id] = groups_get_all_groups($course->id, $userfrom->id, $cm->groupingid);
+                            $users[$userfrom->id]->groups[$post->id] = $userfrom->groups[$post->id];
+                        }
+                        $groupname='';
+                        if (!empty($userfrom->groups)){
+                            // mtrace("\nDEBUG : lib.php :: 285 :: \n");
+                            // print_r($userfrom->groups);
+                            foreach($userfrom->groups as $un_groupe){
+                                // mtrace("\nDEBUG : lib_cron.php :: 288 \n");
+                                // print_r($un_groupe);
+                                if (!empty($un_groupe)){
+                                    foreach($un_groupe as $groupe){
+                                        //mtrace("\nDEBUG : lib.php :: 1015 \n");
+                                        //print_r($groupe);
+                                        if (!empty($groupe->name)){
+                                        	$groupname.= $groupe->name. ' ';
+                                    	}
+                                	}
+                            	}
+                            }
+                        	// mtrace("\nDEBUG : lib_cron.php :: 299 :: $groupname \n");
+                        }
                                 
                         $userfrom->customheaders = array ("Precedence: Bulk");
 
@@ -716,7 +697,6 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                         else {
                             // The full treatment
 							$context = context_system::instance();
-
                             $posttext = referentiel_make_mail_text(TYPE_CERTIFICAT, $context, $course, $post, $userfrom, $userto, true);
                             $posthtml = referentiel_make_mail_post(TYPE_CERTIFICAT, $context, $course, $post, $userfrom, $userto, false, true, false);
                         }
@@ -744,7 +724,7 @@ mtrace("DEBUT CRON REFERENTIEL CERTIFICATS");
                 }
             }
         }
-    /// We have finishied all digest emails activities, update $CFG->digestcertificatetimelast
+		/// We have finishied all digest emails activities, update $CFG->digestcertificatetimelast
         set_config('digestcertificatetimelast', $timenow);
     }
 
@@ -818,15 +798,15 @@ global $DB;
 
         // checking activity validity, and adding users to loop through later
         foreach ($activities as $aid => $activite) {
-/*
-             // DEBUG : cron_lib.php :
-            mtrace("lib_cron.php :: 885 :: ACTIVITE: AID\n");
-            print_object($aid);
-mtrace("\n");
-            mtrace("ACTIVITE: ACTIVITE\n");
-            print_object($activite);
-mtrace("\n");
-*/
+			if (REFERENTIEL_DEBUG){
+            	// DEBUG : cron_lib.php :
+            	mtrace("lib_cron.php :: 821 :: ACTIVITE: AID\n");
+            	print_r($aid);
+				mtrace("\n");
+    	        mtrace("ACTIVITE: ACTIVITE\n");
+        	    print_r($activite);
+				mtrace("\n");
+			}
             $activiteid = $activite->id;
 
             // DEBUG : cron_lib.php :
@@ -899,9 +879,6 @@ mtrace("\n");
                     $teachers[]=referentiel_get_user($activites[$activiteid]->teacherid);
                 }
                 else{  // on recherche les accompagnateurs
-// ####################################
-// MODIF            JF Version 1.2.xx
-// ####################################
                     $teachers_repartition=array();
                     $teachers_repartition=referentiel_get_repartition_competences($instanceid, $courseid, $activite->competences_activite, $teachers_repartition);
                     $teachers=referentiel_get_accompagnements_user($instanceid, $courseid, $activite->userid);
@@ -913,28 +890,27 @@ mtrace("\n");
                     // notifier tous les enseignants sauf les administrateurs et createurs de cours
                     $teachers=referentiel_get_teachers_course($courseid);
                 }
-/*
+if (REFERENTIEL_DEBUG){
+	if (!empty($teachers)){
                 // DEBUG : cron_lib.php :
-                mtrace("\nlib_cron.php :: 949 :: TEACHERS\n");
+                mtrace("\nlib_cron.php :: 913 :: TEACHERS\n");
                 print_r($teachers);
                 mtrace("\n");
-*/
+	}
+}
                 // Liste des destinataires
                 // s'il y a un référent et qu'il n'est pas l'emetteur du message
 
                 if ($emetteur==0) { // etudiant
                     if ($teachers)  {
                         foreach ($teachers as $teacher) {
-/*
-                mtrace("\nlib.php :: 974 :: TEACHER\n");
-                print_object($teacher);
-                mtrace("\n");
-*/
                             // DEBUG
                             if (REFERENTIEL_DEBUG){
-                                mtrace("\nlib.php :: 867 :: TEACHER\n");
-                                print_object($teacher);
-                                mtrace("\n");
+                                if (!empty($teacher)){
+                                	mtrace("\nlib.php :: 867 :: TEACHER\n");
+ 	                               	print_r($teacher);
+    	                            mtrace("\n");
+								}
                             }
 
                             if (!empty($teacher->id)){
@@ -1050,36 +1026,39 @@ mtrace("\n");
     // La collection des destinataires est maintenant disponible
     // Preparer les messages
     if ($users && $activites) {
+
+if (REFERENTIEL_DEBUG){
+	if (!empty($users)){
         // DEBUG : cron_lib.php :
-        // mtrace('TRAITEMENT DES MESSAGES ');
-/*
-        // DEBUG : cron_lib.php :
-        mtrace("\nlib_cron.php :: 1086 :: USERS DESTINATAIRES\n");
+        mtrace("\nlib_cron.php :: 1058 :: USERS DESTINATAIRES\n");
         print_r($users);
         mtrace("\n");
-        mtrace("\nlib_cron.php :: 1089 :: ACTIVITES A POSTER\n");
+	}
+    if (!empty($activites)){
+        mtrace("\nlib_cron.php :: 1063 :: ACTIVITES A POSTER\n");
         print_r($activites);
         mtrace("\n");
-
-        mtrace("\nlib_cron.php :: 1089 :: SUBSCRIBED USERS\n");
-        print_object($subscribedusers);
+	}
+	if (!empty($subscribedusers)){
+        mtrace("\nlib_cron.php :: 1068 :: SUBSCRIBED USERS\n");
+        print_r($subscribedusers);
         mtrace("\n");
-
-        // mtrace("\nEXIT : lib_cron.php :: 1089 \n");
+	}
+        // mtrace("\nEXIT : lib_cron.php :: 1072 \n");
         // exit;
-*/
+}
         $urlinfo = parse_url($CFG->wwwroot);
         $hostname = $urlinfo['host'];
 
         foreach ($users as $userto) {
-  /*
-        // DEBUG : cron_lib.php :
-        mtrace("\nlib_cron.php :: 1100 :: USER DESTINATAIRE (userto)\n");
-        print_object($userto);
+
+if (REFERENTIEL_DEBUG){
+        mtrace("\nlib_cron.php :: 1056 :: USER DESTINATAIRE (userto)\n");
+        print_r($userto);
         mtrace("\n");
-        //mtrace("\nEXIT : lib_cron.php :: 1107 \n");
+        //mtrace("\nEXIT : lib_cron.php :: 1059 \n");
         //exit;
-*/
+}
             @set_time_limit(TIME_LIMIT); // terminate if processing of any account takes longer than 3 minutes if PHP not in safe_mode
 
             // set this so that the capabilities are cached, and environment matches receiving user
@@ -1099,24 +1078,24 @@ mtrace("\n");
             }
 
             foreach ($activites as $aid => $activite) {
-/*
+if (REFERENTIEL_DEBUG){
+	if (!empty($activite)){
         // DEBUG : cron_lib.php :
-        mtrace("\nlib_cron.php :: 888 :: ACTIVITE POSTEE ($aid)\n");
-        print_object($activite);
+        mtrace("\nlib_cron.php :: 1101 :: ACTIVITE POSTEE ($aid)\n");
+        print_r($activite);
         mtrace("\n");
-
-                // DEBUG : cron_lib.php :
-        mtrace("\nlib_cron.php :: 893 :: COURS IMPLIQUES \n");
-        print_object($courses);
+	}
+    if (!empty($courses)){
+		// DEBUG : cron_lib.php :
+        mtrace("\nlib_cron.php :: 1106 :: COURS IMPLIQUES \n");
+        print_r($courses);
         mtrace("\n");
-*/
+	}
+}
                 // Set up the environment for activity, course
                 $course     = $courses[$activite->ref_course];
                 $cm         =& $coursemodules[$activite->ref_instance];
-/*
-        mtrace("\nlib_cron.php :: 901 :: DESTINATAIRE ");
-        mtrace($subscribedusers[$activite->id][$userto->id]);
-*/
+
                 // Do some checks  to see if we can mail out now
                 if (!isset($subscribedusers[$activite->id][$userto->id])) {
                     continue; // user does not subscribe to this activity
@@ -1150,41 +1129,41 @@ mtrace("\n");
                 if (!empty($activite->teacherid)
                     && !empty($activite->date_modif)
                     && ($activite->date_modif>$activite->date_modif_student) ){
-                    //mtrace(" lib.php :: 931 :: ACTIVITE ENVOYEE PAR TEACHER\n");
+                    $userfrom = $DB->get_record("user", array("id" => "$activite->teacherid"));
                     if (empty($users[$activite->teacherid])){
-                        $userfrom = $DB->get_record("user", array("id" => "$activite->teacherid"));
+                        $users[$activite->teacherid] = $userfrom;
                     }
-                    else{
-                        $userfrom = $users[$activite->teacherid];
-                    }
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1167 :: ACTIVITE ENVOYEE PAR TEACHER:\n");
+}
+
                 }
                 else if (array_key_exists($activite->userid, $users)
                     && !empty($users[$activite->userid]) ) { // we might know him/her already
-                    //mtrace(" lib.php :: 941 :: ACTIVITE ENVOYEE PAR ETUDIANT\n");
-                    $userfrom = $users[$activite->userid];
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1174 :: ACTIVITE ENVOYEE PAR ETUDIANT : \n ");
+}                   $userfrom = $DB->get_record("user", array("id" => "$activite->userid"));
+                    $users[$activite->userid] = $userfrom;
                 }
                 else if ($userfrom = $DB->get_record("user", array("id" => "$activite->userid"))) {
                     //mtrace(" lib.php :: 945 :: ACTIVITE ENVOYEE PAR ETUDIANT\n");
                     $users[$userfrom->id] = $userfrom; // fetch only once, we can add it to user list, it will be skipped anyway
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1182 :: ACTIVITE ENVOYEE PAR ETUDIANT : \n");
+}
+
                 }
                 else {
                     mtrace('Could not find user '.$activite->userid);
                     continue;
                 }
                 
-
                 // setup global $COURSE properly - needed for roles and languages
                 cron_setup_user($userto, $course);
 
                 // Fill caches
                 if (!isset($userto->viewfullnames[$activite->id])) {
-                    // Valable pour Moodle 2.1 et Moodle 2.2
-                    //if ($CFG->version < 2011120100) {
-                        $modcontext = context_module::instance($cm->id);
-                    //} else {
-                        //$modcontext = context_module::instance($cm);
-                    //}
-
+                    $modcontext = context_module::instance($cm->id);
                     $userto->viewfullnames[$activite->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                 }
                 
@@ -1193,13 +1172,7 @@ mtrace("\n");
 
                 // Fill caches
                 if (!isset($userfrom->viewfullnames[$activite->id])) {
-                    // Valable pour Moodle 2.1 et Moodle 2.2
-                    //if ($CFG->version < 2011120100) {
-                        $modcontext = context_module::instance($cm->id);
-                    //} else {
-                        //$modcontext = context_module::instance($cm);
-                    //}
-
+                    $modcontext = context_module::instance($cm->id);
                     $userfrom->viewfullnames[$activite->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                 }
 
@@ -1239,6 +1212,18 @@ mtrace("\n");
 
 
                 // OK so we need to send the email.
+if (REFERENTIEL_DEBUG){
+        mtrace("\nlib_cron.php :: 1216:: EXPEDITEUR : USERFROM ");
+        print_r($userfrom);
+}
+
+
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1222 :: DESTINATAIRE : USERTO\n");
+	print_r($userto);
+    mtrace("\n");
+}
+
 
                 // Does the user want this post in a digest?  If so postpone it for now.
                 if ($userto->maildigest > 0) {
@@ -1258,7 +1243,7 @@ mtrace("\n");
 
                     $queue->type = TYPE_ACTIVITE;
                     if (!$DB->insert_record('referentiel_notification', $queue)) {
-                        mtrace("Error: mod/referentiel/lib.php : Line 991 : Could not queue for digest mail for id $activite->id to user $userto->id ($userto->email) .. not trying again.");
+                        mtrace("Error: mod/referentiel/lib.php : Line 1271 : Could not queue for digest mail for id $activite->id to user $userto->id ($userto->email) .. not trying again.");
                     }
                     continue;
                 }
@@ -1286,18 +1271,25 @@ mtrace("\n");
                     $postsubject = "$course->shortname: ".format_string($strreferentielname.' '.$activite->type_activite,true);
                 }
 
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_module::instance($cm->id);
-    //} else {
-        // $context = context_module::instance($cm);
-    //}
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1275 :: ACTIVITE ENVOYEE PAR ETUDIANT : USERFROM\n");
+	print_r($userfrom);
+    mtrace("\n");
+}
 
+		        $context = context_module::instance($cm->id);
                 $posttext = referentiel_make_mail_text(TYPE_ACTIVITE, $context, $course, $activite, $userfrom, $userto);
                 $posthtml = referentiel_make_mail_html(TYPE_ACTIVITE, $context, $course, $activite, $userfrom, $userto);
 
-                // Send the post now!
+if (REFERENTIEL_DEBUG){
+	mtrace(" lib.php :: 1285 :: CONTENU  DU MESSAGE a l'UTILISATEUR :\n");
+ 	mtrace("TEXT\n".$posttext);
+    mtrace("\n");
+ 	mtrace("HTML\n".$posthtml);
+    mtrace("\n");
+}
 
+                // Send the post now!
                 // mtrace('Sending ', '');
 
                 if (!$mailresult = email_to_user($userto, $userfrom, $postsubject, $posttext,
@@ -1317,14 +1309,18 @@ mtrace("\n");
                 // mtrace('./mod/referentiel/lib.php :: Line 371 : post '.$activite->id. ': '.$activite->type_activite);
         }
     }
-/*
-    mtrace("\nlib_cron.php :: 1291 :: SENT MESSAGES :: MAILCOUNT\n");
+if (REFERENTIEL_DEBUG){
+    if (!empty($mailcount)){
+    	mtrace("\nlib_cron.php :: 1314 :: SENT MESSAGES :: MAILCOUNT\n");
         print_r($mailcount);
         mtrace("\n");
-        mtrace("\nlib_cron.php :: 1294 :: NOT SENT MESSAGES :: ERRORCOUNT\n");
+    }
+    if (!empty($errorcount)){
+	    mtrace("\nlib_cron.php :: 1319 :: NOT SENT MESSAGES :: ERRORCOUNT\n");
         print_r($errorcount);
         mtrace("\n");
-*/
+	}
+}
     if ($activites) {
         foreach ($activites as $activite) {
             mtrace($mailcount[$activite->id]." users were sent activity $activite->id, $activite->type_activite");
@@ -1492,12 +1488,7 @@ mtrace("\n");
 
                     // Fill caches
                     if (!isset($userto->viewfullnames[$activite->id])) {
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $modcontext = context_module::instance($cm->id);
-    //} else {
-        //$modcontext = context_module::instance($cm);
-    //}
+				        $modcontext = context_module::instance($cm->id);
                         $userto->viewfullnames[$activite->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                     }
 
@@ -1508,13 +1499,6 @@ mtrace("\n");
                     $posttext .= "\n \n";
                     $posttext .= "$course->shortname -> $strreferentiels -> ".format_string($activite->type_activite,true);
                     $posttext .= "\n";
- // ICI ERREUR PROBLEMATIQUE
- /*
-                    $posthtml .= "<p><font face=\"sans-serif\">".
-                    "<a target=\"_blank\" href=\"$CFG->wwwroot/course/view.php?id=$course->id\">$course->shortname</a> -> ".
-                    "<a target=\"_blank\" href=\"$CFG->wwwroot/mod/referentiel/index.php?id=$course->id\">$strreferentiels</a> -> ".
-                    "<a target=\"_blank\" href=\"$CFG->wwwroot/mod/referentiel/activite.php?id=$activite->ref_instance&activite_id=$activite->id\">".format_string($activite->type_activite,true)."</a>";
-*/
                     $posthtml .= "<p><font face=\"sans-serif\">".
                     "<a target=\"_blank\" href=\"$CFG->wwwroot/course/view.php?id=$course->id\">$course->shortname</a> -> ".
                     "<a target=\"_blank\" href=\"$CFG->wwwroot/mod/referentiel/index.php?id=$course->id\">$strreferentiels</a> -> ".
@@ -1598,12 +1582,7 @@ mtrace("\n");
                                 }
                                 else {
                                     // The full treatment
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_module::instance($cm->id);
-    //} else {
-        // $context = context_module::instance($cm);
-    //}
+							        $context = context_module::instance($cm->id);
                                     $posttext = referentiel_make_mail_text(TYPE_ACTIVITE, $context, $course, $post, $userfrom, $userto, true);
                                     $posthtml = referentiel_make_mail_post(TYPE_ACTIVITE, $context, $course, $post, $userfrom, $userto, false, true, false);
                                 }
@@ -1692,22 +1671,30 @@ global $DB;
     $taches = referentiel_get_unmailed_tasks($starttime, $endtime);
     if ($taches) {
 
+		if (REFERENTIEL_DEBUG){
+			mtrace("\nlib_cron.php :: 1675 :: TACHES\n");
+			print_r($taches);
+			mtrace("\n");
+		}
+
         // Mark them all now as being mailed.  It's unlikely but possible there
         // might be an error later so that a post is NOT actually mailed out,
         // but since mail isn't crucial, we can accept this risk.  Doing it now
         // prevents the risk of duplicated mails, which is a worse problem.
-/*
-A RETABLIR APRES DEBUG : cron_lib.php :
-*/
+
         if (!referentiel_mark_old_tasks_as_mailed($endtime)) {
             mtrace('Errors occurred while trying to mark some referentiel tasks as being mailed.');
             return false;  // Don't continue trying to mail them, in case we are in a cron loop
         }
-/**/
         // checking task validity, and adding users to loop through later
         foreach ($taches as $tid => $task) {
             // DEBUG : cron_lib.php :
             // mtrace('task '.$task->id.' '.$tid);
+			if (REFERENTIEL_DEBUG){
+				mtrace("\nlib_cron.php :: 1694 :: TASK\n");
+				print_r($task);
+				mtrace("\n");
+			}
 
             if (!isset($tasks[$tid])) {
                 $tasks[$tid] = $task;
@@ -1744,7 +1731,7 @@ A RETABLIR APRES DEBUG : cron_lib.php :
             $teachers=referentiel_get_teachers_course($courseid);
 
 // DEBUG : cron_lib.php :
-// mtrace('DESTINATAIRES...');
+
             if (!isset($subscribedusers[$tid])) {
                 // notifier tous les etudiants
                 // ICI MODIFIER LA COLLECTE
@@ -1756,20 +1743,21 @@ A RETABLIR APRES DEBUG : cron_lib.php :
                 }
                 if ($students){
                   foreach ($students as $student) {
-                    $subscribedusers[$tid][$student->userid]=referentiel_get_user($student->userid);
-                    $user=referentiel_get_user($student->userid);
+					$user = referentiel_get_user($student->userid);
                     if ($user->emailstop) {
                       if (!empty($CFG->forum_logblocked)) {
                         // add_to_log(SITEID, 'referentiel', 'mail blocked', '', '', 0, $user->id);
                       }
                     }
                     else{
-                      // this user is subscribed to this notification
-                      $subscribedusers[$tid][$student->userid]=$student->userid;
-                      // this user is a user we have to process later
-                      $users[$student->userid] = $user;
-// DEBUG : cron_lib.php :
-// mtrace('DESTINATAIRE ETUDIANT '.$student->userid);
+						// this user is subscribed to this notification
+						$subscribedusers[$tid][$student->userid]=$student->userid;
+						// this user is a user we have to process later
+						$users[$student->userid] = $user;
+						if (REFERENTIEL_DEBUG){
+							mtrace("\nDEBUG :: lib_cron:: 1758 :: \nDESTINATAIRE ETUDIANT ID: ".$user->id."\n");
+							//print_r($user);
+						}
                     }
                   }
                 }
@@ -1790,10 +1778,11 @@ A RETABLIR APRES DEBUG : cron_lib.php :
                                 // this user is a user we have to process later
                                 $users[$user->id] = $user;
                                 // DEBUG : cron_lib.php :
-                                // mtrace('DESTINATAIRE AUTEUR '.$userid);
+                                if (REFERENTIEL_DEBUG){
+									mtrace("\nDEBUG :: lib_cron:: 1782 :: \nDESTINATAIRE TEACHER: ".$user->id." \n");
+									//print_r($user);
+								}		
                             }
-// DEBUG : cron_lib.php :
-// mtrace('DESTINATAIRE ENSEIGNANT '.$user->id);
                         }
                     }
                 }
@@ -1808,7 +1797,9 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 
     if ($users && $tasks) {
 // DEBUG : cron_lib.php :
-// mtrace('TRAITEMENT DES MESSAGES TACHES');
+if (REFERENTIEL_DEBUG){
+	mtrace("TRAITEMENT DES MESSAGES TACHES\n");
+}	
         $urlinfo = parse_url($CFG->wwwroot);
         $hostname = $urlinfo['host'];
 
@@ -1823,7 +1814,7 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 
             // init caches
             $userto->viewfullnames = array();
-   //         $userto->canpost       = array();
+			// $userto->canpost       = array();
             // $userto->markposts     = array();
             $userto->enrolledin    = array();
 
@@ -1845,29 +1836,18 @@ A RETABLIR APRES DEBUG : cron_lib.php :
                     continue; // user does not subscribe to this activity
                 }
 
-/*
-// BIG PROBLEM
-                // Verify user is enrollend in course - if not do not send any email
-                if (!isset($userto->enrolledin[$course->id])) {
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_course::instance($course->id);
-    //} else {
-        //$context = context_course::instance($course->id);
-    //}
-
-                    $userto->enrolledin[$course->id] = has_capability('moodle/course:view', $context);
-                }
-                if (!$userto->enrolledin[$course->id]) {
-                    // oops - this user should not receive anything from this course
-                    continue;
-                }
-*/
-
                 // Get info about the author user
-                if (array_key_exists($task->auteurid, $users)) { // we might know him/her already
-                    $userfrom = $users[$task->auteurid];
-                } else if ($userfrom = $DB->get_record("user", array("id" => "$task->auteurid"))) {
+                if (array_key_exists($task->auteurid, $users)) { // we might know him/her already but we need a really complete user object, so.. get it again!
+                	if ($userfrom = $DB->get_record("user", array("id" => "$task->auteurid"))){
+                    	$users[$task->auteurid] = $userfrom;
+					}
+					else{
+						// error
+                    	mtrace('Could not find user '.$task->auteurid);
+                    	continue;
+					}
+                }
+				else if ($userfrom = $DB->get_record("user", array("id" => "$task->auteurid"))) {
                     $users[$userfrom->id] = $userfrom; // fetch only once, we can add it to user list, it will be skipped anyway
                 }
                 else {
@@ -1882,13 +1862,7 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 
                 // Fill caches
                 if (!isset($userto->viewfullnames[$tid])) {
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $modcontext = context_module::instance($cm->id);
-    //} else {
-        //$modcontext = context_module::instance($cm);
-    //}
-
+			        $modcontext = context_module::instance($cm->id);
                     $userto->viewfullnames[$tid] = has_capability('moodle/site:viewfullnames', $modcontext);
                 }
                 if (!isset($userfrom->groups[$tid])) {
@@ -1899,7 +1873,6 @@ A RETABLIR APRES DEBUG : cron_lib.php :
                     $userfrom->groups[$tid] = groups_get_all_groups($course->id, $userfrom->id, $cm->groupingid);
                     $users[$userfrom->id]->groups[$tid] = $userfrom->groups[$tid];
                 }
-
 
                 // OK so we need to send the email.
 
@@ -1936,18 +1909,11 @@ A RETABLIR APRES DEBUG : cron_lib.php :
                 }
 
                 $postsubject = "$course->shortname: ".format_string($strreferentielname.' '.$task->type_task,true);
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_module::instance($cm->id);
-    //} else {
-        // $context = context_module::instance($cm);
-    //}
-
+		        $context = context_module::instance($cm->id);
                 $posttext = referentiel_make_mail_text(TYPE_TACHE, $context, $course, $task, $userfrom, $userto);
                 $posthtml = referentiel_make_mail_html(TYPE_TACHE, $context, $course, $task, $userfrom, $userto);
 
                 // Send the post now!
-
                 // mtrace('Sending ', '');
 
                 if (!$mailresult = email_to_user($userto, $userfrom, $postsubject, $posttext,
@@ -2132,12 +2098,7 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 
                     // Fill caches
                     if (!isset($userto->viewfullnames[$tache->id])) {
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $modcontext = context_module::instance($cm->id);
-    //} else {
-    //    $modcontext = context_module::instance($cm);
-    //}
+	 			        $modcontext = context_module::instance($cm->id);
                         $userto->viewfullnames[$tache->id] = has_capability('moodle/site:viewfullnames', $modcontext);
                     }
 
@@ -2193,16 +2154,9 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 
                             $by->name = "<a target=\"_blank\" href=\"$CFG->wwwroot/user/view.php?id=$userfrom->id&amp;course=$course->id\">$by->name</a>";
                             $posthtml .= '<div><a target="_blank" href="'.$CFG->wwwroot.'/mod/referentiel/task.php?d='.$post->ref_instance.'&activite_id='.$post->id.'">'.format_string($post->type_activite,true).'</a> '.get_string("bynameondate", "referentiel", $by).'</div>';
-
                         }
                         else {
-                            // The full treatment
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_module::instance($cm->id);
-    //} else {
-        // $context = context_module::instance($cm);
-    //}
+					        $context = context_module::instance($cm->id);
                             $posttext = referentiel_make_mail_text(TYPE_TACHE, $context, $course, $post, $userfrom, $userto, true);
                             $posthtml = referentiel_make_mail_post(TYPE_TACHE, $context, $course, $post, $userfrom, $userto, false, true, false);
                         }
@@ -2262,8 +2216,21 @@ A RETABLIR APRES DEBUG : cron_lib.php :
 function referentiel_make_mail_html($type, $context, $course, $post, $userfrom, $userto) {
   global $CFG;
   $site=get_site();
-  // DEBUG : cron_lib.php :
-  // mtrace("DEBUG : cron_lib.php : : referentiel_make_mail_html TYPE: $type");
+/*
+if (REFERENTIEL_DEBUG){
+	mtrace("DEBUG : cron_lib.php : 2267 : referentiel_make_mail_html \n TYPE: $type\n");
+    mtrace("CONTEXT\n");
+	print_r($context);
+mtrace("COUSE\n");
+	print_r($course);
+mtrace("POST\n");
+	print_r($post);
+mtrace("USERFROM\n");
+	print_r($userfrom);
+mtrace("USERTO\n");
+	print_r($userto);
+}
+*/
   if ($userto->mailformat != 1) {  // Needs to be HTML
         return '';
   }
@@ -2322,9 +2289,23 @@ function referentiel_make_mail_post($type, $context, $course, $post, $userfrom, 
 
     global $CFG;
     global $OUTPUT;
-    // DEBUG : cron_lib.php :
-    // mtrace("referentiel_make_mail_post TYPE: $type");
 
+    $output='';
+
+if (REFERENTIEL_DEBUG){
+	mtrace("DEBUG : cron_lib.php : 2342 : referentiel_make_mail_post \n TYPE: ".$type."\n");
+    mtrace("CONTEXT\n");
+	print_r($context);
+	mtrace("COURSE ID ".$course->id."\n");
+	//print_r($course);
+	mtrace("POST\n");
+	print_r($post);
+	mtrace("USERFROM ID : ".$userfrom->id."\n");
+	//print_r($userfrom);
+	mtrace("USERTO ID : ".$userto->id."\n");
+	//print_r($userto);
+}
+if ($userfrom && $course){
     // JF 2011/10/25
     if (!isset($userfrom->viewfullnames[$post->id])) {
         $viewfullnamesfrom = has_capability('moodle/site:viewfullnames', $context, $userfrom->id);
@@ -2407,8 +2388,11 @@ function referentiel_make_mail_post($type, $context, $course, $post, $userfrom, 
   $output = '<table border="0" cellpadding="3" cellspacing="0" class="forumpost">';
 
   $output .= '<tr class="header"><td width="35" valign="top" class="picture left">';
-//  $output .= print_user_picture($userfrom, $course->id, $userfrom->picture, false, true);
-  $output .=  $OUTPUT->user_picture($userfrom, array('courseid'=>$course->id));
+
+  if (!empty($userfrom->id)){
+  	$output .=  $OUTPUT->user_picture($userfrom, array('courseid'=>$course->id, 'link' => true));
+  }
+
   $output .= '</td>';
   $output .= '<td class="topic starter">';
 
@@ -2653,8 +2637,13 @@ function referentiel_make_mail_post($type, $context, $course, $post, $userfrom, 
   }
   $output .= '</td></tr></table>'."\n\n";
 
+  }
+  if (REFERENTIEL_DEBUG){
+	mtrace("\nOUTPUT: \n".$output."\n");
+  }
   return $output;
 }
+
 
 /**
  * Builds and returns the body of the email notification in plain text.

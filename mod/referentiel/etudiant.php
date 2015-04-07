@@ -97,15 +97,7 @@
 	// Moodle 2
 
     $url->param('mode', $mode);
-
-
-    // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
-        $context = context_module::instance($cm->id);
-    //} else {
-        // $context = context_module::instance($cm);
-    //}
-
+    $context = context_module::instance($cm->id);
 
 	if (isset($userid) && ($userid>0)) {
 		// userid record referentiel_etudiant
@@ -260,8 +252,7 @@
         			} else { // Before Moodle 2.7
 						add_to_log($course->id, 'referentiel', 'update', "etudiant.php?id=$cm->id", $record->id, $cm->id);
 					}
-				}
-            }
+			}
         }
         unset($form);
 		redirect("$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id&amp;sesskey=".sesskey());
@@ -290,7 +281,7 @@
 	        	    if (isset($form->redirect)) {
     	                $SESSION->returnpage = $form->redirecturl;
         	       	}
-                       else {
+                    else {
             	       	$SESSION->returnpage = "$CFG->wwwroot/mod/referentiel/etudiant.php?id=$cm->id";
 	               	}
        				if ($CFG->version > 2014051200) { // Moodle 2.7+
@@ -329,7 +320,7 @@
         			} else { // Before Moodle 2.7
 						add_to_log($course->id, 'referentiel', 'update', "etudiant.php?id=$cm->id", $form->etudiant_id, $cm->id);
 					}
-    	    	}
+				}
 
 			break;
 

@@ -107,7 +107,8 @@ $sql='';
         $url->param('id', $id);
     }
 	else{
-		print_error(get_string('erreurscript','referentiel','Erreur01 : activite.php'), 'referentiel');
+		//die();
+		print_error(get_string('erreur1','referentiel','activite.php'), 'referentiel');
 	}
 
 	if (empty($mode)){

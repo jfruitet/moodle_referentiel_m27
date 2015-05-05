@@ -2,7 +2,8 @@
 // ----------------
 // UTF-8 French
 //
-
+$string['erreur1']= 'Paramètre manquant. Vous ne pouvez pas appeler cette page (<i> {$a} </i>) sans lui fournir une liste de paramètres obligatoires... ';
+$string['type_aide']= 'Au plus 20 caractères S.V.P.';
 // Events
 $string['eventeditpageviewed'] = 'Page éditée';
 $string['eventreferentielcomplete'] = 'Referentiel complété';
@@ -1687,6 +1688,7 @@ $string['creer_task'] = 'Ajouter une Tâche';
 $string['consigne_associee'] = 'Document de consignes attaché';
 $string['type_task']= 'Thème ';
 $string['type_consigne']= 'Type de document';
+
 $string['depot_consigne']= 'Attacher un document de consignes';
 $string['criteres_evaluation'] = 'Critères d\'évaluation';
 $string['date_modification'] = 'Modifié le';
@@ -1998,7 +2000,8 @@ $string['supprimer_activite'] = 'Supprimer une activité';
 
 $string['type'] = 'Type ';
 $string['type_activite'] = 'Type d\'activité ';
-$string['type_document'] = 'Type de document ';
+$string['type_document'] = 'Type de document';
+
 $string['extensions_document'] = '[Texte, Exe, PDF, ZIP, Image, Audio, Video...] ';
 $string['type_item'] = 'Type  d\'Item [Obligatoire, Optionnel...] ';
 

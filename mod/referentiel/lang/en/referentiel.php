@@ -1,6 +1,8 @@
 <?php
 // referentiel module
 //
+$string['erreur1']= 'Missing parameter. You can\'t use this page (<i> {$a} </i>) without a madatory parameter...';
+$string['type_aide']= 'No more than 20 characters please.';
 
 // Events
 $string['eventeditpageviewed'] = 'Edit page viewed';
@@ -1508,7 +1510,6 @@ $string['tasks'] = 'Tasks';
 $string['type_consigne']= 'Document Type';
 $string['type_task']= 'Thema';
 $string['updatetask'] = 'Modify';
-
 
 // Version  1.3 2009/03/25
 // A traduire ou retraduire

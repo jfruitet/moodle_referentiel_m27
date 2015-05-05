@@ -3436,7 +3436,7 @@ global $CFG, $USER, $DB, $OUTPUT;
                 $document = new object();
                 $document->id=$docid;
                 $document->url_document=$fullpath;
-                $document->type_document=$formdata->type;
+                $document->type_document=substr($formdata->type,0, 20);
                 if (empty($formdata->description)){
                     $document->description_document=get_string('url', 'referentiel');
                 }
@@ -3487,7 +3487,7 @@ global $CFG, $USER, $DB, $OUTPUT;
                 $document = new object();
                 $document->id=$docid;
                 $document->url_consigne=$fullpath;
-                $document->type_consigne=$formdata->type;
+                $document->type_consigne=substr($formdata->type,0, 20);
                 if (empty($formdata->description)){
                     $document->description_consigne=get_string('url', 'referentiel');
                 }

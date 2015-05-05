@@ -455,7 +455,7 @@ global $DB;
 	){
 		$document = new object();
 		$document->url_document=($form->url_document);
-		$document->type_document=($form->type_document);
+		$document->type_document=substr($form->type_document,0,20);
 		$document->description_document=($form->description_document);
 		$document->ref_activite=$activite_id;
 		if (isset($form->cible_document)){
@@ -585,7 +585,7 @@ $ok=true;
 		$document = new object();
 		$document->id=$form->document_id;
 		$document->url_document=($form->url_document);
-		$document->type_document=($form->type_document);
+		$document->type_document=substr($form->type_document,0,20);
 		$document->description_document=($form->description_document);
 		$document->ref_activite=$form->ref_activite;
 		if (isset($form->cible_document)){
@@ -623,7 +623,7 @@ $ok=true;
 	else if (isset($form->action) && ($form->action=="creer_document")){
 		$document = new object();
 		$document->url_document=($form->url_document);
-		$document->type_document=($form->type_document);
+		$document->type_document=substr($form->type_document,0,20);
 		$document->description_document=($form->description_document);
 		$document->ref_activite=$form->ref_activite;
 		if (isset($form->cible_document)){
@@ -675,7 +675,7 @@ global $USER;
 		$document = new object();
 		$document->id=$form->document_id;
 		$document->url_document=($form->url_document);
-		$document->type_document=($form->type_document);
+		$document->type_document=substr($form->type_document,0,20);
 		$document->description_document=($form->description_document);
 		$document->ref_activite=$form->ref_activite;
 		if (isset($form->cible_document)){
@@ -721,7 +721,7 @@ global $USER;
 	if (isset($form->ref_activite) && $form->ref_activite){
 		$document = new object();
 		$document->url_document=($form->url_document);
-		$document->type_document=($form->type_document);
+		$document->type_document=substr($form->type_document,0,20);
 		$document->description_document=($form->description_document);
 		$document->ref_activite=$form->ref_activite;
 		if (isset($form->cible_document)){

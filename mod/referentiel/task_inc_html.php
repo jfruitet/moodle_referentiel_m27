@@ -664,7 +664,7 @@ echo get_string('cle_souscription', 'referentiel').' : <input type="text" name="
 </tr>	
 <tr valign="top">		
     <td align="right">
-<b><?php  print_string('type_consigne','referentiel') ?>:</b>
+<b><?php  print_string('type_consigne','referentiel') ?></b><br /><?php  print_string('type_aide','referentiel') ?> :
 	</td>
     <td align="left">
 <input type="text" name="type_consigne" size="20" maxlength="20" value="<?php  p($type_consigne) ?>" />

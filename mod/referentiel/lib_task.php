@@ -285,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `mdl_referentiel_consigne` (
 	*/
 		$consigne = new object();
 		$consigne->url_consigne=$form->url_consigne;
-		$consigne->type_consigne=$form->type_consigne;
+		$consigne->type_consigne=substr($form->type_consigne,0,20);
 		$consigne->description_consigne=$form->description_consigne;
 		$consigne->ref_task=$taskid;
 		if (isset($form->cible_consigne)){
@@ -417,7 +417,7 @@ $ok=true;
 		$consigne = new object();
 		$consigne->id=$form->consigne_id;
 		$consigne->url_consigne=($form->url_consigne);
-		$consigne->type_consigne=($form->type_consigne);
+		$consigne->type_consigne=substr($form->type_consigne,0,20);
 		$consigne->description_consigne=($form->description_consigne);
 		$consigne->ref_task=$form->ref_task;
 		if (isset($form->cible_consigne)){
@@ -443,7 +443,7 @@ $ok=true;
 	else if (isset($form->action) && ($form->action=="creer_consigne")){
 		$consigne = new object();
 		$consigne->url_consigne=($form->url_consigne);
-		$consigne->type_consigne=($form->type_consigne);
+		$consigne->type_consigne=substr($form->type_consigne,0,20);
 		$consigne->description_consigne=($form->description_consigne);
 		$consigne->ref_task=$form->ref_task;
 		if (isset($form->cible_consigne)){
@@ -489,7 +489,7 @@ global $DB;
 		$consigne = new object();
 		$consigne->id=$form->consigne_id;
 		$consigne->url_consigne=($form->url_consigne);
-		$consigne->type_consigne=($form->type_consigne);
+		$consigne->type_consigne=substr($form->type_consigne,0,20);
 		$consigne->description_consigne=($form->description_consigne);
 		$consigne->ref_task=$form->ref_task;
 		if (isset($form->cible_consigne)){
@@ -528,7 +528,7 @@ global $DB;
 	if (!empty($form->ref_task)){
 		$consigne = new object();
 		$consigne->url_consigne=$form->url_consigne;
-		$consigne->type_consigne=$form->type_consigne;
+		$consigne->type_consigne=substr($form->type_consigne,0,20);
 		$consigne->description_consigne=$form->description_consigne;
 		$consigne->ref_task=$form->ref_task;
 		if (isset($form->cible_consigne)){

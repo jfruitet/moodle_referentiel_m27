@@ -390,7 +390,7 @@ echo '<input type="radio" name="mailnow" value="1" />'.get_string('yes').' &nbsp
 <br />
 <textarea cols="70" rows="2" name="description_document">'.$description_document.'</textarea>
 <br />
-<span class="bold">'.get_string('type_document','referentiel').'</span>  :
+<span class="bold">'.get_string('type_document','referentiel').'</span><br />'.get_string('type_aide','referentiel').'  :
 <input type="text" name="type_document" size="10" maxlength="20" value="'.$type_document.'" />
 <i><span class="small">'.get_string('extensions_document','referentiel').'</span></i>
 <br />

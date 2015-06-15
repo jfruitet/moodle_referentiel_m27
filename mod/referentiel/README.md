@@ -45,7 +45,7 @@ Ces notations sont récupérées dans le module référentiel sous forme de compétenc
 
 ./report/referentiel
 
-Lisez la [documentation d'installation] (http://moodlemoot2009.insa-lyon.fr/mod/resource/view.php?id=922 "Installation")
+Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
 
 ### PRESENTATION (English)
 

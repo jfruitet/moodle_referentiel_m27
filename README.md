@@ -1,7 +1,7 @@
 moodle_referentiel_m27
 ======================
 
-Referentiel plugin (mod / block / report) for Moodle 2.7 and further
+Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8 (and maybe further ?)
 
 This version works well with Moodle 2.8 too.
 
@@ -45,7 +45,7 @@ Ces notations sont récupérées dans le module référentiel sous forme de compétenc
 
 ./report/referentiel
 
-Lisez la [documentation d'installation] (http://moodlemoot2009.insa-lyon.fr/mod/resource/view.php?id=922 "Installation")
+Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
 
 ### PRESENTATION (English)
 

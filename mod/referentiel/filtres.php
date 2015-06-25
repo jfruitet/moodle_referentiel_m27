@@ -15,6 +15,9 @@
     $sql_f_order=optional_param('sql_f_order','', PARAM_ALPHA);
     $sql_f_user=optional_param('sql_f_user','', PARAM_ALPHA);
 
+	// MODIF JF POUR POSTGRES
+    $sql_f_select=optional_param('sql_f_select','', PARAM_ALPHA);
+
 	$data_f= new Object(); // parametres de filtrage
 	
 	// Activites
@@ -75,6 +78,7 @@ function set_filtres_sql($type=''){
     global $data_f;
 	global $sql_f_where;
 	global $sql_f_order;
+	global $sql_f_select;
 	global $order;
 	//echo "<br />DEBUG :: filtres.php :: Ligne 78 :: TYPE=$type\n";
 	//print_object( $data_f);
@@ -95,16 +99,32 @@ function set_filtres_sql($type=''){
 		}
 
 		if (isset($data_f->f_date_decision) && ($data_f->f_date_decision=='1')){
-			if ($sql_f_order!='')
+			if ($sql_f_order!='') {
 				$sql_f_order.=', date_decision ASC ';
-			else
+			}
+			else {
 				$sql_f_order.=' date_decision ASC ';
+			}
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_decision ';
+			}
+			else {
+				$sql_f_select.=' date_decision ';
+			}
+
 		}
 		else if (isset($data_f->f_date_decision) && ($data_f->f_date_decision=='-1')){
 			if ($sql_f_order!='')
 				$sql_f_order.=', date_decision DESC ';
 			else
 				$sql_f_order.=' date_decision DESC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_decision ';
+			}
+			else {
+				$sql_f_select.=' date_decision ';
+			}
+
 		}
 
 		if (isset($data_f->f_auteur) && ($data_f->f_auteur=='1')){
@@ -112,12 +132,26 @@ function set_filtres_sql($type=''){
 				$sql_f_order.=', userid ASC ';
 			else
 				$sql_f_order.=' userid ASC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', userid ';
+			}
+			else {
+				$sql_f_select.=' userid ';
+			}
+
 		}
 		else if (isset($data_f->f_auteur) && ($data_f->f_auteur=='-1')){
 			if ($sql_f_order!='')
 				$sql_f_order.=', userid DESC ';
 			else
 				$sql_f_order.=' userid DESC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', userid ';
+			}
+			else {
+				$sql_f_select.=' userid ';
+			}
+
 		}
 
 	}
@@ -141,12 +175,26 @@ function set_filtres_sql($type=''){
 				$sql_f_order.=', date_modif ASC ';
 			else
 				$sql_f_order.=' date_modif ASC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_modif ';
+			}
+			else {
+				$sql_f_select.=' date_modif ';
+			}
+
 		}
 		else if (isset($data_f->f_date_modif) && ($data_f->f_date_modif=='-1')){
 			if ($sql_f_order!='')
 				$sql_f_order.=', date_modif DESC ';
 			else
 				$sql_f_order.=' date_modif DESC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_modif ';
+			}
+			else {
+				$sql_f_select.=' date_modif ';
+			}
+
 		}
 
 		if (isset($data_f->f_date_modif_student) && ($data_f->f_date_modif_student=='1')){
@@ -154,12 +202,26 @@ function set_filtres_sql($type=''){
 				$sql_f_order.=', date_modif_student ASC, date_creation ASC ';
 			else
 				$sql_f_order.=' date_modif_student ASC, date_creation ASC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_modif_student, date_creation ';
+			}
+			else {
+				$sql_f_select.=' date_modif_student, date_creation ';
+			}
+
 		}
 		else if (isset($data_f->f_date_modif_student) && ($data_f->f_date_modif_student=='-1')){
 			if ($sql_f_order!='')
 				$sql_f_order.=', date_modif_student DESC, date_creation DESC ';
 			else
 				$sql_f_order.=' date_modif_student DESC, date_creation DESC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', date_modif_student, date_creation ';
+			}
+			else {
+				$sql_f_select.=' date_modif_student, date_creation ';
+			}
+
 		}
 		
 		if (isset($data_f->f_auteur) && ($data_f->f_auteur=='-1')){
@@ -167,6 +229,13 @@ function set_filtres_sql($type=''){
 				$sql_f_order.=', u.lastname DESC, u.firstname DESC, u.id DESC ';
 			else
 				$sql_f_order.=' u.lastname DESC, u.firstname DESC, u.id DESC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', u.lastname, u.firstname, u.id ';
+			}
+			else {
+				$sql_f_select.=' u.lastname, u.firstname, u.id ';
+			}
+
             $order=-1;
 		}
         // if (isset($data_f->f_auteur) && ($data_f->f_auteur=='1')){
@@ -175,6 +244,13 @@ function set_filtres_sql($type=''){
 				$sql_f_order.=', u.lastname ASC, u.firstname ASC, u.id ASC ';
 			else
 				$sql_f_order.=' u.lastname ASC, u.firstname ASC, u.id ASC ';
+			if ($sql_f_select!='') {
+				$sql_f_select.=', u.lastname, u.firstname, u.id ';
+			}
+			else {
+				$sql_f_select.=' u.lastname, u.firstname, u.id ';
+			}
+
             $order=1;
 		}
 

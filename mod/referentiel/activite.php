@@ -759,13 +759,21 @@ $sql='';
                 else{
                     $sql_order=$sql_f_order;
                 }
+                if ($sql_f_select==''){
+                    $sql_select=''; //'  userid, date_creation ';
+                }
+                else{
+                    $sql_select=' , '.$sql_f_select;
+                }
                 $params[]=$referentiel->ref_referentiel;
 
                 if (($modeaff>=0) && ($modeaff<3)) { // mode==listactivityall or mode==modifyactivity
 					// $sql = 'SELECT * FROM {referentiel_activite} WHERE ref_referentiel=? AND ';
 					$sql_count = 'SELECT COUNT(ra.id) as nb FROM {referentiel_activite} as ra WHERE ra.ref_referentiel=? AND ';
                 }
-				$sql2 = 'SELECT DISTINCT ra.userid AS userid, COUNT(ra.id) AS activitynumber  FROM {referentiel_activite} AS ra, {user} AS u WHERE ra.ref_referentiel=? AND ra.userid=u.id AND ';
+				$sql2 = 'SELECT DISTINCT ra.userid AS userid, COUNT(ra.id) AS activitynumber '. $sql_select .'
+ FROM {referentiel_activite} AS ra, {user} AS u
+ WHERE ra.ref_referentiel=? AND ra.userid=u.id AND ';
 
 				$sql_users='';
 				if ($sql_order){

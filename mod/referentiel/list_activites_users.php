@@ -132,8 +132,8 @@ $pagination   = optional_param('pagination', 1, PARAM_INT);
 	for ($i=1; $i<count($params); $i++){
 		$users[]=$params[$i];
 	}
-
-	$sql = 'SELECT ra.* FROM {referentiel_activite} AS ra, {user} AS u WHERE ref_referentiel=? AND ra.userid=u.id AND ';
+    // MODIF PostGres
+	$sql = 'SELECT ra.*, u.lastname as lastname, u.firstname as firstname, u.id as userid FROM {referentiel_activite} AS ra, {user} AS u WHERE ref_referentiel=? AND ra.userid=u.id AND ';
     $sql_users='';
  	foreach ($users as $userid){
 		if (empty($sql_users)){
@@ -148,10 +148,12 @@ $pagination   = optional_param('pagination', 1, PARAM_INT);
         $sql_users .=") ";
         $sql=addslashes($sql.$sql_users.' '.$sql_where_order);
         //DEBUG
-        //echo "<br>DEBUG :: 123 :: Params<br />\n";
-		//print_object($params);
-		//echo "<br>DEBUG :: 125 :: SQL&gt; ".htmlspecialchars($sql)."\n";
-
+        if (false){
+			echo "<br>DEBUG :: 151 :: list_activites_users.php<br />Paramas<br />\n";
+			print_object($params);
+			echo "<br>DEBUG :: 153 :: SQL&gt; ".htmlspecialchars($sql)."\n";
+			//exit;
+		}
 	}
 
 
@@ -162,7 +164,7 @@ $pagination   = optional_param('pagination', 1, PARAM_INT);
 	$fin=  $deb + $perPage;
 	$limit = ' LIMIT '.$deb.', '.$fin;
     $sql.=$limit;
-    //echo "<br />DEBUG :: lib_activites_users.php :: 164 :: Length : ".strlen($sql)." <br /> ".htmlspecialchars($sql)."\n";
+    // echo "<br />DEBUG :: lib_activites_users.php :: 167 :: Length : ".strlen($sql)." <br /> ".htmlspecialchars($sql)."\n";
 	//exit;
     
 	$userid_old=0;  // pour la jauge
@@ -171,9 +173,9 @@ $pagination   = optional_param('pagination', 1, PARAM_INT);
 	$first_activity=1;
 	$user_nb_activities_displayed=0;
     if ($recs=$DB->get_records_sql($sql, $params)){
-		//echo "<br />DEBUG :: list_activites_users.php :: 140 : RECORD<br />\n";
-		//print_object( $recs);
-
+		// echo "<br />DEBUG :: list_activites_users.php :: 140 : RECORD<br />\n";
+		// print_object( $recs);
+		// exit;
         // MODIF JF 2014/11/15
 		// Le tri est fait dans la requête SQL
 		/**************************************

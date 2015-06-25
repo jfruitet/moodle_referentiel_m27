@@ -71,4 +71,4 @@ Install all referentiel components in is directory
 
 ./report/referentiel
 
-Read the [install documentation] (http://moodlemoot2009.insa-lyon.fr/mod/resource/view.php?id=922 "Installation, in French")
+Read the [install documentation] (http://moodlemoot2012.unimes.fr/mod/page/view.php?id=878 "Installation, in French")

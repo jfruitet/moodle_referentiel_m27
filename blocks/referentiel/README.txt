@@ -1,59 +1,21 @@
-Block referentiel is part of referentiel module
+Block referentiel is part of the referentiel module
 
 Module Moodle - Référentiel / Skills repository
 jean.fruitet@univ-nantes.fr
-2007/2013
+jean.fruitet@free.fr
+
+2007/2015
 
 Type: Block Module
-Requires: Moodle 2.4 or 2.5
+Requires: Moodle 2.7
+Avalaible: Moodle 2.7, 2.8, 2.9
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
-
-
-PRESENTATION (Français)
------------------------
-Le bloc
-./blocks/referentiel/
-est le complément du module Référentiel
-./mod/referentiel/
-
-Il permet de gérer les occurrences de référentiel existantes et de créer / importer
-de nouvelles occurrences.
-
 
 PRESENTATION (English)
 ----------------------
 This Block is part of Referentiel Module
-It allows management / creation / importation of Referential occurrences
-
-
-INSTALLATION (Français)
------------------------
-Ce block doit être intégré dans le répertoire ./blocks/ d'un serveur Moodle
-
-La procédure suivante s'applique à toute installation Moodle
-VOTRE_DOSSIER_MOODLE = le nom du dossier où est placé votre moodle, en général "moodle"
-URL_SERVEUR_MOODLE = le nom de votre serveur moodle, en général "http://machine.domaine.fr/moodle/"
-
-A. Installer le module Référentiel
-Le module referentiel doit être installé AVANT le block referentiel
-1. Décomprimer l'archive "mod_referentiel_xxx.zip" dans le dossier
-VOTRE_DOSSIER_MOODLE/mod/
-
-B. Installer le bloc Référentiel
-1. Décomprimer l'archive "block_referentiel_xxx.zip" dans le dossier
-VOTRE_DOSSIER_MOODLE/blocks/
-
-2. Se loger avec le role admin sur "URL_SERVEUR_MOODLE"
-3. installer le nouveau module (admin Notification)
-4. Paramétrer le module :
-Administration / Plugins / Activity / Repository
-
-ERREUR FREQUENTE LORS DES MISE A JOUR
-------------------------------------------------
-L'erreur à éviter est de créer une copie de sauvegarde (sous un autre nom) dans le dossier
-VOTRE_DOSSIER_MOODLE/blocks/
-VOTRE_DOSSIER_MOODLE/mod/
+It allows management / creation / importation of Referential (Skills reository) occurrences
 
 INSTALLATION (English)
 ----------------------
@@ -96,10 +58,47 @@ in
 YOUR_MOODLE/report/
 
 
+PRESENTATION (Français)
+-----------------------
+Le bloc
+./blocks/referentiel/
+est le complément du module Référentiel
+./mod/referentiel/
+
+Il permet de gérer les occurrences de référentiel existantes et de créer / importer
+de nouvelles occurrences.
+
+INSTALLATION (Français)
+-----------------------
+Ce block doit être intégré dans le répertoire ./blocks/ d'un serveur Moodle
+
+La procédure suivante s'applique à toute installation Moodle
+VOTRE_DOSSIER_MOODLE = le nom du dossier où est placé votre moodle, en général "moodle"
+URL_SERVEUR_MOODLE = le nom de votre serveur moodle, en général "http://machine.domaine.fr/moodle/"
+
+A. Installer le module Référentiel
+Le module referentiel doit être installé AVANT le block referentiel
+1. Décomprimer l'archive "mod_referentiel_xxx.zip" dans le dossier
+VOTRE_DOSSIER_MOODLE/mod/
+
+B. Installer le bloc Référentiel
+1. Décomprimer l'archive "block_referentiel_xxx.zip" dans le dossier
+VOTRE_DOSSIER_MOODLE/blocks/
+
+2. Se loger avec le role admin sur "URL_SERVEUR_MOODLE"
+3. installer le nouveau module (admin Notification)
+4. Paramétrer le module :
+Administration / Plugins / Activity / Repository
+
+ERREUR FREQUENTE LORS DES MISE A JOUR
+------------------------------------------------
+L'erreur à éviter est de créer une copie de sauvegarde (sous un autre nom) dans le dossier
+VOTRE_DOSSIER_MOODLE/blocks/
+VOTRE_DOSSIER_MOODLE/mod/
+
 ---------------------------------------------------------
 Documentation et mises à jours sous forme d'archive ZIP
 ---------------------------------------------------------
-    * MoodleMoot2009 : http://moodlemoot2009.insa-lyon.fr/course/view.php?id=24
     * MoodleMoot2010 : http://moodlemoot2010.utt.fr/course/view.php?id=33
     * MoodleMoot2012 : http://moodlemoot2012.unimes.fr/course/view.php?id=33
 

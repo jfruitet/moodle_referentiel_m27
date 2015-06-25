@@ -1,7 +1,7 @@
 moodle_referentiel_m27
 ======================
 
-Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8 (and maybe further ?)
+Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8, 2.9 (and maybe further ?)
 
 This version works well with Moodle 2.8 too.
 
@@ -9,13 +9,13 @@ This version works well with Moodle 2.8 too.
 
 jean.fruitet@univ-nantes.fr
 
-2007/2014
+2007/2015
 
 Type: Activity Module
 
 Requires: Moodle 2.7
 
-Avalaible: Moodle 2.7, 2.8
+Avalaible: Moodle 2.7, 2.8, 2.9
 
 Status: Contributed
 

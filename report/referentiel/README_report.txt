@@ -1,24 +1,18 @@
 Moodle module referentiel 
-Module Moodle - Référentiel / Pository - Documentation
+Module Moodle - Référentiel / Referentiel / Skills repository
 jean.fruitet@univ-nantes.fr
-2007/2013
+jean.fruitet@free.fr
+2007/2015
 
-Type: Activity Module
-Requires: Moodle 1.8 / 1.9 or later
+Type: extention for Referentiel module
+Requires: Moodle 2.7
+Avalaible: Moodle 2.7, 2.8, 2.9
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
-Moodle 1.9, 2.0, 2.1
+Moodle 2.7, 2.8, 2.9
 --------------------
-L'archive referentiel-report_m19.zip (referentiel-report_m21.zip)
-doit être décomprimée dans le dossier
-SERVEUR_MOODLE/admin/report/
-
-
-Moodle 2.2, 2.3, 2.4
---------------------
-L'archive referentiel-report.zip
-doit être décomprimée dans le dossier
+Copier le contenu de ce dossier dans 
 SERVEUR_MOODLE/report/
 
 L'administrateur a alors la possibilité de gérer les occurrences, les instances  et les archives

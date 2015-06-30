@@ -814,7 +814,14 @@ $sql='';
                     	// print_object($rec);
                     	$totalRecords=$rec->nb;
 					}
-					$sql2 .= ' GROUP BY ra.userid '. $sql_where_order;
+                	if ($sql_f_select==''){
+                    	$sql_group_by=''; //'  userid, date_creation ';
+                	}
+                	else{
+                    	$sql_group_by=' , '.$sql_f_select. ' ';
+                	}
+
+					$sql2 .= ' GROUP BY ra.userid '. $sql_group_by . $sql_where_order;
                 }
             }
 
@@ -822,6 +829,7 @@ $sql='';
 			$sql2=stripslashes($sql2);
 			//echo "<br />DEBUG :: 770 :: Length : ".htmlspecialchars($sql2)."\n";
             //print_object($params);
+			//exit;
 			if ($recs_bilans=$DB->get_records_sql($sql2, $params)){
        			$recs_bilans=referentiel_order_users_count($records_id_users, $recs_bilans, $order);
 				//print_object($recs_bilans);

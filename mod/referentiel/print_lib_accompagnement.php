@@ -37,7 +37,7 @@ $s='';
             for ($i=$indexdeb; $i<$indexfin; $i++){
                 if (!empty($t_teacherids[$i])){
                     $params=array("refid" => "$referentiel_instance_id", "courseid" => "$course_id", "userid" => "$ref_user", "teacherid" =>"$t_teacherids[$i]");
-                    $sql="SELECT accompagnement FROM {referentiel_accompagnement}
+                    $sql="SELECT accompagnement, userid, teacherid FROM {referentiel_accompagnement}
  WHERE ref_instance=:refid  AND courseid=:courseid AND userid=:userid AND teacherid=:teacherid
  ORDER BY userid ASC, teacherid ASC ";
                     $records_acc = $DB->get_records_sql($sql, $params);
@@ -75,7 +75,7 @@ $s='';
             for ($i=$indexdeb; $i<$indexfin; $i++){
                 if (!empty($t_teacherids[$i])){
                     $params=array("refid" => "$referentiel_instance_id", "courseid" => "$course_id", "userid" => "$ref_user", "teacherid" =>"$t_teacherids[$i]");
-                    $sql="SELECT accompagnement, teacherid FROM {referentiel_accompagnement}
+                    $sql="SELECT accompagnement, teacherid, userid FROM {referentiel_accompagnement}
  WHERE ref_instance=:refid  AND courseid=:courseid AND userid=:userid AND teacherid=:teacherid
  ORDER BY userid ASC, teacherid ASC ";
                     $records_acc = $DB->get_records_sql($sql, $params);

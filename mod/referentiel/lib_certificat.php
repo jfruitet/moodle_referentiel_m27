@@ -963,7 +963,7 @@ static $referentiel_id = NULL;
 function referentiel_get_certificats_id_users($refrefid){
 global $DB;
 	if (!empty($refrefid)){
-        $sql = "SELECT c.userid
+        $sql = "SELECT c.userid, u.lastname, u.firstname
     FROM {referentiel_certificat} as c, {user} as u
     WHERE c.ref_referentiel=:refid
     AND c.userid = u.id ORDER BY u.lastname, u.firstname ";

@@ -161,10 +161,10 @@ global $DB;
 
             // DOMAINE ET COMPETENCES
             
-            $domaines=$DB->get_records_sql("SELECT id, code_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id" => $occurrence->id));
+            $domaines=$DB->get_records_sql("SELECT id, code_domaine, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id" => $occurrence->id));
             if (!empty($domaines)){
                 foreach($domaines as $domaine){
-                    $competence=$DB->get_records_sql("SELECT id, code_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id));
+                    $competence=$DB->get_records_sql("SELECT id, code_competence, num_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id));
                     if (!empty($competence)){
                         foreach($competence as $competence){
                             if (!empty($competence->code_competence)){
@@ -328,13 +328,13 @@ global $DB;
                 $liste_domaines_seuils='';
                 $liste_domaines_minimas='';
 				
-                $domaines=$DB->get_records_sql("SELECT id, code_domaine, type_domaine, seuil_domaine, minima_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$occurrence->id));
+                $domaines=$DB->get_records_sql("SELECT id, code_domaine, type_domaine, seuil_domaine, minima_domaine, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$occurrence->id));
                 if (!empty($domaines)){
                     foreach($domaines as $domaine){
                         $liste_comp_oblig='';
                         $liste_comp_seuil='';
                         $liste_comp_minima='';						
-                        $codes_competence=$DB->get_records_sql("SELECT code_competence, type_competence, seuil_competence, minima_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id));
+                        $codes_competence=$DB->get_records_sql("SELECT code_competence, type_competence, seuil_competence, minima_competence, num_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id));
                         if (!empty($codes_competence)){
                             foreach($codes_competence as $codec){
                                 $liste_comp_oblig.=$codec->code_competence.':'.$codec->type_competence.'/';
@@ -539,7 +539,7 @@ function referentiel_initialise_domaines($refrefid, $valeur){
     $liste_domaines='';
 
     if (!empty($refrefid)){
-        if ($domaines=$DB->get_records_sql("SELECT code_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$refrefid))){
+        if ($domaines=$DB->get_records_sql("SELECT code_domaine, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$refrefid))){
             foreach($domaines as $domaine){
                 $liste_domaines.=$domaine->code_domaine.':'.$valeur.'/';
             }
@@ -566,7 +566,7 @@ function referentiel_initialise_competences_domaine($domaineid, $valeur){
     $liste_competences='';
 
     if (!empty($domaineid)){
-        if ($competences=$DB->get_records_sql("SELECT code_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaineid))){
+        if ($competences=$DB->get_records_sql("SELECT code_competence, num_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaineid))){
             foreach($competences as $competence){
                 $liste_competences.=$competence->code_competence.':'.$valeur.'/';
             }
@@ -592,7 +592,7 @@ function referentiel_initialise_competences($refrefid, $valeur){
     $liste_competences='';
 
     if (!empty($refrefid)){
-        if ($domaines=$DB->get_records_sql("SELECT id FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$refrefid))){
+        if ($domaines=$DB->get_records_sql("SELECT id, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$refrefid))){
             foreach($domaines as $domaine){
                 $liste_competences.=referentiel_initialise_competences_domaine($domaine->id, $valeur);
             }

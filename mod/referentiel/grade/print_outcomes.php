@@ -304,7 +304,7 @@ global $scales;
                     // selectionner les items (activites utilisant ces outcomes)
 
                     $params3=array("outcomeid" => "$r_outcome->id", "courseid" => "$r_referentiel->courseid");
-                    $sql3 = "SELECT `id`, `courseid`, `categoryid`, `itemname`, `itemtype`, `itemmodule`, `iteminstance`, `itemnumber`, `iteminfo`, `idnumber`, `calculation`, `gradetype`, `grademax`, `grademin`, `scaleid`, `outcomeid`, `timemodified`
+                    $sql3 = "SELECT id, courseid, categoryid, itemname, itemtype, itemmodule, iteminstance, itemnumber, iteminfo, idnumber, calculation, gradetype, grademax, grademin, scaleid, outcomeid, timemodified
  FROM {grade_items}  WHERE outcomeid= :outcomeid  AND courseid=:courseid
  ORDER BY courseid, outcomeid ASC ";
                     $r_items=$DB->get_records_sql($sql3, $params3);

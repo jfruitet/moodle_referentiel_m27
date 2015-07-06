@@ -256,6 +256,17 @@ global $DB;
 	return 0;
 }
 
+function referentiel_get_user_by_firstname_lastname($firstname, $lastname){
+// retourne un tableau d'users a partir du prenom et du nom
+global $DB;
+	if (!empty($login)){
+        $params=array("firstname" => "$firstname", "lastname" => "$lastname");
+		$sql = "SELECT id FROM {user} AS a WHERE a.firstname = :firstname AND a.lastname = :lastname ";
+		return ($DB->get_records_sql($sql, $params));
+	}
+	return NULL;
+}
+
 
 function referentiel_get_user_mail($user_id) {
 // retourne le NOM prenom a partir de l'id
@@ -320,7 +331,7 @@ global $CFG;
     print_r($params);
     */
 
-	$rq="SELECT distinct u.id as userid
+	$rq="SELECT distinct u.id as userid , u.lastname
     FROM {user} u
 	LEFT OUTER JOIN {context} ctx
     	ON (u.id=ctx.instanceid AND ctx.contextlevel = ?)
@@ -455,7 +466,70 @@ global $DB;
 }
 
 /**
- * This function returns records list of teachers from course
+ * This function returns true if userid is student from course
+ *
+ * @return boolean
+ **/
+function referentiel_is_student_course($courseid, $userid, $roleid=0){
+// This function returns true if userid student from course
+global $DB;
+    if ($courseid && $userid){
+		if ($course = $DB->get_record("course", array("id" => "$courseid"))) {
+	    	if ($context = context_course::instance($course->id)){
+		    	if ($roles = referentiel_get_student_roles()){
+    	            foreach ($roles as $role){
+        	    		if (($roleid && $role->id==$roleid) || (!$roleid)){
+            	    		if ($users= get_role_users($role->id, $context)){
+                				foreach($users as $user){
+                        			if ($user->id==$userid){
+										return true;
+		                            }
+    		                    }
+        		            }
+            		    }
+            		}
+		        }
+    		}
+		}
+	}
+
+    return false;
+}
+
+/**
+ * This function returns true if userid is teacher from course
+ *
+ * @return boolean
+ **/
+function referentiel_is_teacher_course($courseid, $userid, $roleid=0){
+// This function returns true if userid student from course
+global $DB;
+    if ($courseid && $userid){
+		if ($course = $DB->get_record("course", array("id" => "$courseid"))) {
+	    	if ($context = context_course::instance($course->id)){
+		    	if ($roles = referentiel_get_teacher_roles()){
+    	            foreach ($roles as $role){
+        	    		if (($roleid && $role->id==$roleid) || (!$roleid)){
+            	    		if ($users= get_role_users($role->id, $context)){
+                				foreach($users as $user){
+                        			if ($user->id==$userid){
+										return true;
+		                            }
+    		                    }
+        		            }
+            		    }
+            		}
+		        }
+    		}
+		}
+	}
+
+    return false;
+}
+
+
+/**
+ * This function returns records list of students from course
  *
  * @return objects
  * @todo Finish documenting this function

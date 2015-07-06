@@ -1,6 +1,8 @@
 <?php
 // referentiel module
 //
+$string['notsameoccurrence'] = 'This skill repository is not compatible';
+$string['notsameinstance'] = 'This skill repository instance is not compatible';
 $string['erreur1']= 'Missing parameter. You can\'t use this page (<i> {$a} </i>) without a madatory parameter...';
 $string['type_aide']= 'No more than 20 characters please.';
 

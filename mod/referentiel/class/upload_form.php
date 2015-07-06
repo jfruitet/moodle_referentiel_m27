@@ -31,13 +31,14 @@ class mod_referentiel_upload_form extends moodleform {
         $mform->addHelpButton('general', 'documenth','referentiel');
 
         $mform->addElement('text','type',get_string('type_document','referentiel'));
-        $mform->setType('type', PARAM_ALPHA);
+        $mform->setType('type', PARAM_TEXT);
+        $mform->addRule('type', get_string('type_aide','referentiel'), 'maxlength', '20', 'server', false, false);
 
         $mform->addElement('text','description',get_string('description','referentiel'));
         $mform->setType('description', PARAM_TEXT);
 
         $mform->addElement('text','etiquette',get_string('etiquette_document','referentiel'));
-        $mform->setType('etiquette', PARAM_ALPHANUMEXT);
+        $mform->setType('etiquette', PARAM_TEXT);
 
         $mform->addElement('text','url',get_string('url','referentiel'));
         $mform->setType('url', PARAM_URL);

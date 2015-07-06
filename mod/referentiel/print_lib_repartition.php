@@ -227,7 +227,7 @@ $s='';
 	if (!empty($referentiel_instance_id) && !empty($course_id) && !empty($code_item)){
         if ($t_teacherids){
             for ($i=$indexdeb; $i<$indexfin; $i++){
-                $sql = "SELECT teacherid FROM {referentiel_repartition}
+                $sql = "SELECT teacherid, code_item FROM {referentiel_repartition}
  WHERE ref_instance=:instanceid
  AND courseid=:courseid AND code_item=:code_item AND teacherid=:teacherid
  ORDER BY code_item ASC, teacherid ASC ";
@@ -270,7 +270,7 @@ $s='';
         if ($t_teacherids){
             //foreach ($t_teacherids as $tid){
             for ($i=$indexdeb; $i<$indexfin; $i++){
-                $sql = "SELECT teacherid FROM {referentiel_repartition}
+                $sql = "SELECT teacherid, code_item FROM {referentiel_repartition}
  WHERE ref_instance=:instanceid
  AND courseid=:courseid AND code_item=:code_item AND teacherid=:teacherid
  ORDER BY code_item ASC, teacherid ASC ";

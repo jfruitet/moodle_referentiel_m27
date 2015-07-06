@@ -1,11 +1,11 @@
 Moodle module referentiel 
 Module Moodle - Référentiel / Skills repository - Documentation
 jean.fruitet@univ-nantes.fr
-2007/2014
+2007/2015
 
 Type: Activity Module
 Requires: Moodle 2.7
-Avalaible: Moodle 2.7, 2.8
+Avalaible: Moodle 2.7, 2.8, 2.9
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
 

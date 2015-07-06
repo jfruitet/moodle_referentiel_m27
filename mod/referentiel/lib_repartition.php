@@ -297,7 +297,7 @@ function referentiel_get_repartitions_teacher($referentiel_instance_id, $course_
 // 
 global $DB;
 	if (!empty($referentiel_instance_id) && !empty($course_id) && !empty($ref_teacher)){
-    return ($DB->get_records_sql("SELECT r.code_item FROM {referentiel_repartition} as r, ". $CFG->prefix . "user as t
+    return ($DB->get_records_sql("SELECT r.code_item, t.lastname, t.firstname  FROM {referentiel_repartition} as r, user as t
  WHERE r.teacherid=t.id
  AND r.ref_instance=:instanceid AND r.courseid=:courseid  AND r.teacherid=:teacherid
  ORDER BY t.lastname ASC, t.firstname ASC ",

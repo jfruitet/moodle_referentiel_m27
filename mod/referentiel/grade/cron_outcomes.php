@@ -886,7 +886,7 @@ CREATE TABLE mdl_grade_outcomes (
     	    			if (!empty($where1)){
 							$where1=' (itemmodule != ?) AND ('. $where1 . ')';
 
-							$sql1='SELECT id, courseid, itemmodule, iteminstance, grademin, grademax, scaleid FROM {grade_items} WHERE '.$where1.' ORDER BY iteminstance, outcomeid  ';
+							$sql1='SELECT id, courseid, itemmodule, iteminstance, grademin, grademax, scaleid, outcomeid FROM {grade_items} WHERE '.$where1.' ORDER BY iteminstance, outcomeid  ';
 
 							if (OUTCOMES_SUPER_DEBUG){
   								mtrace("\nDEBUG :: Line 605 :: PARAMETRES REQUETE \n");
@@ -1226,7 +1226,7 @@ global $DB;
 	                                if (!$document_old=$DB->get_record("referentiel_document", array("url_document" => $url, "ref_activite" => $activite_id))){
 					        	    	$document = new object();
         				    			$document->url_document=$url;
-	        	    					$document->type_document=addslashes(get_string('mahara', 'referentiel'));
+	        	    					$document->type_document=addslashes(substr(get_string('mahara', 'referentiel'),0,20));
 		        	    				$document->description_document=get_string('mahara','referentiel');
     		        					$document->ref_activite=$activite_id;
 										$document->cible_document=1;
@@ -1254,7 +1254,7 @@ global $DB;
 	                                if (!$document_old=$DB->get_record("referentiel_document", array("url_document" => $url, "ref_activite" => $activite_id))){
 					        	    	$document = new object();
         				    			$document->url_document=$url;
-	        	    					$document->type_document=addslashes(get_string('document', 'referentiel'));
+	        	    					$document->type_document=addslashes(substr(get_string('document', 'referentiel'),0,20));
 		        	    				$document->description_document=get_string('assignementdoc','referentiel');
     		        					$document->ref_activite=$activite_id;
 										$document->cible_document=1;
@@ -1347,7 +1347,7 @@ global $DB;
 	     ){
             $document = new object();
             $document->url_document=$m->link;
-            $document->type_document=addslashes(get_string('modulename', $m->type));
+            $document->type_document=addslashes(substr(get_string('modulename', $m->type),0,20));
             $document->description_document=get_string('assignementdoc','referentiel');; // addslashes($m->description);
             $document->ref_activite=$activite_id;
 			$document->cible_document=1;
@@ -1366,7 +1366,7 @@ global $DB;
 	        		    }
 			            $document = new object();
         			    $document->url_document=addslashes(referentiel_get_mahara_link($alink));
-            			$document->type_document=addslashes(get_string('mahara', 'referentiel'));
+            			$document->type_document=addslashes(substr(get_string('mahara', 'referentiel'),0,20));
             			$document->description_document=get_string('mahara','referentiel'); // addslashes($m->description);
             			$document->ref_activite=$activite_id;
 						$document->cible_document=1;
@@ -1386,7 +1386,7 @@ global $DB;
 	        		    }
 			            $document = new object();
         			    $document->url_document=addslashes(referentiel_url_file($afile));
-            			$document->type_document=addslashes(get_string('document', 'referentiel'));
+            			$document->type_document=addslashes(substr(get_string('document', 'referentiel'),0,20));
             			$document->description_document=get_string('assignementdoc','referentiel'); // addslashes($m->description);
             			$document->ref_activite=$activite_id;
 						$document->cible_document=1;

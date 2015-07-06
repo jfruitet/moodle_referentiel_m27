@@ -3,8 +3,6 @@ moodle_referentiel_m27
 
 Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8, 2.9 (and maybe further ?)
 
-This version works well with Moodle 2.8 too.
-
 ## Module Moodle - Référentiel / Skills repository - Documentation
 
 jean.fruitet@univ-nantes.fr

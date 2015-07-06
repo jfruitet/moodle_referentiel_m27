@@ -3277,7 +3277,7 @@ class tformat_csv extends tformat_default {
         $expout = "";
 		if ($consigne){
 			$id_consigne = $consigne->id ;		
-            $type_consigne = trim($consigne->type_consigne);
+            $type_consigne = trim(substr($consigne->type_consigne,0, 20));
             $description_consigne = $this->purge_sep($consigne->description_consigne);
 			$url_consigne = $consigne->url_consigne;
             $ref_task = $consigne->ref_task;

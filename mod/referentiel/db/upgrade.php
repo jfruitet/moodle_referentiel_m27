@@ -1071,7 +1071,7 @@ function xmldb_referentiel_upgrade($oldversion) {
         $field->set_attributes(XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, '0', 'ref_competence');
         /// Launch change of default for field
         if ($dbman->field_exists($table, $field)) {
-            if ($items = $DB->get_recordset_sql("SELECT id, type_item FROM {referentiel_item_competence} ORDER BY id", null)){
+            if ($items = $DB->get_recordset_sql("SELECT id, type_item FROM {referentiel_item_competence} ORDER BY id, type_item ", null)){
                 foreach ($items as $item){
                     if ($item->type_item!=''){
                         $DB->set_field('referentiel_item_competence', 'type_item', '1', array('id' => $item->id));
@@ -1147,11 +1147,11 @@ function xmldb_referentiel_upgrade($oldversion) {
                             $liste_domaines_obligatoires='';
                             $liste_domaines_seuils='';
 
-                            if ($domaines=$DB->get_recordset_sql("SELECT id, code_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$occurrence->id))){
+                            if ($domaines=$DB->get_recordset_sql("SELECT id, num_domaine, code_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:id ORDER BY num_domaine ", array("id"=>$occurrence->id))){
                                 foreach($domaines as $domaine){
                                     $liste_comp_oblig='';
                                     $liste_comp_seuil='';
-                                    if ($codes_competence=$DB->get_recordset_sql("SELECT code_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id))){
+                                    if ($codes_competence=$DB->get_recordset_sql("SELECT code_competence, num_competence FROM {referentiel_competence} WHERE ref_domaine=:id ORDER BY num_competence ", array("id"=>$domaine->id))){
                                         foreach($codes_competence as $codec){
                                             $liste_comp_oblig.=$codec->code_competence.':0/';
                                             $liste_comp_seuil.=$codec->code_competence.':0.0/';
@@ -1229,7 +1229,7 @@ function xmldb_referentiel_upgrade($oldversion) {
                 foreach ($rs as $res){
                     $DB->set_field("referentiel_domaine","code_domaine", $res->code_domaine."-".$res->id, array("id" => "$res->id"));
                     // Mettre a jour la table referentiel_protocol
-                    $sql="SELECT id, code_domaine, type_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:refrefid ORDER BY num_domaine ";
+                    $sql="SELECT id, code_domaine, type_domaine, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:refrefid ORDER BY num_domaine ";
                     $domaines= $DB->get_records_sql($sql, array("refrefid" => $res->refrefid));
                     if ($domaines){
                         $l_domaines_oblig='';
@@ -1289,7 +1289,7 @@ function xmldb_referentiel_upgrade($oldversion) {
                     $DB->set_field("referentiel_competence","code_competence", $res->code_competence."-".$res->id, array("id" => "$res->id"));
 
                     // Mettre a jour la table referentiel_protocol
-                    $sql="SELECT id, code_competence, type_competence FROM {referentiel_competence} WHERE ref_domaine=:ref_domaine ORDER BY ref_domaine, num_competence ";
+                    $sql="SELECT id, code_competence, type_competence, num_competence FROM {referentiel_competence} WHERE ref_domaine=:ref_domaine ORDER BY ref_domaine, num_competence ";
                     $competences= $DB->get_records_sql($sql, array("ref_domaine" => $res->ref_domaine));
                     if ($competences){
                         $l_competences_oblig='';
@@ -1333,7 +1333,7 @@ function xmldb_referentiel_upgrade($oldversion) {
                     $DB->set_field("referentiel_item_competence","code_item", $res->code_item."-".$res->id, array("id" => "$res->id"));
 
                     // Mettre a jour la table referentiel_referentiel  et refrentiel_protocol
-                    $sql="SELECT id, code_item, type_item FROM {referentiel_item_competence} WHERE ref_referentiel=:refrefid ORDER BY ref_competence, num_item ";
+                    $sql="SELECT id, code_item, type_item, ref_competence, num_item FROM {referentiel_item_competence} WHERE ref_referentiel=:refrefid ORDER BY ref_competence, num_item ";
                     $items= $DB->get_records_sql($sql, array("refrefid" => $res->refrefid));
                     if ($items){
                         $l_codes='';
@@ -1410,11 +1410,11 @@ function xmldb_referentiel_upgrade($oldversion) {
                             // initialiser les minimas
                             $liste_minimas_domaines='';
                             $liste_minimas_competences='';
-                            $domaines=$DB->get_records_sql("SELECT id, code_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:refrefid ORDER BY num_domaine ", array("refrefid" => $occurrence->id));
+                            $domaines=$DB->get_records_sql("SELECT id, code_domaine, num_domaine FROM {referentiel_domaine} WHERE ref_referentiel=:refrefid ORDER BY num_domaine ", array("refrefid" => $occurrence->id));
                             if (!empty($domaines)){
                                 foreach($domaines as $domaine){
                                     $liste_comp_minimas='';
-                                    $codes_competence=$DB->get_records_sql("SELECT id, code_competence FROM {referentiel_competence} WHERE ref_domaine=:ref_domaine ORDER BY num_competence ", array("ref_domaine" => $domaine->id));
+                                    $codes_competence=$DB->get_records_sql("SELECT id, code_competence, num_competence  FROM {referentiel_competence} WHERE ref_domaine=:ref_domaine ORDER BY num_competence ", array("ref_domaine" => $domaine->id));
                                     if (!empty($codes_competence)){
                                         foreach($codes_competence as $codec){
                                             $liste_comp_minimas.=$codec->code_competence.':0/';

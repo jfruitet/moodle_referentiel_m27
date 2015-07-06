@@ -1877,6 +1877,11 @@ global $DB;
 		if (empty($order)){
 			$order= 'userid ASC ';
 		}
+		else{
+			if (!preg_match("/userid/",$order)){
+                $order= ' userid ASC, '.$order;
+			}
+		}
         $params= array("refid" => "$referentiel_referentiel_id");
 		$sql="SELECT userid FROM {referentiel_certificat} WHERE ref_referentiel=:refid $select ORDER BY $order ";
 		return $DB->get_records_sql($sql, $params);

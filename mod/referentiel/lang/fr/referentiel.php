@@ -2,6 +2,9 @@
 // ----------------
 // UTF-8 French
 //
+$string['notsameoccurrence'] = 'Cette occurrence de référentiel n\'est pas compatible';
+$string['notsameinstance'] = 'Cette instance n\'est pas compatible';
+
 $string['erreur1']= 'Paramètre manquant. Vous ne pouvez pas appeler cette page (<i> {$a} </i>) sans lui fournir une liste de paramètres obligatoires... ';
 $string['type_aide']= 'Au plus 20 caractères S.V.P.';
 // Events

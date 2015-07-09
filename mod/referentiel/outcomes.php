@@ -284,7 +284,7 @@
     require_once('onglets.php'); // menus sous forme d'onglets
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, NULL, $mode);
     $tab_onglets->display();
-
+    echo '<br />'."\n";
     echo '<div align="center"><h2><img src="'.$icon.'" border="0" title=""  alt="" /> '.get_string('usedoutcomes','referentiel').' '.$OUTPUT->help_icon('usedoutcomesh','referentiel').'</h2></div>'."\n";
 
     if (has_capability('mod/referentiel:managecertif', $context)) {

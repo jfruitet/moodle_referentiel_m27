@@ -434,6 +434,7 @@
     require_once('onglets.php'); // menus sous forme d'onglets 
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, $data_f, $mode);
     $tab_onglets->display();
+    echo '<br />'."\n";
 
     // print_heading_with_help($strmessage, 'exportcertificat', 'referentiel', $icon);
 

@@ -425,10 +425,8 @@
     require_once('onglets.php'); // menus sous forme d'onglets
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, NULL, $mode);
     $tab_onglets->display();
-
+    echo '<br />'."\n";
     echo '<div align="center"><h2><img src="'.$icon.'" border="0" title=""  alt="" /> '.$strmessage.' '.$OUTPUT->help_icon('archiveh','referentiel').'</h2></div>'."\n";
-
-
 
     $records_users=referentiel_get_liste_users($referentiel, $course, $context, $list_userids, $userid_filtre, $gusers, $select_acc, $select_all);
 

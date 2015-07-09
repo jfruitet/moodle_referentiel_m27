@@ -580,7 +580,7 @@
     require_once('onglets.php'); // menus sous forme d'onglets 
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, $data_f);
     $tab_onglets->display();
-
+    echo '<br />'."\n";
 
     echo '<div align="center"><h2><img src="'.$icon.'" border="0" title="referentiel" alt="referentiel" /> '.$strcertificat.' '.$OUTPUT->help_icon('certificath','referentiel').'</h2></div>'."\n";
 

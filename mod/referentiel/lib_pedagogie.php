@@ -602,7 +602,7 @@ $t_users=array();
 	if ($record_users){
         $s.='<div align="center">'."\n";
 		$s.='<table class="selection">'."\n";
-		$s.='<tr>';
+		$s.='<tr valign="top">';
         foreach ($record_users as $record_u) {   // liste d'id users
 			// 
 			$t_users[]= array('id' => $record_u->userid, 'lastname' => referentiel_get_user_nom($record_u->userid), 'firstname' => referentiel_get_user_prenom($record_u->userid));
@@ -612,19 +612,30 @@ $t_users=array();
 		}
 		array_multisort($t_users_lastname, SORT_ASC, $t_users_firstname, SORT_ASC, $t_users);
 		$n=count($t_users);
-        if ($n>=18){
+
+		// How many boxes ?
+		$size=4;
+
+		$n=count($t_users);
+        if ($n>=48){
 			$l=$maxcol;
 			$c=(int) ($n / $l);
+			$size = 8;
+		}
+        elseif ($n>=18){
+			$l=$maxcol;
+			$c=(int) ($n / $l);
+			$size = 6;
 		}
         elseif ($n>=6){
 			$l=$maxcol-2;
-			$c=(int) ($n / $l);    
+			$c=(int) ($n / $l);
         }
 		else{
 			$l=1;
-			$c=(int) ($n);		
+			$c=(int) ($n);
 		}
-		
+
 		if ($c*$l==$n){
             $reste=false;
         }
@@ -636,7 +647,7 @@ $t_users=array();
 		for ($j=0; $j<$l; $j++){
 			$s.='<td>';
 			$s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;action=selectuser">'."\n";
-			$s.='<select name="userid" id="userid" size="4">'."\n";
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 			
             if ($j<$l-1){
                 if (($userid=='') || ($userid==0)){
@@ -692,7 +703,7 @@ $t_users=array();
 		if ($i<$n){
 			$s.='<td>';
 			$s.='<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;action=selectuser">'."\n";	
-			$s.='<select name="userid" id="userid" size="4">'."\n";
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 			if (($userid=='') || ($userid==0)){
 				$s.='<option value="0" selected="selected">'.get_string('tous', 'referentiel').'</option>'."\n";
 			}

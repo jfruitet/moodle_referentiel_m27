@@ -824,7 +824,7 @@
     require_once('onglets.php'); // menus sous forme d'onglets
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, NULL, $mode);
     $tab_onglets->display();
-
+    echo '<br />'."\n";
         echo '<div align="center"><h2><img src="'.$icon.'" border="0" title="" alt="" /> '.get_string('select_print_certificat','referentiel').' '.$OUTPUT->help_icon('selectcertificath','referentiel').'</h2></div>'."\n";
         referentiel_select_liste_certificats($referentiel, $list_pedagoids, $userid_filtre, $gusers, $select_acc, $mode, $CFG->wwwroot . '/mod/referentiel/print_certificat.php?d='.$referentiel->id, $select_all, $sql_filtre_where, $export_filtre);
         // Gestion des fichiers d'archives

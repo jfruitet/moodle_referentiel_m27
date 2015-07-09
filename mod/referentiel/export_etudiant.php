@@ -226,7 +226,7 @@
     require_once('onglets.php'); // menus sous forme d'onglets 
     $tab_onglets = new Onglets($context, $referentiel, $referentiel_referentiel, $cm, $course, $currenttab, $select_acc, NULL, $mode);
     $tab_onglets->display();
-
+    echo '<br />'."\n";
     echo '<div align="center"><h2><img src="'.$icon.'" border="0" title="" alt="" /> '.$strmessage.' '.$OUTPUT->help_icon('exportetudh','referentiel').'</h2></div>'."\n";
 	
     if (!empty($format) && !empty($referentiel) && !empty($course)) {   

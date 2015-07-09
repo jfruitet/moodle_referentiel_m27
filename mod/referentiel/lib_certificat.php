@@ -542,9 +542,20 @@ $t_users=array();
 
         // Formulaire de selection individuelle
 		$n=count($t_users);
-        if ($n>=18){
+
+		// How many boxes ?
+		$size=4;
+
+		$n=count($t_users);
+        if ($n>=48){
 			$l=$maxcol;
 			$c=(int) ($n / $l);
+			$size = 8;
+		}
+        elseif ($n>=18){
+			$l=$maxcol;
+			$c=(int) ($n / $l);
+			$size = 6;
 		}
         elseif ($n>=6){
 			$l=$maxcol-2;
@@ -565,7 +576,7 @@ $t_users=array();
 
         $s.='<div align="center">'."\n";
 		$s.='<table class="selection">'."\n";
-		$s.='<tr>';
+		$s.='<tr valign="top">';
 
 		for ($j=0; $j<$l; $j++){
 			$s.='<td>';
@@ -575,7 +586,7 @@ $t_users=array();
             else{
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
-			$s.='<select name="userid" id="userid" size="4">'."\n";
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 
             if ($j<$l-1){
                 if (($userid=='') || ($userid==0)){
@@ -639,7 +650,7 @@ $t_users=array();
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
 
-			$s.='<select name="userid" id="userid" size="4">'."\n";
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 			if (($userid=='') || ($userid==0)){
 				$s.='<option value="0" selected="selected">'.get_string('tous', 'referentiel').'</option>'."\n";
 			}

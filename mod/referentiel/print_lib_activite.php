@@ -92,10 +92,10 @@ global $COURSE;
 			    print_error(get_string('creer_referentiel','referentiel'), "$CFG->wwwroot/course/view.php?id=$course->id&amp;sesskey=".sesskey());
 			}
 		}
-	 	// preparer les variables globales pour Overlib
+	 	// global variables for Overlib
 		referentiel_initialise_descriptions_items_referentiel($referentiel_referentiel->id);
 
-		// boite pour selectionner les utilisateurs ?
+		// Users select Boxes - boite pour selectionner les utilisateurs
 		if ($isteacher || $iseditor || $istutor){
             referentiel_boites_selections_users($cm, $course, $context, $mode, $referentiel_instance, $initiale, $userids, $userid_filtre, $gusers, $select_acc);
 		}
@@ -303,7 +303,8 @@ function referentiel_modifie_enqueue_activite(){
 
 
 /**************************************************************************
- * takes a list of records, the current referentiel, an optionnal user id *
+ * Users selection boxes
+ *  takes a list of records, the current referentiel, an optionnal user id *
  * and mode to display                                                    *
  * input @param string  $mode                                             *
  *       @param object $referentiel_instance                              *
@@ -355,7 +356,7 @@ $record_id_users=array();
 					$record_id_users[]=$a;
 				}
 			}
-			// Ajouter l'utilisateur courant pour qu'il voit ses activites
+			// Add current user to display his/her activities declarations - Ajouter l'utilisateur courant pour qu'il voit ses activites
 			$a = new Object();
 			$a->userid=$USER->id;
 			$record_id_users[]=$a;
@@ -363,8 +364,8 @@ $record_id_users=array();
 			//echo "<br>DEBUG :: 363 :: prin_lib_users.php :: <br>\n";
     		//print_object($record_id_users);
 			//exit;
-            echo referentiel_select_users_activite_accompagnes($userid_filtre, $select_acc, $mode);
-            echo referentiel_select_users_activite_2($record_id_users, $userid_filtre, $select_acc, $mode, $initiale);
+            echo referentiel_select_users_activite_accompagnes($userid_filtre, $select_acc, $mode);      // Select checkbox
+            echo referentiel_select_users_activite_2($record_id_users, $userid_filtre, $select_acc, $mode, $initiale); // Display selct box Every users
 		}
     }
 }
@@ -557,6 +558,12 @@ $t_users_lastname=array();
 	return $recs;
 }
 
+/**
+ * Display a list of boxes for select a user
+ * Uses constants MAXBOITESSELECTION defined in lib.php
+ *
+ *
+ **/
 
 // ----------------------
 function referentiel_select_users_activite_2($record_users, $userid=0, $select_acc=0, $mode='listactivity', $initiales='', $data_f=NULL){
@@ -614,7 +621,7 @@ $t_users_lastname=array();
         else{
             $baseurl3 ='';
         }
-        // selection alphabetique
+        // alphabetic selection alphabetique
         $s.='<div align="center">'."\n";
         $s.= '<a class="select" href="'.$baseurl.$baseurl1.$baseurl2.$baseurl3.'">'.get_string('tous', 'referentiel').'</a> '."\n";
         foreach ($alpha as $letter){
@@ -629,10 +636,19 @@ $t_users_lastname=array();
 
         $s.='<div align="center">'."\n";
 
+		// How many boxes ?
+		$size=4;
+
 		$n=count($t_users);
-        if ($n>=18){
+        if ($n>=48){
 			$l=$maxcol;
 			$c=(int) ($n / $l);
+			$size = 8;
+		}
+        elseif ($n>=18){
+			$l=$maxcol;
+			$c=(int) ($n / $l);
+			$size = 6;
 		}
         elseif ($n>=6){
 			$l=$maxcol-2;
@@ -652,12 +668,12 @@ $t_users_lastname=array();
 		$i=0;
 
 		$s.='<table class="selection">'."\n";
-        $s.='<tr>'."\n";
+        $s.='<tr valign="top">'."\n";
 		for ($j=0; $j<$l; $j++){
             $s.='<td>'."\n";
 			$s.="\n".'<form name="form" method="post" action="activite.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
 
-			$s.='<select name="userid" id="userid" size="4">'."\n";
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 
             if ($j<$l-1){
                 if (($userid=='') || ($userid==0)){
@@ -720,7 +736,7 @@ $t_users_lastname=array();
         if ($i<$n){
             $s.='<td>';
             $s.='<form name="form" method="post" action="activite.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
-            $s.='<select name="userid" id="userid" size="4">'."\n";
+            $s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
     		if (($userid=='') || ($userid==0)){
 	       			$s.='<option value="0" selected="selected">'.get_string('tous', 'referentiel').'</option>'."\n";
 		    }
@@ -767,6 +783,9 @@ $t_users_lastname=array();
 
 	return $s;
 }
+
+
+
 
 
 function referentiel_print_enqueue_activite(){

@@ -89,8 +89,8 @@ define('TIME_LIMIT', 360);// temps  maximal d'exécution d'un script si PHP ne f
 define('EDITOR_ON', 1);// editeur de referentiels simplifié wysiwyg actif (necessite le dossier mod/referentiel/editor sur le serveur)
 // define('EDITOR_ON', 0);   // editeur inactif
 
-define('MAXBOITESSELECTION', 5);  // à réduire si le nombre de boites de selection des etudiants
-// ne tient pas dans la page sans ascenceur horizontal
+define('MAXBOITESSELECTION', 4);  // à réduire si le nombre de boites de selection des etudiants
+// ne tient pas dans la page sans ascenseur horizontal
 
 define('NOTIFICATION_TACHES', 1); // placer à 1 pour activer la notification
 define('NOTIFICATION_ACTIVITES', 1); // placer à 0 pour désactiver la notification

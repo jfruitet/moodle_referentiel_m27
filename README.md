@@ -1,11 +1,9 @@
-moodle_referentiel_m27
+Ôªømoodle_referentiel_m27
 ======================
 
 Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8, 2.9 (and maybe further ?)
 
-This version works well with Moodle 2.8 too.
-
-## Module Moodle - RÈfÈrentiel / Skills repository - Documentation
+## Module Moodle - R√©f√©rentiel / Skills repository - Documentation
 
 jean.fruitet@univ-nantes.fr
 
@@ -21,32 +19,6 @@ Status: Contributed
 
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
-### PRESENTATION (FranÁais)
-
-"referentiel" est un module Moodle destinÈ ‡ implanter une activitÈ de type certification
-de compÈtences.
-
-Ce module permet :
-
-* de spÈcifier un rÈfÈrentiel de compÈtences (ou de le tÈlÈcharger) ;
-* de dÈclarer des activitÈs et d'associer celles-ci aux compÈtences du rÈfÈrentiel ;
-* de gÈrer l'accompagnement ;
-* de dÈfinir des t‚ches (mission, consignes, liste de compÈtences mobilisÈes pour accomplir la t‚che, documents attachÈs) ;
-* d'Èmettre des certificats basÈs sur le dit rÈfÈrentiel ;
-* Si le site active les Objectifs, vous pouvez exporter le rÈfÈrentiel sous forme d'une
-liste d'objectifs qui serviront alors ‡ Èvaluer toute forme d'activitÈ(forum, BD, devoir, etc.).
-Ces notations sont rÈcupÈrÈes dans le module rÈfÈrentiel sous forme de compÈtences validÈes dans des dÈclaration d'activitÈ.
-
-#### Pour utiliser pleinement cette version installez les composants suivants dans leurs dossiers respectifs
-
-./mod/referentiel
-
-./blocks/referentiel
-
-./report/referentiel
-
-Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
-
 ### PRESENTATION (English)
 
 Skills repository ("referentiel") is a Moodle module for skill certification.
@@ -61,6 +33,10 @@ You can:
 * If your site enables Outcomes (also known as Competencies, Goals, Standards or Criteria), you can now export a list of Outcomes from referentiel module then grade things using
 that scale (forum, database, assigments, etc.) throughout the site. Then these evaluations will be integrated in the Referentiel instance of the course.
 
+#### Documentation
+
+https://docs.moodle.org/29/en/mod/referentiel/view
+
 #### Installation
 
 Install all referentiel components in is directory
@@ -71,4 +47,61 @@ Install all referentiel components in is directory
 
 ./report/referentiel
 
-Read the [install documentation] (http://moodlemoot2012.unimes.fr/mod/page/view.php?id=878 "Installation, in French")
+
+##### The following steps should get you up and running with this module code.
+
+1. Unzip the archive in a temporary directory.
+
+	Move sub-directory  "./mod/referentiel" to YOUR_MOODLE_DIR/mod/
+	
+	Language data files may be let in  "YOUR_MOODLE_DIR/mod/referentiel/lang/"
+
+	Move sub-directory "./blocks/referentiel" to YOUR_MOODLE_DIR/blocks/
+
+	Move sub-directory  "./project/referentiel" to YOUR_MOODLE_DIR/project/
+	
+	Languages files can be left in the moodle/{mod|blocks|project}/referentiel/lang/ directory.
+
+2. log on with admin role
+
+3. install new modules as usual (admin Notification)
+
+4. Set module parameters
+
+Administration / Plugins / Activity / Skills repository (referentiel)
+
+Unmask Administration / Plugins / Blocks / Skills repository (referentiel)
+
+If you use scales for skill evaluation, read on referentiel documentation:
+
+https://docs.moodle.org/29/en/mod/referentiel/bareme
+
+
+### PRESENTATION (Fran√ßais)
+
+"referentiel" est un module Moodle destin√© √† implanter une activit√©e type certification
+de comp√©nces.
+
+Ce module permet :
+
+* de sp√©cifier un r√©f√©rentiel de comp√©tences (ou de le t√©l√©charger) ;
+* de d√©clarer des activit√©s et d'associer celles-ci aux comp√©tences du r√©f√©rentiel ;
+* de g√©rer l'accompagnement ;
+* de d√©finir des t√¢ches (mission, consignes, liste de comp√©tences mobilis√©es pour accomplir la t√¢che, documents attach√©s) ;
+* d'√©mettre des certificats bas√©s sur le dit r√©f√©rentiel ;
+* Si le site active les Objectifs, vous pouvez exporter le r√©f√©rentiel sous forme d'une
+liste d'objectifs qui serviront alors √† √©valuer toute forme d'activit√©(forum, BD, devoir, etc.).
+Ces notations sont r√©cup√©r√©es dans le module r√©f√©rentiel sous forme de comp√©tences valid√©es dans des d√©claration d'activit√©.
+
+#### Pour utiliser pleinement cette version installez les composants suivants dans leurs dossiers respectifs
+
+./mod/referentiel
+
+./blocks/referentiel
+
+./report/referentiel
+
+Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
+
+
+

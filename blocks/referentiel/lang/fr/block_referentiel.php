@@ -43,6 +43,7 @@ $string['import'] = 'Importer un Référentiel';
 $string['instances'] = 'Instances du cours';
 $string['integer'] = 'Integer value';
 $string['invalidcourse'] = 'Cours invalide';
+$string['invalidmodule'] = 'Module invalide';
 $string['local_course'] = 'Réserver cette occurrence à ce cours ?';
 $string['local_courseh'] = 'Occurrence locale';
 $string['local_courseh_help'] = 'ATTENTION : En rendant un référentiel <i>Local</i> vos interdisez sont utilisation dans les autres cours.';

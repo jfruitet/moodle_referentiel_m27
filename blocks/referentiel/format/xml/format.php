@@ -565,6 +565,10 @@ class rformat_xml extends rformat_default {
 	$nbdomaines=0;        // compteur
 	$nbcompetences=0;        // compteur
     $nbitems=0;              // compteur
+ 	if (!$xmlreferentiel){
+        $this->error( get_string( 'incompletedata', 'referentiel' ) );
+  		return false;
+	}
 
 		// print_r($xmlreferentiel);
 		if (!isset($this->action) || (isset($this->action) && ($this->action!="selectreferentiel") && ($this->action!="importreferentiel"))){

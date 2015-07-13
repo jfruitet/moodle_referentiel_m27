@@ -44,6 +44,7 @@ $string['instances'] = 'Course Instances';
 $string['instances'] = 'Instances du cours';
 $string['integer'] = 'Valeur entière';
 $string['invalidcourse'] = 'Not valid Course';
+$string['invalidmodule'] = 'Not valid Module';
 $string['local_course'] = 'Use this occurrence in this course only ?';
 $string['local_courseh'] = 'Local Occurrence';
 $string['local_courseh_help'] = 'ATTENTION : If you set a <i>Local</i> occurrence you forbid his use in an another course.';

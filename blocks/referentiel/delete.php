@@ -53,6 +53,7 @@ $action = optional_param('action','', PARAM_ALPHANUMEXT);
 $delete = optional_param('delete', '', PARAM_ALPHANUMEXT);    //delete action
 $deleteid = optional_param('deleteid', 0, PARAM_INT);    // delete record id
 // http://localhost/moodle25/blocks/referentiel/edit.php?blockid=65&courseid=2&occurrenceid=2&deleteid=217&action=modifieritem&delete=Supprimer&pass=&sesskey=pLZgTzHQUJ
+
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('invalidcourse', 'block_referentiel', $courseid);
 }
@@ -61,8 +62,6 @@ $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
 $viewurl = new moodle_url('/blocks/referentiel/view.php', array('blockid'=>$blockid, 'courseid'=>$courseid, 'occurrenceid'=>$occurrenceid));
 
 require_login($course);
-
-// $context = get_context_instance(CONTEXT_BLOCK, $blockid);
 
 $currenttab = $mode;
 
@@ -115,6 +114,14 @@ $isauthor=$occurrence_object->is_author();
 							if ($val){
 								// suppression sans confirmation
 								// REPRIS DE course/mod.php
+								// DEBUG
+								// print_object($form->t_ref_instance);
+								// echo "<br />COURSEID:".$course->id." KEY:$key, VAL_InstanceId:$val\n";
+								// exit;
+								if (!$cm = get_coursemodule_from_instance('referentiel', $val, $course->id)) {
+         							print_error('invalidmodule', 'block_referentiel', $val);
+								}
+
 								$params=array("module" => "$cm->module", "refid" => "$val");
 								$sql = "SELECT * FROM {course_modules} WHERE module = :module AND instance=:refid ";
 								$courses_modules = $DB->get_records_sql($sql, $params);
@@ -124,12 +131,11 @@ $isauthor=$occurrence_object->is_author();
 										if (!empty($course_module)) {
             								if ($course_record = $DB->get_record("course", array("id" => "$course_module->course"))) {
     											require_login($course_module->course); // needed to setup proper $COURSE
-	       		        						$context_course = get_context_instance(CONTEXT_COURSE, $course_module->course);
+											    $context_course = context_course::instance($course_module->course);
                									require_capability('moodle/course:manageactivities', $context_course);
 
-			     								$that_instance = $DB->get_record("referentiel", array("id" => "$course_module->instance"));
-							     				if 	($that_instance){
-                                                    if (function_exists('course_delete_module')){  // Moodle v 2.5 et suivantes
+			     								if ($that_instance = $DB->get_record("referentiel", array("id" => "$course_module->instance"))){
+							     				    if (function_exists('course_delete_module')){  // Moodle v 2.5 et suivantes
                                                         if (course_delete_module($course_module->id)) {
                                                             if (delete_mod_from_section($course_module->id, "$course_module->section")) {
                                                                 rebuild_course_cache($course_record->id);
@@ -146,12 +152,12 @@ $isauthor=$occurrence_object->is_author();
 									                    }
                                                     }
 
-								                }
-								                // Supprimer l'instance
-								                if (!referentiel_delete_instance($that_instance->id)) {
-                                					$record_course = $DB->get_record('course', array('id'=> $that_instance->course));
-                                					$msg.= "<br />".get_string('instance','referentiel')." $that_instance->name (#$that_instance->id) ".get_string('course')." $record_course->fullname ($record_course->shortname) ".get_string('not_deleted', 'referentiel')."\n";
-            			    		            }
+                        							// Supprimer l'instance
+								                	if (!referentiel_delete_instance($that_instance->id)) {
+                                						$record_course = $DB->get_record('course', array('id'=> $that_instance->course));
+	                                					$msg.= "<br />".get_string('instance','referentiel')." $that_instance->name (#$that_instance->id) ".get_string('course')." $record_course->fullname ($record_course->shortname) ".get_string('not_deleted', 'referentiel')."\n";
+    	        			    		            }
+												}
 							            	}
 						            	}
 					            	}

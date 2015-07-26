@@ -622,6 +622,233 @@ $t_users_lastname=array();
             $baseurl3 ='';
         }
         // alphabetic selection alphabetique
+        $s.='<div style="text-align:center;">'."\n";
+        $s.= '<a class="select" href="'.$baseurl.$baseurl1.$baseurl2.$baseurl3.'">'.get_string('tous', 'referentiel').'</a> '."\n";
+        foreach ($alpha as $letter){
+            if (!empty($t_alphabetique[$letter])){
+                $s.= '<a class="select" href="'.$baseurl.$letter.$baseurl1.$t_id_alphabetique[$letter].$baseurl2.$baseurl3.'">'.$letter.'</a> '."\n";
+            }
+            else{
+                $s.=''.$letter.' '."\n";
+            }
+        }
+        $s.='</div><br />'."\n";
+
+        //$s.='<div align="center">'."\n";
+
+		// How many boxes ?
+		$size=4;
+
+		$n=count($t_users);
+        if ($n>=48){
+			$l=$maxcol;
+			$c=(int) ($n / $l);
+			$size = 8;
+		}
+        elseif ($n>=18){
+			$l=$maxcol;
+			$c=(int) ($n / $l);
+			$size = 6;
+		}
+        elseif ($n>=6){
+			$l=$maxcol-2;
+			$c=(int) ($n / $l);
+        }
+		else{
+			$l=1;
+			$c=(int) ($n);
+		}
+
+		if ($c*$l==$n){
+            $reste=false;
+        }
+        else{
+            $reste=true;
+        }
+		$i=0;
+
+		echo '<table><tr><td>'."\n";
+		for ($j=0; $j<$l; $j++){
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
+			$s.='<form name="form" method="post" action="activite.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
+
+			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
+
+            if ($j<$l-1){
+                if (($userid=='') || ($userid==0)){
+                    $s.='<option value="0" selected="selected">'.get_string('choisir', 'referentiel').'</option>'."\n";
+                }
+                else{
+                    $s.='<option value="0">'.get_string('choisir', 'referentiel').'</option>'."\n";
+                }
+			}
+			else{
+			   if ($reste){
+                    if (($userid=='') || ($userid==0)){
+                        $s.='<option value="0" selected="selected">'.get_string('choisir', 'referentiel').'</option>'."\n";
+                    }
+                    else{
+				      $s.='<option value="0">'.get_string('choisir', 'referentiel').'</option>'."\n";
+                    }
+                }
+                else{
+                    if (($userid=='') || ($userid==0)){
+                        $s.='<option value="0" selected="selected">'.get_string('tous', 'referentiel').'</option>'."\n";
+                    }
+                    else{
+				      $s.='<option value="0">'.get_string('tous', 'referentiel').'</option>'."\n";
+                    }
+                }
+			}
+
+			for ($k=0; $k<$c; $k++){
+				if ($userid==$t_users[$i]['id']){
+					$s.='<option value="'.$t_users[$i]['id'].'" selected="selected">'.referentiel_nom_prenom($t_users[$i]['lastname'], $t_users[$i]['firstname']).'</option>'."\n";
+				}
+				else{
+					$s.='<option value="'.$t_users[$i]['id'].'">'.referentiel_nom_prenom($t_users[$i]['lastname'], $t_users[$i]['firstname']).'</option>'."\n";
+				}
+				$i++;
+			}
+			$s.='</select>'."\n";
+            if (!empty($data_f)){
+                $s.='
+<input type="hidden" name="f_auteur" value="'.$data_f->f_auteur.'" />
+<input type="hidden" name="f_validation" value="'.$data_f->f_validation.'" />
+<input type="hidden" name="f_referent" value="'.$data_f->f_referent.'" />
+<input type="hidden" name="f_date_modif" value="'.$data_f->f_date_modif.'" />
+<input type="hidden" name="f_date_modif_student" value="'.$data_f->f_date_modif_student.'" />
+';
+            }
+			$s.='<br /><input type="submit" value="'.get_string('select', 'referentiel').'" />'."\n";;
+			$s.='
+<!-- accompagnement -->
+<input type="hidden" name="select_acc"        value="'.$select_acc.'" />
+<!-- These hidden variables are always the same -->
+<input type="hidden" name="courseid"        value="'.$course->id.'" />
+<input type="hidden" name="sesskey"     value="'.sesskey().'" />
+<input type="hidden" name="mode"          value="'.$mode.'" />'."\n";
+			$s.='</form>'."\n";
+			$s.='</div>'."\n";
+        }
+
+        if ($i<$n){
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
+            $s.='<form name="form" method="post" action="activite.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
+            $s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
+    		if (($userid=='') || ($userid==0)){
+	       			$s.='<option value="0" selected="selected">'.get_string('tous', 'referentiel').'</option>'."\n";
+		    }
+            else{
+				    $s.='<option value="0">'.get_string('tous', 'referentiel').'</option>'."\n";
+            }
+
+            while ($i <$n){
+                if ($userid==$t_users[$i]['id']){
+                    $s.='<option value="'.$t_users[$i]['id'].'" selected="selected">'.referentiel_nom_prenom($t_users[$i]['lastname'], $t_users[$i]['firstname']).'</option>'."\n";
+                }
+				else{
+					$s.='<option value="'.$t_users[$i]['id'].'">'.referentiel_nom_prenom($t_users[$i]['lastname'], $t_users[$i]['firstname']).'</option>'."\n";
+				}
+				$i++;
+			}
+			$s.='</select>'."\n";
+            if (!empty($data_f)){
+                $s.='
+<input type="hidden" name="f_auteur" value="'.$data_f->f_auteur.'" />
+<input type="hidden" name="f_validation" value="'.$data_f->f_validation.'" />
+<input type="hidden" name="f_referent" value="'.$data_f->f_referent.'" />
+<input type="hidden" name="f_date_modif" value="'.$data_f->f_date_modif.'" />
+<input type="hidden" name="f_date_modif_student" value="'.$data_f->f_date_modif_student.'" />
+';
+            }
+
+			$s.='<br /><input type="submit" value="'.get_string('select', 'referentiel').'" />'."\n";;
+			$s.='
+<!-- accompagnement -->
+<input type="hidden" name="select_acc" value="'.$select_acc.'" />
+<!-- These hidden variables are always the same -->
+<input type="hidden" name="select_acc" value="'.$select_acc.'" />
+<input type="hidden" name="courseid"        value="'.$course->id.'" />
+<input type="hidden" name="sesskey"     value="'.sesskey().'" />
+<input type="hidden" name="mode"          value="'.$mode.'" />'."\n";
+            $s.='</form>'."\n";
+            $s.='</div>'."\n";
+		}
+        //$s.='</div>'."\n";
+    	//
+        $s.='</td></tr></table>'."\n";
+	}
+
+
+	return $s;
+}
+
+
+/**
+ * Display a list of boxes for select a user
+ * Uses constants MAXBOITESSELECTION defined in lib.php
+ *
+ *
+ **/
+
+// ----------------------
+function referentiel_select_users_activite_2_tab($record_users, $userid=0, $select_acc=0, $mode='listactivity', $initiales='', $data_f=NULL){
+// SELECT INPUT  ALPHABETIQUE
+global $CFG;
+global $cm;
+global $course;
+$maxcol=MAXBOITESSELECTION;
+$s="";
+$t_users=array();
+$t_users_id=array();
+$t_users_firstname=array();
+$t_users_lastname=array();
+
+    if ($record_users){
+		// $s.='<option value="0" selected="selected">'.get_string('choisir', 'referentiel').'</option>'."\n";
+	    foreach ($record_users as $record_u) {   // liste d'id users
+			//
+			if (!empty($record_u->userid)){
+				$firstname= referentiel_get_user_prenom($record_u->userid);
+                $lastname = referentiel_get_user_nom($record_u->userid);
+                $initiale = mb_strtoupper(substr($lastname,0,1),'UTF-8');
+
+			    $t_users[]= array('id' => $record_u->userid, 'lastname' => $lastname, 'firstname' => $firstname, 'initiale' => $initiale);
+			    $t_users_id[]= $record_u->userid;
+
+			    $t_users_lastname[] = $lastname;
+			    $t_users_firstname[]= $firstname;
+            }
+		}
+
+		array_multisort($t_users_lastname, SORT_ASC, $t_users_firstname, SORT_ASC, $t_users);
+        $alpha  = explode(',', get_string('alphabet', 'referentiel'));
+        foreach ($t_users as $an_user){
+            if (!empty($an_user)){
+                // print_object($an_user);
+                $t_alphabetique[$an_user['initiale']][]=$an_user['id'].",".$an_user['firstname'].",".$an_user['lastname'];
+                if (!isset($t_id_alphabetique[$an_user['initiale']])){
+                    $t_id_alphabetique[$an_user['initiale']]=$an_user['id'];
+                }
+                else{
+                    $t_id_alphabetique[$an_user['initiale']].='_'.$an_user['id'];
+                }
+            }
+        }
+
+        // Should use this variable so that we don't break stuff every time a variable is added or changed.
+        $baseurl = $CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;action=selectuser&amp;initiale=';
+        $baseurl1 ='&amp;userids=';
+        $baseurl2 ='&amp;select_acc='.$select_acc.'&amp;mode='.$mode.'&amp;courseid='.$course->id.'&amp;sesskey='.sesskey();
+
+        if (!empty($data_f)){
+            $baseurl3='&amp;f_auteur='.$data_f->f_auteur.'&amp;f_referent='.$data_f->f_referent.'&amp;f_validation='.$data_f->f_validation.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student;
+        }
+        else{
+            $baseurl3 ='';
+        }
+        // alphabetic selection alphabetique
         $s.='<div align="center">'."\n";
         $s.= '<a class="select" href="'.$baseurl.$baseurl1.$baseurl2.$baseurl3.'">'.get_string('tous', 'referentiel').'</a> '."\n";
         foreach ($alpha as $letter){
@@ -783,7 +1010,6 @@ $t_users_lastname=array();
 
 	return $s;
 }
-
 
 
 

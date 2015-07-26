@@ -996,6 +996,7 @@ $sql='';
 		// boites de selection
 		referentiel_boites_selections($context, $mode, $cm, $course, $referentiel, $initiale, $userids, $userid_filtre, $gusers, $data_f, $select_acc);
 
+		echo '<div>'."\n";
 		if (!empty($activite_id)){ // affichage de l'activite
             $bareme=NULL;
 			if ($CFG->referentiel_use_scale){
@@ -1013,22 +1014,24 @@ $sql='';
 			if ($records_id_users){
 				// Afficher
 				// ESPACE DEDIE A L'INSERTION AJAX
-echo '<div align="center">';
-if ($pagination){
-	echo '<a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=0&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'">'.get_string('pagination_no','referentiel').'</a> &nbsp; &nbsp;
+
+				echo '<br />'."\n";
+				echo '<div style="text-align:center;">'."\n";;
+
+				if ($pagination){
+					echo '<a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=0&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'">'.get_string('pagination_no','referentiel').'</a> &nbsp; &nbsp;
 <a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=1&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'"><b>'.get_string('pagination_yes','referentiel').'</b></a>'."\n";
-}
-else{
-	echo '<a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=0&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'"><b>'.get_string('pagination_no','referentiel').'</b></a> &nbsp; &nbsp;
+				}
+				else{
+					echo '<a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=0&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'"><b>'.get_string('pagination_no','referentiel').'</b></a> &nbsp; &nbsp;
 <a href="'.$CFG->wwwroot.'/mod/referentiel/activite.php?id='.$cm->id.'&amp;pagination=1&amp;select_acc='.$select_acc.'&amp;userid='.$userid.'&amp;mode='.$mode.'&amp;f_auteur='.$data_f->f_auteur.'&amp;f_validation='.$data_f->f_validation.'&amp;f_referent='.$data_f->f_referent.'&amp;f_date_modif='.$data_f->f_date_modif.'&amp;f_date_modif_student='.$data_f->f_date_modif_student.'&amp;sesskey='.sesskey().'">'.get_string('pagination_yes','referentiel').'</a>'."\n";
-}
-echo '</div>';
+				}
+
+				echo '</div>';
 ?>
-<!-- Espace insertion -->
-<div id="pagin" class="pagination">
-</div>
-<div id="<?php echo $divid;?>">
-</div>
+				<!-- Espace insertion -->
+<div id="pagin" class="pagination"></div>
+<div id="<?php echo $divid;?>"></div>
 <?php
 				echo '<br /><br />'."\n";
 				if (!empty($onclick)){
@@ -1040,6 +1043,7 @@ echo '</div>';
 				}
 			}
 		}
+		echo '</div>'."\n";
 	}
 
     echo $OUTPUT->footer();

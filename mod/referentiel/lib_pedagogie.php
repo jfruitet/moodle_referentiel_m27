@@ -600,9 +600,6 @@ $s="";
 $t_users=array();
 
 	if ($record_users){
-        $s.='<div align="center">'."\n";
-		$s.='<table class="selection">'."\n";
-		$s.='<tr valign="top">';
         foreach ($record_users as $record_u) {   // liste d'id users
 			// 
 			$t_users[]= array('id' => $record_u->userid, 'lastname' => referentiel_get_user_nom($record_u->userid), 'firstname' => referentiel_get_user_prenom($record_u->userid));
@@ -643,9 +640,9 @@ $t_users=array();
             $reste=true;
         }
 		$i=0;
-		
+		$s.='<table class="selection"><tr valign="top"><td>';
 		for ($j=0; $j<$l; $j++){
-			$s.='<td>';
+   			$s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			$s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;action=selectuser">'."\n";
 			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 			
@@ -697,11 +694,11 @@ $t_users=array();
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
-			$s.='</td>';
+			$s.='</div>';
 		}
 		
 		if ($i<$n){
-			$s.='<td>';
+   			$s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			$s.='<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;action=selectuser">'."\n";	
 			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
 			if (($userid=='') || ($userid==0)){
@@ -731,10 +728,10 @@ $t_users=array();
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
-			$s.='</td>';
+			$s.='</div>';
 		}
-		$s.='</tr></table>'."\n";
-		$s.='</div>'."\n";
+		$s.='</td></tr></table>'."\n";
+
 	}
 	
 	return $s;

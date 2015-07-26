@@ -551,12 +551,11 @@ $appli="etudiant.php";
         }
 		$i=0;
 
-        $s.='<div align="center">'."\n";
-		$s.='<table class="selection">'."\n";
-        $s.='<tr valign="top">'."\n";
+
+		$s.='<table class="selection"><tr valign="top"><td>'."\n";
 
 		for ($j=0; $j<$l; $j++){
-			$s.='<td>';
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			if (!empty($userid)){
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;userid='.$userid.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
@@ -615,11 +614,11 @@ $appli="etudiant.php";
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
 
-            $s.='</td>';
+            $s.='</div>';
         }
 
 		if ($i<$n){
-			$s.='<td>';
+      		$s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			if (!empty($userid)){
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;userid='.$userid.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
@@ -658,10 +657,9 @@ $appli="etudiant.php";
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
-			$s.='</td>';
+			$s.='</div>';
 		}
-		$s.='</tr></table>'."\n";
-		$s.='</div>'."\n";
+		$s.='</td></tr></table>'."\n";
 	}
 	return $s;
 }

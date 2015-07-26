@@ -527,7 +527,7 @@ $t_users=array();
         // http://localhost/moodle/mod/referentiel/certificat.php?d=1&amp;mode=editcertif&amp;sesskey=yvj43gJOTd?id=2&amp;select_acc=0&amp;action=selectuser&amp;initiale=&amp;userids=&amp;select_all=0&amp;mode=editcertif&amp;course=2&amp;sesskey=yvj43gJOTd
 
         // selection alphabetique
-        $s.='<div align="center">'."\n";
+        $s.='<div style="text-align:center;">'."\n";
 
         $s.= '<a class="select" href="'.$baseurl.''.$baseurl1.''.$baseurl2.$baseurl3.'"><b>'.get_string('tous', 'referentiel').'</b></a> '."\n";
         foreach ($alpha as $letter){
@@ -574,12 +574,10 @@ $t_users=array();
         }
 		$i=0;
 
-        $s.='<div align="center">'."\n";
-		$s.='<table class="selection">'."\n";
-		$s.='<tr valign="top">';
-
+		$s.='<table class="selection">';
+		$s.='<tr valign="top"><td>'."\n";
 		for ($j=0; $j<$l; $j++){
-			$s.='<td>';
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			if (!empty($userid)){
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;userid='.$userid.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
@@ -638,11 +636,11 @@ $t_users=array();
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
 
-            $s.='</td>';
+            $s.='</div>';
         }
 
 		if ($i<$n){
-			$s.='<td>';
+   			$s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			if (!empty($userid)){
                 $s.="\n".'<form name="form" method="post" action="'.$appli.'?id='.$cm->id.'&amp;userid='.$userid.'&amp;select_acc='.$select_acc.'&amp;action=selectuser">'."\n";
             }
@@ -681,10 +679,9 @@ $t_users=array();
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />
 </form>'."\n";
-			$s.='</td>';
+			$s.='</div>';
 		}
-		$s.='</tr></table>'."\n";
-		$s.='</div>'."\n";
+		$s.='</td></tr></table>'."\n";
 	}
 
 	return $s;

@@ -983,10 +983,9 @@ $t_users=array();
         }
 		$i=0;
 
-		$s.='<table class="selection">'."\n";
-        $s.='<tr valign="top">'."\n";
+		$s.='<table class="selection"><tr valign="top"><td>'."\n";
 		for ($j=0; $j<$l; $j++){
-            $s.='<td>'."\n";
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
 			$s.="\n".'<form name="form" method="post" action="accompagnement.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
 
 			$s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
@@ -1039,11 +1038,11 @@ $t_users=array();
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />'."\n";
 			$s.='</form>'."\n";
-			$s.='</td>'."\n";
+			$s.='</div>'."\n";
         }
 
         if ($i<$n){
-            $s.='<td>';
+            $s.='<div style="max-width:250px;padding: 2px 2px 2px 2px;float:left;">'."\n";
             $s.='<form name="form" method="post" action="accompagnement.php?id='.$cm->id.'&amp;action=selectuser">'."\n";
             $s.='<select name="userid" id="userid" size="'.$size.'">'."\n";
     		if (($userid=='') || ($userid==0)){
@@ -1075,10 +1074,9 @@ $t_users=array();
 <input type="hidden" name="sesskey"     value="'.sesskey().'" />
 <input type="hidden" name="mode"          value="'.$mode.'" />'."\n";
             $s.='</form>'."\n";
-			$s.='</td>';
+			$s.='</div>';
 		}
-        $s.='</tr></table>'."\n";
-    $s.='</div>'."\n";
+        $s.='</td></tr></table>'."\n";
 	}
 	return $s;
 }

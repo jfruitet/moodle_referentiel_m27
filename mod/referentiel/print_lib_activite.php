@@ -1818,7 +1818,7 @@ global $t_item_description_competence;
 		$s3='"';
 		$s4=' /><label for="code_item_';
 		$s5='">';
-		$s6='</label> '."\n";
+		$s6='</label> &nbsp; &nbsp; '."\n";
 	}
 	else{
 		$s1='<input type="checkbox" id="code_item_'.$id_activite.'_';
@@ -1831,7 +1831,7 @@ global $t_item_description_competence;
 			$s4=' /><label for="code_item_'.$id_activite.'_';
       	}
 		$s5='">';
-		$s6='</label> '."\n";
+		$s6='</label> &nbsp; &nbsp; '."\n";
 	}
 
 	$checked=' checked="checked"';
@@ -2069,7 +2069,7 @@ function referentiel_selection_liste_codes_item_competence($separateur, $liste){
 	$s3='" />';
 	$s4='<label for="code_item_';
 	$s5='">';
-	$s6='</label> '."\n";
+	$s6='</label>';
 	$tl=explode($separateur, $liste);
 	if (!isset($t_item_description_competence) || (!$t_item_description_competence)){
 		$ne=count($tl);
@@ -2077,7 +2077,7 @@ function referentiel_selection_liste_codes_item_competence($separateur, $liste){
 		for ($i=0; $i<$ne;$i++){
 			if (trim($tl[$i])!=""){
 				//$nl.=$s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.$tl[$i].$s6;
-				echo $s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.$tl[$i].$s6;
+				echo $s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.$tl[$i].$s6.' &nbsp; &nbsp; '."\n";
 			}
 		}
 	}
@@ -2087,7 +2087,7 @@ function referentiel_selection_liste_codes_item_competence($separateur, $liste){
 		for ($i=0; $i<$ne;$i++){
 			if (trim($tl[$i])!=""){
 				// $nl.=$s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item($separateur, $tl[$i]).$s6;
-				echo $s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item($separateur, $tl[$i]).$s6;
+				echo $s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item($separateur, $tl[$i]).$s6.' &nbsp; &nbsp; '."\n";
 			}
 		}
 	}
@@ -2163,12 +2163,12 @@ echo"<br />EXIT: 98\n";
 exit;
 */
             $nl='';
-            $s1=' <input type="checkbox" id="code_item_';
+            $s1=' &nbsp; &nbsp; <input type="checkbox" id="code_item_';
             $s2='" name="code_item[]" value="';
             $s3='" />';
             $s4='<label for="code_item_';
             $s5='">';
-            $s6='</label> '."\n";
+            $s6='</label>';
 
             $ne=count($t_item_code);
             $select='';
@@ -2208,7 +2208,7 @@ exit;
                 // item
                 if (trim($t_item_code[$i])!=""){
                     // $nl.=$s1.$i.$s2.$tl[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item($separateur, $tl[$i]).$s6;
-                    $s.= $s1.$i.$s2.$t_item_code[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item('/', $t_item_code[$i]).$s6;
+                    $s.= $s1.$i.$s2.$t_item_code[$i].$s3.$s4.$i.$s5.referentiel_affiche_overlib_un_item('/', $t_item_code[$i]).$s6.' &nbsp; &nbsp; '."\n";
                 }
 
                 $i++;
@@ -2338,7 +2338,7 @@ $s='';
             $s4=' />';
             $s5='<label for="code_item_';
             $s6='">';
-            $s7='</label> '."\n";
+            $s7='</label>';
 	}
 	else{
             $s1='<input type="checkbox" id="code_item_'.$id_activite.'_';
@@ -2352,7 +2352,7 @@ $s='';
             }
             $s5='<label for="code_item_'.$id_activite.'_';
 	   	    $s6='">';
-		    $s7='</label> '."\n";
+		    $s7='</label>';
 	}
 
 
@@ -2430,14 +2430,14 @@ print_object($t_item_code);
 			$code_search=strtr($code, '.', '_');
 			// if (eregi($code_search, $liste_saisie)){
 			if (stristr($liste_saisie, $code_search)){
-				$s.= $s1.$i.$s2.$code.$s3.$checked.$s4.$s5.$i.$s6.$le_code.$s7;
+				$s.= $s1.$i.$s2.$code.$s3.$checked.$s4.$s5.$i.$s6.$le_code.$s7.' &nbsp; &nbsp; '."\n";
 			}
 			else {
 				if (!$is_task){
-					$s.=$s1.$i.$s2.$code.$s3.$s4.$s5.$i.$s6.$le_code.$s7;
+					$s.=$s1.$i.$s2.$code.$s3.$s4.$s5.$i.$s6.$le_code.$s7.' &nbsp; &nbsp; '."\n";
 				}
 				else{
-					$s.=' &nbsp; '. $s5.$i.$s6.$le_code.$s7;
+					$s.=' &nbsp; '. $s5.$i.$s6.$le_code.$s7.' &nbsp; &nbsp; '."\n";
 				}
 			}
 		}

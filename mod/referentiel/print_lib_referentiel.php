@@ -922,7 +922,7 @@ $tempreinte=explode($separateur,$listeempreintes);
 			if ($okpoids){
 			 $p="<span class='poids'>".$tpoids[$i]."</span>";
 			}
-			$e="<span class='empreinte'><i>".$tempreinte[$i]."</i></span>";
+			$e="<span class='empreinte'><i>".$tempreinte[$i]."</i></span> ";
             if ($okpoids){
                 $s.=$c.$p.$e;
             }

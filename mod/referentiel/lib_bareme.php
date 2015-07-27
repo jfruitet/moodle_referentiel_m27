@@ -1028,7 +1028,7 @@ $tlabels=array();
 */            
             $s5='<label for="code_item_';
             $s6='">';
-            $s7='</label> '."\n";
+            $s7='</label> &nbsp; &nbsp; '."\n";
 		}
 		else{
 /*
@@ -1044,7 +1044,7 @@ $tlabels=array();
 */            
             $s5='<label for="code_item_'.$id_activite.'_';
 	   	    $s6='">';
-		    $s7='</label> '."\n";
+		    $s7='</label> &nbsp; &nbsp;'."\n";
 		}
 
 

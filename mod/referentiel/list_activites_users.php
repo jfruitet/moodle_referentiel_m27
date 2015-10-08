@@ -161,8 +161,12 @@ $pagination   = optional_param('pagination', 1, PARAM_INT);
     //echo "<br>DEBUG :: list_activites_users.php :: 697 :: Params<br />\n";
 	//print_object($params);
 	$deb= ($pageNo-1) * $perPage;
-	$fin=  $deb + $perPage;
-	$limit = ' LIMIT '.$deb.', '.$fin;
+
+	// Modif PostGres
+    //$fin=  $deb + $perPage;
+	//$limit = ' LIMIT '.$deb.', '.$fin;
+    $limit = ' LIMIT '.$perPage.' OFFSET '.$deb;
+
     $sql.=$limit;
     // echo "<br />DEBUG :: lib_activites_users.php :: 167 :: Length : ".strlen($sql)." <br /> ".htmlspecialchars($sql)."\n";
 	//exit;

@@ -67,7 +67,7 @@
 		}
 		$url->param('d', $d);
 	}
-	elseif ($id) {
+	elseif ($id) {   // Course module id
         if (! $cm = get_coursemodule_from_id('referentiel', $id)) {
         	print_error('Course Module ID was incorrect');
         }

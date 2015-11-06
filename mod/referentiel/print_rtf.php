@@ -10,13 +10,17 @@
 // JF
      
 // traitement des chaines de caracteres
-require_once('core_text.php');
+//require_once('core_text.php');
+require_once('textlib.php');
 
 // RTF    
-require_once('./rtf/Rtf.php');
+//require_once('./rtf/Rtf.php');
+require_once('./rtflite/PHPRtfLite.php');
 
+// registers PHPRtfLite autoloader (spl)
+PHPRtfLite::registerAutoloader();
 
-class RTFClass extends RTF {
+class RTFClass extends PHPRtfLite {
 
   var $font= NULL;
   var $paragraphe= NULL;
@@ -26,11 +30,11 @@ class RTFClass extends RTF {
   
   function SetFont($police, $taille)
   {
-    $this->font=new Font($taille, $police);
+    $this->font=new PHPRtfLite_Font($taille, $police);
   }
 
   function Write($indentation, $texte){
-    $this->paragraphe= new ParFormat();
+    $this->paragraphe= new PHPRtfLite_ParFormat(PHPRtfLite_ParFormat::TEXT_ALIGN_LEFT);
     $this->paragraphe->setSpaceBefore(3);
     $this->paragraphe->setSpaceAfter(8);
     $this->paragraphe->setIndentRight(5);
@@ -57,25 +61,33 @@ class RTFClass extends RTF {
       $colmax=1;
     }
     
-    $this->table = new Table($this);
-    $this->table = $this->section->addTable();
+    $this->section = $this->addSection();
+	$this->table = $this->section->addTable();
+
     for ($i=0; $i<$nblig; $i++){
-      $this->table ->addRows($nbt);
+      $this->table->addRows($nbt);
       for ($j=0; $j<$colmax; $j++){        
         $this->table->addColumn($colWidth);
       }
     }
     
     //borders
-    // $this->table->setBordersOfCells(new BorderFormat(1, '#555555'), 1, 1, $nblig*$nbt, $colmax);
+    $border = new PHPRtfLite_Border( $this,
+		new PHPRtfLite_Border_Format(1, '#555555'),  // left border
+		new PHPRtfLite_Border_Format(1, '#555555'),  // top border
+		new PHPRtfLite_Border_Format(1, '#555555'),  // rightborder
+		new PHPRtfLite_Border_Format(1, '#555555')); // bottom
+
+	$this->table->setBorderForCellRange($border, 1, 1, $nblig*$nbt, $colmax);
 
     for ($i=0; $i<$nblig; $i++){
       for ($j=0; $j<$nbcol; $j++){        
         $lig=$i*$nbt+(int)($j/10)+1;        
-        $col=($j%10)+1;      
-        $this->table->writeToCell($lig, $col, $textArray[$i][$j], new Font($taille,$police), new ParFormat('center'));
- 	      $this->table->setBordersOfCells(new BorderFormat(1, '#000000'), $lig, $col);
-  	    $this->table->setBackgroundOfCells('#ffffdd', $lig, $col);        
+        $col=($j%10)+1;
+		//$cell = $table->getCell($lig, $col);
+      	//$cell->setBorder(new PHPRtfLite_Border_Format(1, '#000000'), $lig, $col);
+	    $this->table->writeToCell($lig, $col, $textArray[$i][$j], new PHPRtfLite_Font($taille,$police), new PHPRtfLite_ParFormat(PHPRtfLite_ParFormat::TEXT_ALIGN_CENTER));
+  	    // $this->table->cellsetBorder('#ffffdd', $lig, $col);
       }
     }
   }
@@ -567,29 +579,29 @@ function rtf_write_domaine( $domaine ) {
      * @return string xml segment
      */
 function rtf_write_referentiel( $referentiel_instance, $referentiel_referentiel, $param ) {
-    global $CFG;
-		global $rtf;
-		global $image_logo;
-		$ok_saut_page=false;
+	global $CFG;
+	global $rtf;
+	global $image_logo;
+	$ok_saut_page=false;
 		
-		if (($referentiel_instance) && ($referentiel_referentiel)) {
-      $name = no_recode(trim($referentiel_referentiel->name));
-      $code = no_recode(trim($referentiel_referentiel->code_referentiel));
-			$description = no_recode(trim($referentiel_referentiel->description_referentiel));
+	if (($referentiel_instance) && ($referentiel_referentiel)) {
+		$name = no_recode(trim($referentiel_referentiel->name));
+		$code = no_recode(trim($referentiel_referentiel->code_referentiel));
+		$description = no_recode(trim(strip_tags($referentiel_referentiel->description_referentiel)));
 			
-			$id = $referentiel_instance->id;
-      $name_instance = no_recode(trim($referentiel_instance->name));
-      $description_instance = no_recode(trim($referentiel_instance->description_instance));
-      $label_domaine = no_recode(trim($referentiel_instance->label_domaine));
-      $label_competence = no_recode(trim($referentiel_instance->label_competence));
-      $label_item = no_recode(trim($referentiel_instance->label_item));
-      $date_instance = $referentiel_instance->date_instance;
-      $course = $referentiel_instance->course;
-      $ref_referentiel = $referentiel_instance->ref_referentiel;
-			$visible = $referentiel_instance->visible;
+		$id = $referentiel_instance->id;
+      	$name_instance = no_recode(trim($referentiel_instance->name));
+      	$description_instance = no_recode(trim(strip_tags($referentiel_instance->description_instance)));
+      	$label_domaine = no_recode(trim($referentiel_instance->label_domaine));
+      	$label_competence = no_recode(trim($referentiel_instance->label_competence));
+      	$label_item = no_recode(trim($referentiel_instance->label_item));
+      	$date_instance = $referentiel_instance->date_instance;
+      	$course = $referentiel_instance->course;
+      	$ref_referentiel = $referentiel_instance->ref_referentiel;
+		$visible = $referentiel_instance->visible;
       
       
-			$rtf->AddPage();
+		$rtf->AddPage();
 			/*
       $rtf->SetAutoPageBreak(1, 27.0);     
 			$rtf->SetCol(0);
@@ -762,7 +774,7 @@ function rtf_write_certificat( $record, $referentiel_instance, $referentiel_refe
 						$rtf->Write(0.0,no_recode($commentaire_certificat));
 
 						$rtf->SetFont('Arial',10);
-                        $rtf->Write(0.0,'<b>'.no_recode(get_string('$synthese_certificat','referentiel')).' : </b>');
+                        $rtf->Write(0.0,'<b>'.no_recode(get_string('synthese_certificat','referentiel')).' : </b>');
 						$rtf->SetFont('Arial',10);
                         $rtf->Write(0.0,no_recode($synthese_certificat));
 					}
@@ -803,7 +815,7 @@ function rtf_write_certification($referentiel_instance, $referentiel_referentiel
 			if (isset($referentiel_instance->ref_referentiel) && ($referentiel_instance->ref_referentiel>0)){
 				// les empreintes
 				$liste_empreintes = referentiel_purge_dernier_separateur(referentiel_get_liste_empreintes_competence($referentiel_instance->ref_referentiel), '/');
-    		$liste_poids=referentiel_purge_dernier_separateur(referentiel_get_liste_poids($referentiel_instance->ref_referentiel), '|');
+    			$liste_poids=referentiel_purge_dernier_separateur(referentiel_get_liste_poids($referentiel_instance->ref_referentiel), '|');
 				
         if ($userid>0){
 					$record = referentiel_get_certificat_user($userid, $referentiel_instance->ref_referentiel);

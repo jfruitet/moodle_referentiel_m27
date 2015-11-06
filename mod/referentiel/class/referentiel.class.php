@@ -736,7 +736,6 @@ class referentiel {
         require_once('onglets.php');
         $tab_onglets = new Onglets($this->context, $this->referentiel, $this->referentiel_referentiel, $this->cm, $this->course, $currenttab, $select_acc, $data_filtre);
         $tab_onglets->display();
-        echo '<br />'."\n";
     }
     
     /**

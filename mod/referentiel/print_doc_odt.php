@@ -7,7 +7,8 @@
 
      
 // traitement des chaines de caracteres
-require_once('core_text.php');
+//require_once('core_text.php');
+require_once('textlib.php');
 
 // ooffice maison
 require_once('ooffice.class.php');

@@ -575,7 +575,7 @@
         // TRAITEMENT SPECIAL PDF / RTF / DOC / ODT
         if ($print=="rtf"){
                 require_once("print_rtf.php");
-			
+
 			    // ************************** INITIALISATION RTF *********************
                 $file_logo=referentiel_get_logo($referentiel_referentiel);
                 if ($file_logo!=""){
@@ -593,7 +593,10 @@
                 $puce =  chr(149);
 
                 rtf_write_certification($referentiel, $referentiel_referentiel, $userid, $param, $records_certificats);
-                $rtf->sendRtf($nom_fichier);
+				// DEBUG
+				//echo "<br />DEBUG !! 597 ::  NOM FICHIER :  $nom_fichier\n";
+				//exit;
+				$rtf->sendRtf($nom_fichier);
                 exit;
         }
         elseif ($print=="pdf"){
@@ -616,7 +619,7 @@
                     $copyright = chr(169);
                     $registered ="�";
                     $puce =  chr(149);                    
-                    $Refpdf->AliasNbPages();
+                    $Refpdf->getAliasNbPages();
                      
                     pdf_write_certification($referentiel, $referentiel_referentiel, $userid, $param, $records_certificats);
                     $Refpdf->Output();

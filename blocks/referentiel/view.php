@@ -53,9 +53,6 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 $contextcourse = context_course::instance($course->id);
 $context = context_block::instance($blockid);
 
-//$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
-//$context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 require_login($course);
 
 $params=array("blockid"=>$blockid, "courseid"=>$courseid, "occurrenceid"=>$occurrenceid);

@@ -62,9 +62,6 @@ $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
 $viewurl = new moodle_url('/blocks/referentiel/view.php', array('blockid'=>$blockid, 'courseid'=>$courseid, 'occurrenceid'=>$occurrenceid));
 
 require_login($course);
-
-// $context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 $currenttab = $mode;
 
 // Traitements

@@ -57,8 +57,6 @@ $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
 
 require_login($course);
 
-// $context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 $currenttab = 'edit';
 
 // Traitements
@@ -69,18 +67,6 @@ $currenttab = 'edit';
 	//exit;
 	$role=$occurrence_object->roles();
     $isadmin=$role->is_admin;
-
-/*
-	if ($isauthor){
-		echo "<br />DEBUG :: edit.php :: 80 :: ISAUTHOR : true <br />ROLES\n";
-	}
-	else{
-		echo "<br />DEBUG :: edit.php :: 80 :: ISAUTHOR : false <br />ROLES\n";
-	}
-
-	print_object($role);
-    echo "<br />\n";
-*/
 
 	// affichage
 

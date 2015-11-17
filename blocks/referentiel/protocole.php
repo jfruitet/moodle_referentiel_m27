@@ -62,8 +62,6 @@ $baseurl = new moodle_url('/blocks/referentiel/protocole.php', array('blockid'=>
 
 require_login($course);
 
-// $context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 $currenttab = $mode;
 // Occurrence
 $params=array("blockid"=>$blockid, "courseid"=>$courseid, "occurrenceid"=>$occurrenceid);

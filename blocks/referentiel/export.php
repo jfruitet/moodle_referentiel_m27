@@ -71,10 +71,6 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 
 $contextcourse = context_course::instance($course->id);
 $context = context_block::instance($blockid);
-
-//$contextcourse = get_context_instance(CONTEXT_COURSE, $course->id);
-//$context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
 $viewurl = new moodle_url('/blocks/referentiel/view.php', array('blockid'=>$blockid, 'courseid'=>$courseid, 'occurrenceid'=>$occurrenceid));
 

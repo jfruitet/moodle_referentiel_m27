@@ -77,8 +77,6 @@ $baseurl = new moodle_url('/blocks/referentiel/bareme.php', array('blockid'=>$bl
 
 require_login($course);
 
-// $context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 // Traitements
 	// Occurrence
 	$params=array("blockid"=>$blockid, "courseid"=>$courseid, "occurrenceid"=>$occurrenceid);

@@ -60,10 +60,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
 
 require_login($course);
-
 $context = context_block::instance($blockid);
-//$context = get_context_instance(CONTEXT_BLOCK, $blockid);
-
 require_capability('mod/referentiel:import', $context);
 
 // Traitements

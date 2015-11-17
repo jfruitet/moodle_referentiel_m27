@@ -77,7 +77,8 @@ require_capability('mod/referentiel:export', $context);
 if (empty($exportfilename)) {
 	$exportfilename = "outcomes_".referentiel_default_export_filename($occurrence_object->referentiel->code_referentiel).'.csv';
 }
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
+
+// $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
 header("Content-Type: text/csv; charset=utf-8");
 header("Content-Disposition: attachment; filename=$exportfilename");

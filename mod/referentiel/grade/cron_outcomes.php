@@ -277,14 +277,19 @@ global $scales;
                     	                }
 										if ($threshold==-1){
 											$scale  = referentiel_get_scale($scaleid);
-                                	        if ($scale){
-												$threshold=$scale->grademax;
+                                    		if ($val>=$scale->grademax){     // pas de bareme
+                                        		$activite->competences_activite.=$cle.'/';
+                                        		if (OUTCOMES_SUPER_DEBUG){
+													mtrace (" ---> VALIDE \n");
+												}
 											}
                                     	}
-                                    	if ($val>=$threshold){     // baremes
-                                        	$activite->competences_activite.=$cle.'/';
-                                        	if (OUTCOMES_SUPER_DEBUG){
-												mtrace (" ---> VALIDE \n");
+										else{
+                                    		if ($val>$threshold){     // baremes
+                                        		$activite->competences_activite.=$cle.'/';
+                                        		if (OUTCOMES_SUPER_DEBUG){
+													mtrace (" ---> VALIDE \n");
+												}
 											}
                                   		}
                                 		$liste_bareme_activite.=$cle.':'.(int)$val.'/';
@@ -497,7 +502,14 @@ global $DB;
   $m->userdate=userdate($cm->added);
   $m->ref_activite=$mid;
   $m->name=$mname;
-  $m->description=strip_tags($mdescription);
+
+ $pattern = array("/<br>/i", "/<br\/>/i", "/<br \/>/i", "/<p>/i",
+  	"/<a target='.+' href='(.+)'>(.+)<\/a>/i", "/<a target=\".*\" href=\"(.+)\">(.+)<\/a>/i",
+   	"/<a href='(.+)' target='.+'>(.+)<\/a>/i", "/<a href=\"(.+)\" target=\".*\">(.+)<\/a>/i",
+    "/<a href='(.+)'>(.+)<\/a>/i", "/<a href=\"(.+)\">(.+)<\/a>/i" );
+  $replacement = array(' ', ' ', ' ', ' ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ');
+  $m->description=strip_tags(preg_replace($pattern, $replacement,$mdescription));
+
   $m->link=$mlink;
 
   return $m;
@@ -559,7 +571,13 @@ global $DB;
     $mdata->feedback='';
     $mdata->file=array();
     $mdata->link=array();  // array of assign mahara plugin object
-    
+
+ 	$pattern = array("/<br>/i", "/<br\/>/i", "/<br \/>/i", "/<p>/i",
+  	"/<a target='.+' href='(.+)'>(.+)<\/a>/i", "/<a target=\".*\" href=\"(.+)\">(.+)<\/a>/i",
+   	"/<a href='(.+)' target='.+'>(.+)<\/a>/i", "/<a href=\"(.+)\" target=\".*\">(.+)<\/a>/i",
+    "/<a href='(.+)'>(.+)<\/a>/i", "/<a href=\"(.+)\">(.+)<\/a>/i" );
+  	$replacement = array(' ', ' ', ' ', ' ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ', ' $2:$1 ');
+
 	if ($m){
         if (OUTCOMES_SUPER_DEBUG){
         	mtrace("\nDEBUG :: grade/cron_outcomes.php Line 371 ; USER : $userid \nASSIGN MODULE\n");
@@ -657,7 +675,7 @@ INSERT INTO `mdl24_mahara_portfolio` (`id`, `page`, `host`, `userid`, `title`, `
                     			mtrace("\nDEBUG :: grade/cron_outcomes.php Line 402 ; ASSIGN ONLINETEXT\n");
 								print_r($as);
 							}
-							$mdata->submission.=strip_tags($onlinetext->onlinetext);
+							$mdata->submission.=strip_tags(preg_replace($pattern, $replacement, $onlinetext->onlinetext));
 						}
 					}
 				}
@@ -708,9 +726,10 @@ INSERT INTO `mdl24_mahara_portfolio` (`id`, `page`, `host`, `userid`, `title`, `
                     			mtrace("\nDEBUG :: grade/cron_outcomes.php Line 413 ; ASSIGN COMMENTS\n");
 								print_r($comments);
 							}
+
 							foreach ($comments as $comment){
                         		if (!empty($comment)) {
-        							$mdata->comment[]=get_string('commentby','referentiel'). referentiel_user($comment->userid). ' ('.userdate($comment->timecreated).') : '.strip_tags($comment->content);
+        							$mdata->comment[]=get_string('commentby','referentiel'). referentiel_user($comment->userid). ' ('.userdate($comment->timecreated).') : '.strip_tags(preg_replace($pattern, $replacement, $comment->content));
 								}
 							}
 						}
@@ -725,7 +744,7 @@ INSERT INTO `mdl24_mahara_portfolio` (`id`, `page`, `host`, `userid`, `title`, `
                     			mtrace("\nDEBUG :: grade/cron_outcomes.php Line 430 ; ASSIGN FEEDBACK\n");
 								print_r($feedback);
 							}
-							$mdata->feedback=strip_tags($feedback->commenttext);
+							$mdata->feedback = strip_tags(preg_replace($pattern, $replacement, $feedback->commenttext));
 						}
 					}
 				}
@@ -1075,7 +1094,7 @@ CREATE TABLE mdl_grade_outcomes (
  * Given an object containing all the necessary data,
  * this function will create a new activity and return the id number
  *
- * @param object $activite an special referentiel_activite object
+ * @param object $activite: a special referentiel_activite object
  * @param object $m a secial module object
  * @return int The id of the newly inserted record
  **/

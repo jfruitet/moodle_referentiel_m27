@@ -53,7 +53,8 @@ class mod_referentiel_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('name_instance_obligatoire','referentiel'), 'required', null, 'client');
         $mform->addHelpButton('name', 'name_instanceh', 'referentiel');
         // remplace la description
-        $this->add_intro_editor(true, get_string('chatintro', 'chat'));
+        // OBSOLETE : $this->add_intro_editor(true, get_string('description', 'referentiel'));
+        $this->standard_intro_elements(get_string('description_instance', 'referentiel'));
 
         $mform->addElement('text', 'label_domaine', trim(get_string('label_domaine','referentiel')), array('size'=>'60'));
         $mform->setType('label_domaine', PARAM_TEXT);

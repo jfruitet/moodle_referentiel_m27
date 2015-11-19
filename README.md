@@ -1,86 +1,29 @@
-﻿moodle_referentiel_m27
-======================
+moodle_referentiel
+==================
 
-Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8, 2.9 (and maybe further ?)
+Referentiel plugin (mod / block / report) for Moodle  2.9, 3.0 (and maybe further ?)
 
 ## Module Moodle - Référentiel / Skills repository - Documentation
 
-jean.fruitet@univ-nantes.fr
+jean.fruitet@univ-nantes.fr   (jusqu'en 2016)
+jean.fruitet@free.fr (après 2016)
 
 2007/2015
 
 Type: Activity Module
 
-Requires: Moodle 2.7
+Requires: Moodle 2.9
 
-Avalaible: Moodle 2.7, 2.8, 2.9
+Avalaible: Moodle 2.9, 3.0
 
 Status: Contributed
 
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
-### PRESENTATION (English)
-
-Skills repository ("referentiel") is a Moodle module for skill certification.
-
-You can:
-
-* specify a repository or import it
-* declare activities linked with competencies
-* follow students declarations
-* propose tasks (a mission, list of competencies, linked documents...)
-* export an print certificates
-* If your site enables Outcomes (also known as Competencies, Goals, Standards or Criteria), you can now export a list of Outcomes from referentiel module then grade things using
-that scale (forum, database, assigments, etc.) throughout the site. Then these evaluations will be integrated in the Referentiel instance of the course.
-
-#### Documentation
-
-https://docs.moodle.org/29/en/mod/referentiel/view
-
-#### Installation
-
-Install all referentiel components in is directory
-
-./mod/referentiel
-
-./blocks/referentiel
-
-./report/referentiel
-
-
-##### The following steps should get you up and running with this module code.
-
-1. Unzip the archive in a temporary directory.
-
-	Move sub-directory  "./mod/referentiel" to YOUR_MOODLE_DIR/mod/
-	
-	Language data files may be let in  "YOUR_MOODLE_DIR/mod/referentiel/lang/"
-
-	Move sub-directory "./blocks/referentiel" to YOUR_MOODLE_DIR/blocks/
-
-	Move sub-directory  "./project/referentiel" to YOUR_MOODLE_DIR/project/
-	
-	Languages files can be left in the moodle/{mod|blocks|project}/referentiel/lang/ directory.
-
-2. log on with admin role
-
-3. install new modules as usual (admin Notification)
-
-4. Set module parameters
-
-Administration / Plugins / Activity / Skills repository (referentiel)
-
-Unmask Administration / Plugins / Blocks / Skills repository (referentiel)
-
-If you use scales for skill evaluation, read on referentiel documentation:
-
-https://docs.moodle.org/29/en/mod/referentiel/bareme
-
-
 ### PRESENTATION (Français)
 
-"referentiel" est un module Moodle destiné à implanter une activitée type certification
-de compénces.
+"referentiel" est un module Moodle destiné à implanter une activité de type certification
+de compétences.
 
 Ce module permet :
 
@@ -101,7 +44,50 @@ Ces notations sont récupérées dans le module référentiel sous forme de comp
 
 ./report/referentiel
 
-Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
+Lisez la [documentation d'installation détaillée] (http://moodlemoot2012.unimes.fr/mod/resource/view.php?id=882 "Installation" après Connexion anonyme )
+
+### PRESENTATION (English)
+
+Skills repository ("referentiel") is a Moodle module for skill certification.
+
+You can:
+
+* specify a repository or import it
+* declare activities linked with competencies
+* follow students declarations
+* propose tasks (a mission, list of competencies, linked documents...)
+* export an print certificates
+* If your site enables Outcomes (also known as Competencies, Goals, Standards or Criteria), you can now export a list of Outcomes from referentiel module then grade things using
+that scale (forum, database, assigments, etc.) throughout the site. Then these evaluations will be integrated in the Referentiel instance of the course.
 
 
+### Sources
 
+[Moodle 2.9, 3.0 and further] (https://github.com/jfruitet/moodle_referentiel)
+
+### Installation
+
+Install all referentiel components in is directory
+
+./mod/referentiel
+
+./blocks/referentiel
+
+./report/referentiel
+
+Read the [install documentation] (http://moodlemoot2012.unimes.fr/mod/resource/view.php?id=882 "Installation, in French, with Anonymous connexion")
+
+### Documentation
+
+MoodleMoot francophones
+[MoodleMoot 2012] (http://moodlemoot2012.unimes.fr/course/view.php?id=33) Connexion anonyme
+
+Le dossier
+./mod/referentiel/documentation
+sur votre serveur Moodle contient une documentation élémentaire
+
+Look at
+./mod/referentiel/documentation directory on your Moodle server
+
+### Blog
+[Les Référentiels de compétence] (http://jfreferentiels.blogspot.fr/)

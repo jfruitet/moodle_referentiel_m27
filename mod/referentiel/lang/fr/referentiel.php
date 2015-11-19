@@ -933,7 +933,7 @@ $string['creer_documenth_help']= '*        Description du document : Une courte 
 *         Vous pouvez aussi déposer le document dans l\'espace Moodle';
 
 $string['name_instanceh']= 'Titre de l\'Instance ';
-$string['name_instanceh_help']= 'Le titre est celui affiché pour décrire l\'activité, par exemple "Déclarez vos compétences C2i"';
+$string['name_instanceh_help']= 'Le titre est celui affiché pour décrire cette instance de l\'activité Référentiel, par exemple "Dossier de certification C2i des étudiants de Lettre". Soyez précis dans le choix du titre car cela permettra aux utilisateurs (et à l\'administrateur) de distinguer les différentes instances de la même occurrence de référentiel';
 
 $string['formath']= 'Formats  d\'Importation / exportation';
 $string['formath_help']= '* XML est un format textuel de données représentant l\'Information comme une hiérarchies de balises et de données imbriquées. Il permet la sauvegarde et la restauration  de référentiels, d\'activités et de certificats.

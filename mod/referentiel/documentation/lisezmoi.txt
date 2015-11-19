@@ -1,11 +1,13 @@
 Moodle module referentiel 
 Module Moodle - Référentiel / Skills repository - Documentation
-jean.fruitet@univ-nantes.fr
+jean.fruitet@univ-nantes.fr  (jusqu'en 2016)
+jean.fruitet@free.fr (après 2016)
+
 2007/2015
 
 Type: Activity Module
-Requires: Moodle 2.7
-Avalaible: Moodle 2.7, 2.8, 2.9
+Requires: Moodle 2.9
+Avalaible: Moodle 2.9, 3.0
 Status: Contributed
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
@@ -160,9 +162,8 @@ YOUR_MOODLE/report/
 ---------------------------------------------------------
 Documentation et mises à jours sous forme d'archive ZIP 
 ---------------------------------------------------------
-sur les sites du MoodleMoot2008 (Nantes) et du MoodleMoot2009 (Lyon)
+sur les sites du MoodleMoot encore en activité
 
-    * MoodleMoot2009 : http://moodlemoot2009.insa-lyon.fr/course/view.php?id=24
     * MoodleMoot2010 : http://moodlemoot2010.utt.fr/course/view.php?id=33
     * MoodleMoot2012 : http://moodlemoot2012.unimes.fr/course/view.php?id=33
 
@@ -179,7 +180,7 @@ https://sourcesup.renater.fr/scm/viewvc.php/?root=referentiel
 ---------------------------------------------------
 GitHub
 ---------------------------------------------------
-https://github.com/jfruitet/moodle_referentiel_m27
+https://github.com/jfruitet/moodle_referentiel
 
 ----------------------------------------------------
 Forums et Tests du module
@@ -205,10 +206,9 @@ Useful documentation
 --------------------------------------------------------
 Liste de référentiels disponibles pour importation
 --------------------------------------------------------
-After you get runing the referentiel module, go to "./mod/referentiel/sauvegarde_referentiel" directory 
-to import some ready made repositories. (In french)
-Après installation du module sur un serveur Moodle, le dossier "./mod/referentiel/sauvegarde_referentiel" 
-contient les exports/imports suivants :
+Some ready made repositories are here. (In french)
+Pour récupérer des occurrnces de référentiels prêtes à l'importation
+http://moodlemoot2012.unimes.fr/mod/folder/view.php?id=881
 
 Référentiel		Format d'import CSV			Format d'import XML
 B2i Ecole		referentiel-b2i_ecole.csv	referentiel-b2i_ecole.xml
@@ -230,24 +230,6 @@ Les versions des C2i2e 2005 et 2011/2012 ne devraient pas être installées sur 
 pour éviter des confusions lors de la certification.
 
 C2i2 Metiers du droit, de l'ingénieur, de la Santé, du développement durable
-http://moodlemoot2009.insa-lyon.fr/mod/resource/view.php?id=849&subdir=/Referentiels_C2i2_Metiers
-
-Moodle Referentiel v5.3.5 de juin 2010 et suivantes
----------------------------------------------------
-
-Un nouveau format XML est proposé en importation : XML simplifié
-Il est généré par l'éditeur de référentiel wysiwyg intégré à Moodle depuis la version 5.3.5
-On le reconnaît à la présence dans le nom de fichier du suffixe _sxml.xml
-Vous pouvez trouver des modèles pour ce format dans le dossier
-./mod/referentiel/editor/data de votre serveur.
-
-Les fichiers .txt, .dat de ce dossier sont des modèles pour le module référentiel.
-Les fichier _sxml.xml sont au format XML simplifié.
-Ils peuvent être importés dans le module lors de la création d'une nouvelle instance de référentiel
-en cliquant sur le bouton "Import XML simplifié".
-
-N'essayez pas d'importer un référentiel XML simplifié (dont le nom est de la forme xxx_sxml.xml)
-depuis la rubrique "Référentiel/Importer" de l'activité Référentiel
 
 
 --------------------------------------------------------

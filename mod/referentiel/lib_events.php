@@ -33,13 +33,7 @@ global $CFG;
 function referentiel_user_unenrolled($cp) {
 global $CFG;
     if ($cp->lastenrol) {
-            // Valable pour Moodle 2.1 et Moodle 2.2
-    //if ($CFG->version < 2011120100) {
         $context = context_course::instance($cp->courseid);
-    //} else {
-        //$context = context_course::instance($cp->courseid);
-    //}
-
         referentiel_remove_user_subscriptions($cp->userid, $context);
         referentiel_remove_user_tracking($cp->userid, $context);
     }

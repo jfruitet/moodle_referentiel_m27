@@ -1,39 +1,40 @@
-moodle_referentiel_m27
-======================
+moodle_referentiel
+==================
 
-Referentiel plugin (mod / block / report) for Moodle 2.7, 2.8, 2.9 (and maybe further ?)
+Referentiel plugin (mod / block / report) for Moodle  2.9, 3.0 (and maybe further ?)
 
-## Module Moodle - RÈfÈrentiel / Skills repository - Documentation
+## Module Moodle - R√©f√©rentiel / Skills repository - Documentation
 
-jean.fruitet@univ-nantes.fr
+jean.fruitet@univ-nantes.fr   (jusqu'en 2016)
+jean.fruitet@free.fr (apr√®s 2016)
 
 2007/2015
 
 Type: Activity Module
 
-Requires: Moodle 2.7
+Requires: Moodle 2.9
 
-Avalaible: Moodle 2.7, 2.8, 2.9
+Avalaible: Moodle 2.9, 3.0
 
 Status: Contributed
 
 Maintainer(s): jean.fruitet@univ-nantes.fr
 
-### PRESENTATION (FranÁais)
+### PRESENTATION (Fran√ßais)
 
-"referentiel" est un module Moodle destinÈ ‡ implanter une activitÈ de type certification
-de compÈtences.
+"referentiel" est un module Moodle destin√© √† implanter une activit√© de type certification
+de comp√©tences.
 
 Ce module permet :
 
-* de spÈcifier un rÈfÈrentiel de compÈtences (ou de le tÈlÈcharger) ;
-* de dÈclarer des activitÈs et d'associer celles-ci aux compÈtences du rÈfÈrentiel ;
-* de gÈrer l'accompagnement ;
-* de dÈfinir des t‚ches (mission, consignes, liste de compÈtences mobilisÈes pour accomplir la t‚che, documents attachÈs) ;
-* d'Èmettre des certificats basÈs sur le dit rÈfÈrentiel ;
-* Si le site active les Objectifs, vous pouvez exporter le rÈfÈrentiel sous forme d'une
-liste d'objectifs qui serviront alors ‡ Èvaluer toute forme d'activitÈ(forum, BD, devoir, etc.).
-Ces notations sont rÈcupÈrÈes dans le module rÈfÈrentiel sous forme de compÈtences validÈes dans des dÈclaration d'activitÈ.
+* de sp√©cifier un r√©f√©rentiel de comp√©tences (ou de le t√©l√©charger) ;
+* de d√©clarer des activit√©s et d'associer celles-ci aux comp√©tences du r√©f√©rentiel ;
+* de g√©rer l'accompagnement ;
+* de d√©finir des t√¢ches (mission, consignes, liste de comp√©tences mobilis√©es pour accomplir la t√¢che, documents attach√©s) ;
+* d'√©mettre des certificats bas√©s sur le dit r√©f√©rentiel ;
+* Si le site active les Objectifs, vous pouvez exporter le r√©f√©rentiel sous forme d'une
+liste d'objectifs qui serviront alors √† √©valuer toute forme d'activit√©(forum, BD, devoir, etc.).
+Ces notations sont r√©cup√©r√©es dans le module r√©f√©rentiel sous forme de comp√©tences valid√©es dans des d√©claration d'activit√©.
 
 #### Pour utiliser pleinement cette version installez les composants suivants dans leurs dossiers respectifs
 
@@ -43,7 +44,7 @@ Ces notations sont rÈcupÈrÈes dans le module rÈfÈrentiel sous forme de compÈtenc
 
 ./report/referentiel
 
-Lisez la [documentation d'installation] (http://moodlemoot2012.unimes.fr/course/view.php?id=33 "Installation")
+Lisez la [documentation d'installation d√©taill√©e] (http://moodlemoot2012.unimes.fr/mod/resource/view.php?id=882 "Installation" apr√®s Connexion anonyme )
 
 ### PRESENTATION (English)
 
@@ -59,7 +60,12 @@ You can:
 * If your site enables Outcomes (also known as Competencies, Goals, Standards or Criteria), you can now export a list of Outcomes from referentiel module then grade things using
 that scale (forum, database, assigments, etc.) throughout the site. Then these evaluations will be integrated in the Referentiel instance of the course.
 
-#### Installation
+
+### Sources
+
+[Moodle 2.9, 3.0 and further] (https://github.com/jfruitet/moodle_referentiel)
+
+### Installation
 
 Install all referentiel components in is directory
 
@@ -69,4 +75,19 @@ Install all referentiel components in is directory
 
 ./report/referentiel
 
-Read the [install documentation] (http://moodlemoot2012.unimes.fr/mod/page/view.php?id=878 "Installation, in French")
+Read the [install documentation] (http://moodlemoot2012.unimes.fr/mod/resource/view.php?id=882 "Installation, in French, with Anonymous connexion")
+
+### Documentation
+
+MoodleMoot francophones
+[MoodleMoot 2012] (http://moodlemoot2012.unimes.fr/course/view.php?id=33) Connexion anonyme
+
+Le dossier
+./mod/referentiel/documentation
+sur votre serveur Moodle contient une documentation √©l√©mentaire
+
+Look at
+./mod/referentiel/documentation directory on your Moodle server
+
+### Blog
+[Les R√©f√©rentiels de comp√©tence] (http://jfreferentiels.blogspot.fr/)

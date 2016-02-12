@@ -239,7 +239,7 @@ function xmldb_referentiel_upgrade($oldversion) {
     /// Adding keys to table referentiel_task
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
-    /// Adding index to table referentiel_notification_queue
+    /// Adding keys to table referentiel_task
         $table->add_index('user',XMLDB_INDEX_NOTUNIQUE, array('userid'));
 
     /// Launch create table for referentiel_task
@@ -731,15 +731,6 @@ function xmldb_referentiel_upgrade($oldversion) {
 
 
     if ($oldversion < 2011042204) {
-    /*
-        /// Adding index to table referentiel_notification_queue
-        $index = new xmldb_index('user');
-        $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('userid'));
-        if (!$dbman->index_exists($table, $index)) {
-            $dbman->add_index($table, $index);
-        }
-
-    */
         // Supprimer une source d'erreur lors de la creation d'un certificat
     /// Define index uniqueuser (unique) to be dropped from referentiel_certificat
         $table = new xmldb_table('referentiel_certificat');
@@ -1619,7 +1610,7 @@ function xmldb_referentiel_upgrade($oldversion) {
             $table->add_field('competences_bareme', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null);
 
             $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-            /// Adding index to table referentiel_notification_queue
+            /// Adding index to table
             $table->add_index('indscale',XMLDB_INDEX_NOTUNIQUE, array('refscaleid'));
             $table->add_index('indactivite',XMLDB_INDEX_NOTUNIQUE, array('activiteid'));
             /// Launch create table

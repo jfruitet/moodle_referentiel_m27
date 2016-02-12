@@ -43,6 +43,8 @@ require_once($CFG->dirroot.'/calendar/lib.php');
 // 2010/10/18 : configuration
 require_once ("class/referentiel.class.php");
 
+
+
 // les constantes suivantes permettent de tuner le fonctionnement du module
 // a ne modifier qu'avec précaution
 define('MAXPAGE', 15);// Nombre maximal de pages pour la pagination des affichages
@@ -86,7 +88,8 @@ define('MAXLENCODE', 220);// Longueur maximale de la liste des codes d'item
 
 define('TIME_LIMIT', 360);// temps  maximal d'exécution d'un script si PHP ne fonctionne pas en safe_mode
 
-define('EDITOR_ON', 1);// editeur de referentiels simplifié wysiwyg actif (necessite le dossier mod/referentiel/editor sur le serveur)
+// L'editeur simplifié est totalement supprimé donc ceci est inutile
+define('EDITOR_ON', 0);// editeur de referentiels simplifié wysiwyg actif (necessite le dossier mod/referentiel/editor sur le serveur)
 // define('EDITOR_ON', 0);   // editeur inactif
 
 define('MAXBOITESSELECTION', 4);  // à réduire si le nombre de boites de selection des etudiants

@@ -228,10 +228,10 @@
 
                         echo "<hr />";
                         if (isset($eformat->returnpage) && ($eformat->returnpage!="")){
-                            echo $OUTPUT->continue_button($eformat->returnpage);
+                            $OUTPUT->continue_button($eformat->returnpage);
                         }
                         else{
-                            echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/etudiant.php?id='.$cm->id);
+                            $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/etudiant.php?id='.$cm->id);
                         }
                     }
                     else{

@@ -213,10 +213,10 @@
 
                         echo "<hr />";
                         if (isset($tformat->returnpage) && ($tformat->returnpage!="")){
-                            echo $OUTPUT->continue_button($tformat->returnpage);
+                            $OUTPUT->continue_button($tformat->returnpage);
                         }
                         else{
-                            echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/task.php?id='.$cm->id);
+                            $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/task.php?id='.$cm->id);
                         }
                     }
                     else{

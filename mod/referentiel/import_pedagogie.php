@@ -240,10 +240,10 @@
 
                         echo "<hr />";
                         if (isset($pformat->returnpage) && ($pformat->returnpage!="")){
-                            echo $OUTPUT->continue_button($pformat->returnpage);
+                            $OUTPUT->continue_button($pformat->returnpage);
                         }
                         else{
-                            echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/pedagogie.php?id='.$cm->id);
+                            $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/pedagogie.php?id='.$cm->id);
                         }
                     }
                     else{

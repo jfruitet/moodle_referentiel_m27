@@ -229,10 +229,10 @@
 
                         echo "<hr />";
                         if (isset($cformat->returnpage) && ($cformat->returnpage!="")){
-                            echo $OUTPUT->continue_button($cformat->returnpage);
+                            $OUTPUT->continue_button($cformat->returnpage);
                         }
                         else{
-                            echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/certificat.php?id='.$cm->id);
+                            $OUTPUT->continue_button($CFG->wwwroot.'/mod/referentiel/certificat.php?id='.$cm->id);
                         }
                     }
                     else{

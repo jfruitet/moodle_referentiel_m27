@@ -8,6 +8,12 @@ $string['notsameinstance'] = 'Cette instance n\'est pas compatible';
 $string['erreur1']= 'Paramètre manquant. Vous ne pouvez pas appeler cette page (<i> {$a} </i>) sans lui fournir une liste de paramètres obligatoires... ';
 $string['type_aide']= 'Au plus 20 caractères S.V.P.';
 // Events
+$string['domaincreated'] = 'Domaine créé';
+$string['eventinstanceviewed'] = 'Instance affichée';
+$string['eventcertificatedeleted'] = 'Certificat supprimé';
+$string['eventcertificateupdated'] = 'Certificat mis à jour';
+$string['eventtasklinked'] = 'Tâche associée';
+
 $string['eventeditpageviewed'] = 'Page éditée';
 $string['eventreferentielcomplete'] = 'Referentiel complété';
 $string['eventactivitycreated'] = 'Activité  crée';
@@ -19,7 +25,6 @@ $string['eventallpedagogydeleted'] = 'Toutes les Pédagogies sont supprimées';
 $string['eventconfigupdated'] = 'Configuration mise à jour';
 $string['eventinstancedeleted'] = 'Instance supprimée';
 $string['eventinstanceupdated'] = 'Instance mise à jour';
-$string['eventinstanceviewed'] = 'Instance affichée';
 $string['eventdomaincreated'] = 'Domaine créé';
 $string['eventdomaindeleted'] = 'Domaine supprimé';
 $string['eventdomainupdated'] = 'Domaine mis à jour';

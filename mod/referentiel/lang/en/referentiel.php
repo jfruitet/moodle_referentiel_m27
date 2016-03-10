@@ -7,6 +7,12 @@ $string['erreur1']= 'Missing parameter. You can\'t use this page (<i> {$a} </i>)
 $string['type_aide']= 'No more than 20 characters please.';
 
 // Events
+$string['domaincreated'] = 'Domain created';
+$string['eventinstanceviewed'] = 'Instance displayed';
+$string['eventcertificatedeleted'] = 'Certificate deleted';
+$string['eventcertificateupdated'] = 'Certificate updated';
+$string['eventtasklinked'] = 'Task linked';
+
 $string['eventeditpageviewed'] = 'Edit page viewed';
 $string['eventreferentielcomplete'] = 'Referentiel complete';
 $string['eventactivitycreated'] = 'Activity created';

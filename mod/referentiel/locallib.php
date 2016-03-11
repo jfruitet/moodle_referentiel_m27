@@ -1058,34 +1058,24 @@ global $DB;
 
 
 
-
-
 /**
  * This function returns records from table referentiel_activite
  *
  * @param id reference activite
- * @param select clause : ' AND champ=valeur,  ... '
- * @param order clause : ' champ ASC|DESC, ... '
  * @return objects
- * @todo Finish documenting this function
  **/
-function referentiel_get_users_activites_instance($referentiel_instance_id, $user_id=0, $select='', $order=''){
+function referentiel_get_users_activites_instance($referentiel_instance_id){
 global $DB;
-	$where='';
 	if (!empty($referentiel_instance_id)){
-        $params = array("refid" => "$referentiel_instance_id", "userid" => "$user_id");
-		if ($user_id!=0){
-			$where= ' AND userid=:userid';
+        $params = array("refid" => "$referentiel_instance_id");
+        $sql="SELECT DISTINCT userid FROM {referentiel_activite} WHERE ref_instance=:refid GROUP BY userid ORDER BY userid ";
+		if ($recs = $DB->get_records_sql($sql, $params)){
+			return ($recs);
 		}
-		if (empty($order)){
-			$order= 'userid ASC, date_creation DESC ';
-		}
-        $sql="SELECT DISTINCT userid FROM {referentiel_activite} WHERE ref_instance=:refid  $where  $select ORDER BY $order ";
-		return $DB->get_records_sql($sql, $params);
 	}
-	else
-		return NULL;
+    return NULL;
 }
+
 
 
 
